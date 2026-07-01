@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ADHDmaxxing - System Interface</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="initiation-modal" class="modal-hidden">
+        <div class="modal-content info-content animate-fade-in">
+            <h2 class="serif-title">⚠️ SYSTEM DIRECTIVE CODES</h2>
+            <hr class="thin-line">
+            
+            <div id="slideshow-container">
+                <div class="system-slide">
+                    <h3 class="slide-title">[1/4] THE IDENTITY MATRIX</h3>
+                    <p class="slide-text">Your profile picture is automatically normalized to high-contrast grayscale. As you accumulate permanent Experience points (XP), your boundary aura dynamically mutates across four distinct tiers: Novice, Awakened, Elite, and S-Class.</p>
+                </div>
+                <div class="system-slide hidden">
+                    <h3 class="slide-title">[2/4] OBJECTIVE TRACKING & ANTI-CHEAT</h3>
+                    <p class="slide-text">Quests are classified into Mandatory tracks (Main/Side) carrying overnight 1.5x penalties, and Optional tracks (Errands/Bonus). All new entries default to "Plan for Tomorrow" to prevent you from padding metrics with easy late-night points.</p>
+                </div>
+                <div class="system-slide hidden">
+                    <h3 class="slide-title">[3/4] PROPORTIONAL UNLOCKS</h3>
+                    <p class="slide-text">Real-world rewards are tied directly to their financial valuation (1 Rs = 2 XP milestone threshold). Points are never deducted or spent; passing an XP milestone permanently unlocks the node for real-world payout validation.</p>
+                </div>
+                <div class="system-slide hidden">
+                    <h3 class="slide-title">[4/4] INTERVENTION PROTECTION</h3>
+                    <p class="slide-text">Use Postpone Tokens (PT) surgically to shield individual mandatory items on brutal days. Toggling Stasis Mode inside the panel freezes the entire system's penalty logic when you are sick, avoiding broken streak anxieties.</p>
+                </div>
+            </div>
+
+            <div class="slideshow-controls">
+                <button id="slide-prev-btn" class="secondary-btn costar-btn" onclick="changeSlide(-1)" disabled>Previous</button>
+                <button id="slide-next-btn" class="primary-btn costar-btn" onclick="changeSlide(1)">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="night-shift-modal" class="modal-hidden">
+        <div class="modal-content animate-slide-up">
+            <h2 class="serif-title">🌙 NIGHT SHIFT DIRECTIVE</h2>
+            <p class="system-subtitle">Unresolved mandatory allocations demand structural resolution.</p>
+            <hr class="thin-line">
+            
+            <div id="night-hub-list" class="scroll-panel"></div>
+            
+            <div class="modal-actions" style="margin-top: 15px;">
+                <button class="primary-btn costar-btn" style="width: 100%;" onclick="dismissNightHub()">Push Through (Resume Engine)</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="setup-screen" class="hidden">
+        <div class="setup-content animate-fade-in">
+            <h2 class="serif-title">SYSTEM AWAKENING</h2>
+            <p class="system-subtitle">Calibrate parameters to initialize the protocol.</p>
+            
+            <div class="form-group">
+                <label for="setup-name">Identity Codename:</label>
+                <input type="text" id="setup-name" placeholder="e.g., Sung Jinwoo">
+                <span class="input-helper">Your system identifier profile designation.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="setup-reset">Circadian Rollover Hour:</label>
+                <select id="setup-reset">
+                    <option value="0">12:00 AM (Midnight)</option>
+                    <option value="1">01:00 AM</option>
+                    <option value="2">02:00 AM</option>
+                    <option value="3" selected>03:00 AM (System Recommendation)</option>
+                    <option value="4">04:00 AM</option>
+                    <option value="5">05:00 AM</option>
+                    <option value="6">06:00 AM</option>
+                </select>
+                <span class="input-helper">The precise deadline hour when daily task metrics expire and structural rollover penalties compute.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="setup-deadline">Doomsday Limit Target:</label>
+                <input type="date" id="setup-deadline" value="2026-08-01">
+                <span class="input-helper">Establishes the final milestone projection matrix window.</span>
+            </div>
+
+            <div class="reward-mandate-box">
+                <h4 class="serif-sub" style="margin-top:0; color:#fff;">🛡️ MANDATORY INITIAL PROFILE ROSTER</h4>
+                <p class="input-helper" style="margin-bottom: 10px;">ADHD Guardrail: You must seed the database with a minimum of 4 distinct tier targets based on valuation to restrict impulse padding loops.</p>
+                <div class="setup-reward-row"><input type="text" id="r1-name" value="Coffee Bar Luxury Allocation"> <input type="number" id="r1-val" value="150" placeholder="Rs"></div>
+                <div class="setup-reward-row"><input type="text" id="r2-name" value="Premium Core Apparel Upgrade"> <input type="number" id="r2-val" value="1000" placeholder="Rs"></div>
+                <div class="setup-reward-row"><input type="text" id="r3-name" value="Digital Entertainment Asset Swap"> <input type="number" id="r3-val" value="4000" placeholder="Rs"></div>
+                <div class="setup-reward-row"><input type="text" id="r4-name" value="S-Class Tattoo Session Unlock"> <input type="number" id="r4-val" value="10000" placeholder="Rs"></div>
+            </div>
+
+            <button class="primary-btn costar-btn" style="margin-top:15px;" onclick="initializeSystem()">Initialize Interface</button>
+        </div>
+    </div>
+
+    <div id="main-dashboard" class="hidden">
+        <div id="status-alerts-bar">
+            <span id="stasis-badge" class="badge hidden">❄️ REST/SICK PROTOCOL ACTIVE</span>
+        </div>
+
+        <div id="avatar-container" class="animate-fade-in">
+            <div id="avatar-graphic-frame" onclick="triggerAvatarUpload()">
+                <div id="avatar-aura-glow"></div>
+                <img id="avatar-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><rect width='80' height='80' fill='%23111'/><text x='50%' y='55%' font-family='sans-serif' font-size='10' fill='%23444' text-anchor='middle'>UPLOAD</text></svg>" alt="Identity Face Node">
+                <div id="avatar-rank-title">NOVICE</div>
+            </div>
+            <input type="file" id="avatar-file-input" class="hidden" accept="image/*" onchange="processAvatarUpload(this)">
+            
+            <div id="player-stats">
+                <h1 class="serif-name"><span id="username">---</span></h1>
+                <p class="meta-text">Rank Status: <span id="rank-display">---</span> | Level: <span id="level-display">-</span> | Streak: <span id="streak-display">0</span>d</p>
+                
+                <div id="daily-directive-msg">"Calibrating directive arrays..."</div>
+                <div id="dashboard-milestone-tracker">Next Target Locked: Counting metrics...</div>
+
+                <div class="economy-bar">
+                    <div class="eco-stat"><span>⚡ TOTAL XP</span><strong id="xp-display">0</strong></div>
+                    <div class="eco-stat"><span>⏳ TOKENS</span><strong id="pt-display">0</strong></div>
+                    <div class="eco-stat alert-text"><span>💀 DOOMSDAY</span><strong id="countdown-display">--</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="quest-board" class="animate-fade-in">
+            <div class="quest-category">
+                <h3 class="category-header">🔥 MAIN OBJECTIVES <span class="header-desc">(Mandatory - Heavy Rollover Penalty)</span></h3>
+                <ul id="main-quest-list" class="quest-list"></ul>
+            </div>
+            
+            <div class="quest-category">
+                <h3 class="category-header">🛠️ SIDE DEVIATIONS <span class="header-desc">(Mandatory - Standard Rollover Penalty)</span></h3>
+                <ul id="side-quest-list" class="quest-list"></ul>
+            </div>
+            
+            <div class="quest-category">
+                <h3 class="category-header">📜 ERRAND REGISTRY <span class="header-desc">(Optional - Rollover Without Penalty)</span></h3>
+                <ul id="errand-quest-list" class="quest-list"></ul>
+            </div>
+            
+            <div class="quest-category">
+                <h3 class="category-header">⭐ BONUS INSIGHTS <span class="header-desc">(Optional Routine Upsides)</span></h3>
+                <ul id="bonus-quest-list" class="quest-list"></ul>
+            </div>
+            
+            <div class="quest-category completed-section">
+                <h3 class="category-header completed-header">✅ ARCHIVED TRANSACTION RECORDS</h3>
+                <ul id="completed-quest-list" class="quest-list"></ul>
+            </div>
+        </div>
+
+        <div id="action-bar">
+            <button id="add-quest-btn" class="primary-btn costar-btn">+ Register Objective</button>
+            <button id="settings-btn" class="secondary-btn costar-btn" onclick="openSettingsModal()">⚙️ Control Panel</button>
+            <button id="help-btn" class="secondary-btn costar-btn" onclick="openInitiationModal(true)" style="max-width: 50px; padding:0;">?</button>
+        </div>
+    </div>
+
+    <div id="quest-modal" class="modal-hidden">
+        <div class="modal-content animate-slide-up">
+            <h3 class="serif-title">NEW PROTOCOL OBJECTIVE</h3>
+            <hr class="thin-line">
+            
+            <label>Rapid Archetypes:</label>
+            <div class="suggestion-box">
+                <button class="chip" onclick="fillSuggestion('Water the plants', 'side', 'cyclic', 3)">+ Water Plants</button>
+                <button class="chip" onclick="fillSuggestion('Drink 2L Water', 'bonus', 'daily')">+ Drink Water</button>
+                <button class="chip" onclick="fillSuggestion('Deep Work Focus Block', 'main', 'daily')">+ Deep Work</button>
+                <button class="chip" onclick="fillSuggestion('Take Routine Medicine', 'side', 'cyclic', 7)">+ Med Routine</button>
+            </div>
+
+            <label for="quest-title">Objective Parameters:</label>
+            <input type="text" id="quest-title" placeholder="Define target performance criteria...">
+
+            <label for="quest-type">Target Classification:</label>
+            <select id="quest-type">
+                <option value="main">🔥 Main Objective (+50 XP - Critical Focus)</option>
+                <option value="side">🛠️ Side Deviation (+20 XP - Maintenance Habit)</option>
+                <option value="errand">📜 Errand Registry (+75 XP - Flexible Task)</option>
+                <option value="bonus">⭐ Bonus Insight (+15 XP - Small Health Win)</option>
+            </select>
+
+            <label for="quest-frequency">Recurrence Protocol:</label>
+            <select id="quest-frequency" onchange="toggleCycleInputVisibility()">
+                <option value="daily" selected>🔁 Daily Cyclical</option>
+                <option value="one-time">⚡ Single Dynamic Event</option>
+                <option value="cyclic">⏳ Interval Rotation (Every X Days)</option>
+            </select>
+
+            <div id="custom-cycle-group" class="hidden" style="margin-top: 12px;">
+                <label for="quest-cycle-days">Interval Length (Days):</label>
+                <input type="number" id="quest-cycle-days" value="7" min="1">
+            </div>
+
+            <label for="quest-schedule" style="margin-top: 12px;">Deployment Matrix Timeline:</label>
+            <select id="quest-schedule">
+                <option value="tomorrow" selected>🗓 Nighttime Buffer: Plan for Tomorrow (Anti-Cheat)</option>
+                <option value="today">🚀 Deploy Active Today (Impromptu Action)</option>
+            </select>
+
+            <div class="modal-actions">
+                <button class="secondary-btn costar-btn" onclick="closeModal()">Dismiss</button>
+                <button class="primary-btn costar-btn" onclick="addNewQuest()">Authorize</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="settings-modal" class="modal-hidden">
+        <div class="settings-modal-content animate-slide-up">
+            <div class="settings-header">
+                <h3 class="serif-title" style="margin:0;">SYSTEM MODULES</h3>
+                <button class="close-x" onclick="closeSettingsModal()">&times;</button>
+            </div>
+            
+            <div class="settings-tabs">
+                <button id="tab-btn-config" class="tab-btn active" onclick="switchSettingsTab('config')">Engine</button>
+                <button id="tab-btn-roster" class="tab-btn" onclick="switchSettingsTab('roster')">Milestones</button>
+                <button id="tab-btn-archive" class="tab-btn" onclick="switchSettingsTab('archive')">Chronicles</button>
+            </div>
+
+            <div id="tab-content-config" class="tab-pane">
+                <div class="form-group toggle-group">
+                    <label for="settings-stasis" style="margin:0; color:#fff;">❄️ Rest / Sick Day Protocol</label>
+                    <input type="checkbox" id="settings-stasis" onchange="toggleStasisMode()" style="width:auto; cursor:pointer;">
+                </div>
+                <span class="input-helper" style="display:block; margin:-10px 0 15px 0;">Stasis Hibernation: Halts penalty loops completely for illness or planned recovery windows without breaking streak metrics.</span>
+
+                <div class="form-group">
+                    <label for="settings-boss-date">Doomsday Matrix Target Limit:</label>
+                    <input type="date" id="settings-boss-date">
+                </div>
+
+                <div class="form-group">
+                    <label for="settings-reset-hour">Circadian Refresh Rollover:</label>
+                    <select id="settings-reset-hour">
+                        <option value="0">12:00 AM</option>
+                        <option value="1">01:00 AM</option>
+                        <option value="2">02:00 AM</option>
+                        <option value="3">03:00 AM</option>
+                        <option value="4">04:00 AM</option>
+                        <option value="5">05:00 AM</option>
+                        <option value="6">06:00 AM</option>
+                    </select>
+                </div>
+                <button class="primary-btn costar-btn" style="width:100%; margin-top:15px;" onclick="saveSettings()">Commit Parameters</button>
+                <button class="secondary-btn costar-btn" style="width:100%; color:var(--system-red); border-color:#3a1c1c; margin-top:10px;" onclick="triggerSystemWipe()">⚠️ Factory Purge Protocol</button>
+            </div>
+
+            <div id="tab-content-roster" class="tab-pane hidden">
+                <div class="reward-creation-box">
+                    <h5 style="margin: 0 0 12px 0; letter-spacing:1px; color:#fff;">+ MANIFEST TARGET ALLOCATION</h5>
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <input type="text" id="new-reward-name" placeholder="Target Description (e.g., Acquire New Apparel)">
+                        <input type="number" id="new-reward-value" placeholder="Monetary Value Equivalent (Rs)" min="1">
+                        <button class="gold-btn" style="width: 100%;" onclick="addCustomReward()">Inject Target Objective</button>
+                    </div>
+                </div>
+                <h4 class="serif-sub">ACTIVE PROCUREMENT TARGETS</h4>
+                <div id="milestone-roster-list" class="scroll-panel"></div>
+            </div>
+
+            <div id="tab-content-archive" class="tab-pane hidden">
+                <h4 class="serif-sub">HISTORICAL METRIC RECORDS</h4>
+                <div id="history-archive-list" class="scroll-panel"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
