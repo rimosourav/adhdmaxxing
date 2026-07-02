@@ -3,272 +3,865 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ADHDmaxxing - System Interface</title>
-    <link rel="stylesheet" href="style.css">
+    <title>ADHDmaxxing - System Awakened</title>
+    <style>
+        /* --- CORE EDITORIAL DARK THEME --- */
+        :root {
+            --bg-black: #000000;
+            --panel-dark: #0a0a0c;
+            --border-silver: #1c1c1e;
+            --text-pure: #ffffff;
+            --text-gray: #8e8e93;
+            --text-dark: #3a3a3c;
+            --system-blue: #00ddff;
+            --system-red: #ff3b3b;
+            --system-gold: #ffcc00;
+            --system-purple: #af52de;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-pure);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            margin: 0;
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .serif-title { font-family: "Georgia", serif; font-weight: 400; letter-spacing: 0.08em; margin: 0 0 8px 0; text-transform: uppercase; font-size: 1.25rem; text-align: center; }
+        .serif-sub { font-family: "Georgia", serif; font-style: italic; font-weight: 400; color: var(--text-gray); margin: 16px 0 8px 0; font-size: 0.9rem; text-align: center; }
+        .thin-line { border: 0; height: 1px; background: var(--border-silver); margin: 12px 0; }
+        .hidden, .modal-hidden { display: none !important; }
+
+        /* Animation */
+        .animate-fade-in { animation: fadeIn 0.5s forwards; }
+        .animate-slide-up { animation: slideUp 0.4s forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Badges & Dashboard Layout */
+        #status-alerts-bar { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+        .badge { padding: 6px 12px; font-size: 0.7rem; font-weight: bold; border: 1px solid rgba(0, 221, 255, 0.3); background: #000; color: var(--system-blue); }
+
+        #main-dashboard { width: 100%; max-width: 500px; box-sizing: border-box; margin: 0 auto;}
+
+        #avatar-container {
+            background: var(--panel-dark); border: 1px solid var(--border-silver);
+            padding: 20px; border-radius: 2px; margin-bottom: 20px;
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+        }
+
+        #instagram-avatar-circle {
+            width: 100px; height: 100px; border-radius: 50%; background: #000;
+            border: 2px solid var(--text-dark); position: relative;
+            display: flex; justify-content: center; align-items: center; margin-bottom: 14px;
+        }
+        #avatar-img { width: calc(100% - 4px); height: calc(100% - 4px); border-radius: 50%; object-fit: cover; filter: grayscale(100%); }
+        
+        #avatar-rank-title {
+            font-size: 0.55rem; font-weight: 900; letter-spacing: 0.1em;
+            position: absolute; bottom: -6px; z-index: 5; color: var(--text-gray);
+            background: #000; border: 1px solid var(--border-silver); padding: 1px 6px; text-transform: uppercase;
+        }
+
+        .serif-name { font-family: "Georgia", serif; font-weight: 400; margin: 0; font-size: 1.6rem; letter-spacing: 0.05em; }
+        .meta-text { font-size: 0.75rem; color: var(--text-gray); margin: 4px 0 10px 0; }
+        #daily-directive-msg { font-family: "Georgia", serif; font-style: italic; font-size: 0.85rem; border-left: 2px solid var(--system-blue); padding-left: 10px; margin: 12px 0; color: var(--text-pure); text-align: left; line-height: 1.3; }
+        #dashboard-milestone-tracker { font-size: 0.75rem; font-weight: bold; color: var(--system-gold); margin: 10px 0 14px 0; text-align: left; width: 100%; word-break: break-word; }
+
+        .economy-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 14px; background: #000; border: 1px solid var(--border-silver); padding: 8px; width: 100%; box-sizing: border-box; }
+        .eco-stat { display: flex; flex-direction: column; align-items: center; }
+        .eco-stat span { font-size: 0.55rem; font-weight: bold; color: var(--text-gray); margin-bottom: 2px; }
+        .eco-stat strong { font-size: 0.9rem; color: var(--text-pure); }
+        .alert-text strong { color: var(--system-red); }
+
+        body.rank-novice #instagram-avatar-circle { border-color: var(--text-dark); }
+        body.rank-awakened #instagram-avatar-circle { border-color: var(--system-blue); box-shadow: 0 0 12px rgba(0, 221, 255, 0.2); }
+        body.rank-elite #instagram-avatar-circle { border-color: var(--system-purple); box-shadow: 0 0 16px rgba(175, 82, 222, 0.25); }
+        body.rank-s-class #instagram-avatar-circle { border-color: var(--system-gold); box-shadow: 0 0 24px rgba(255, 204, 0, 0.35); }
+
+        /* Task Lists */
+        .quest-category { margin-bottom: 18px; }
+        .category-header { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; border-bottom: 1px solid var(--border-silver); padding-bottom: 6px; margin: 0 0 10px 0; }
+        .header-desc { font-weight: 400; color: var(--text-gray); font-size: 0.65rem; letter-spacing: 0; }
+        .quest-list { list-style: none; padding: 0; margin: 0; }
+
+        .quest-item {
+            background: var(--panel-dark); border: 1px solid var(--border-silver);
+            padding: 12px 14px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; gap: 8px;
+        }
+        .quest-item.completed-decay { opacity: 0; transform: scale(0.97) translateY(-4px); transition: var(--transition); }
+        .completed-section { opacity: 0.5; } .completed-section:hover { opacity: 1; }
+
+        /* Forms & Inputs */
+        .form-group { margin-bottom: 14px; }
+        .toggle-group { display: flex; justify-content: space-between; align-items: center; background: #000; border: 1px solid var(--border-silver); padding: 12px; }
+        label { display: block; font-size: 0.7rem; color: var(--text-gray); font-weight: bold; margin-bottom: 4px; text-transform: uppercase; }
+        .input-helper { display: block; font-size: 0.65rem; color: var(--text-dark); margin-top: 4px; }
+        .reward-mandate-box { background: rgba(10,10,12,0.6); padding: 12px; border: 1px solid var(--border-silver); margin-top: 12px; width: 100%; box-sizing: border-box; }
+        
+        .setup-reward-row { display: flex; gap: 6px; margin-bottom: 6px; width: 100%; align-items: center; }
+        .setup-reward-row input[type="text"] { flex: 3; }
+        .setup-reward-row input[type="number"] { flex: 1.2; }
+
+        input, select {
+            width: 100%; padding: 12px; background: #000; border: 1px solid var(--border-silver);
+            color: #fff; font-size: 0.85rem; box-sizing: border-box; transition: var(--transition); height: 46px;
+        }
+        input:focus, select:focus { outline: none; border-color: var(--system-blue); }
+        .calendar-input-row { display: flex; gap: 8px; width: 100%; }
+
+        /* Universal Standardized Buttons */
+        .btn-text { text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; font-weight: bold; }
+        
+        .primary-btn, .secondary-btn {
+            height: 46px; /* Universal height lock */
+            display: flex; justify-content: center; align-items: center; box-sizing: border-box;
+            cursor: pointer; padding: 0 12px; width: 100%; text-align: center; transition: var(--transition);
+        }
+        
+        .primary-btn { background: var(--text-pure); color: #000; border: 1px solid var(--text-pure); }
+        .primary-btn:hover { background: #e5e5ea; }
+        
+        .secondary-btn { background: transparent; color: var(--text-pure); border: 1px solid var(--border-silver); }
+        .secondary-btn:hover { background: #08080a; border-color: var(--text-dark); }
+
+        .gold-btn {
+            height: 36px; /* Slightly smaller for inline task buttons */
+            display: flex; justify-content: center; align-items: center; padding: 0 10px;
+            background: transparent; border: 1px solid var(--text-pure); color: var(--text-pure); 
+            font-size: 0.7rem; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: var(--transition);
+        }
+        .gold-btn:hover { background: var(--text-pure); color: #000; }
+        .pt-btn { border-color: var(--system-gold) !important; color: var(--system-gold) !important; }
+
+        /* Perfect Center Alignment for 40-40-20 Navigation */
+        .nav-row {
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            width: 100%; max-width: 320px; margin: 24px auto 0 auto; box-sizing: border-box;
+        }
+        .nav-row button { height: 46px; padding: 0; }
+
+        /* Other Centralized Button Wrappers */
+        .centered-btn-wrapper { display: flex; justify-content: center; width: 100%; max-width: 320px; margin: 18px auto 0 auto; gap: 8px; }
+        
+        .modal-header-row { display: flex; justify-content: space-between; align-items: center; }
+        .close-x { background: transparent; border: none; color: var(--text-gray); font-size: 1.5rem; cursor: pointer; padding: 0; line-height: 1; }
+
+        /* Modals with Natural Scrolling */
+        #quest-modal, #settings-modal, #tutorial-modal, #night-shift-modal, #tomorrow-modal, #edit-task-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95); z-index: 9999;
+            display: flex; justify-content: center; align-items: flex-start;
+            padding: 40px 12px; box-sizing: border-box; overflow-y: auto;
+        }
+        
+        .modal-content, .settings-modal-content, .setup-content {
+            background: var(--bg-black); border: 1px solid var(--border-silver);
+            padding: 24px; width: 100%; max-width: 440px; box-sizing: border-box; margin: 0 auto;
+        }
+
+        .faq-section { background: var(--panel-dark); border: 1px solid var(--border-silver); padding: 12px; margin-bottom: 10px; }
+        .faq-section h4 { margin: 0 0 6px 0; font-size: 0.75rem; color: var(--system-blue); }
+        .faq-section p { margin: 0; font-size: 0.75rem; color: var(--text-gray); line-height: 1.4; }
+        
+        .system-slide { background: var(--panel-dark); padding: 20px; border: 1px solid var(--border-silver); min-height: 110px; }
+        .slide-title { font-size: 0.75rem; color: var(--system-gold); margin: 0 0 8px 0; }
+        .slide-text { font-size: 0.75rem; color: #fff; line-height: 1.4; margin: 0; }
+
+        .settings-tabs { display: flex; justify-content: center; max-width: 320px; margin: 14px auto; gap: 4px; }
+        .tab-btn { flex: 1; height: 38px; display: flex; justify-content: center; align-items: center; background: transparent; border: 1px solid var(--border-silver); color: var(--text-gray); cursor: pointer; font-size: 0.7rem; text-transform: uppercase; }
+        .tab-btn.active { background: var(--panel-dark); border-color: var(--text-pure); color: var(--text-pure); font-weight: bold; }
+
+        .reward-creation-box { background: var(--panel-dark); padding: 12px; border: 1px dashed var(--text-dark); width: 100%; box-sizing: border-box; margin-bottom: 15px;}
+        .roster-card, .archive-card { background: var(--panel-dark); border: 1px solid var(--border-silver); padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; box-sizing: border-box; }
+        
+        .flex-buttons { display: flex; gap: 6px; }
+    </style>
 </head>
 <body>
 
-    <div id="initiation-modal" class="modal-hidden">
-        <div class="modal-content info-content animate-fade-in">
-            <h2 class="serif-title">⚠️ SYSTEM DIRECTIVE CODES</h2>
+    <div id="tutorial-modal" class="modal-hidden">
+        <div class="modal-content animate-fade-in">
+            <h2 class="serif-title">📖 SYSTEM GUIDE</h2>
             <hr class="thin-line">
             
-            <div id="slideshow-container">
+            <div id="slideshow-box">
                 <div class="system-slide">
-                    <h3 class="slide-title">[1/4] THE IDENTITY MATRIX</h3>
-                    <p class="slide-text">Your profile picture is automatically normalized to high-contrast grayscale. As you accumulate permanent Experience points (XP), your boundary aura dynamically mutates across four distinct tiers: Novice, Awakened, Elite, and S-Class.</p>
+                    <h3 class="slide-title">[1/4] THE DOOMSDAY DEADLINE</h3>
+                    <p class="slide-text">You are fighting against a countdown clock. Choose a major real-world deadline date. The app displays exactly how many days you have left to reach it, forcing you to see time slipping away.</p>
                 </div>
                 <div class="system-slide hidden">
-                    <h3 class="slide-title">[2/4] OBJECTIVE TRACKING & ANTI-CHEAT</h3>
-                    <p class="slide-text">Quests are classified into Mandatory tracks (Main/Side) carrying overnight 1.5x penalties, and Optional tracks (Errands/Bonus). All new entries default to "Plan for Tomorrow" to prevent you from padding metrics with easy late-night points.</p>
+                    <h3 class="slide-title">[2/4] YOUR SLEEP RESET HOUR</h3>
+                    <p class="slide-text">Everyone has a different sleep schedule. Pick a reset hour between 12:00 AM and 6:00 AM. This is your personal midnight. If you do not finish your mandatory tasks before this hour, you face point penalties.</p>
                 </div>
                 <div class="system-slide hidden">
-                    <h3 class="slide-title">[3/4] PROPORTIONAL UNLOCKS</h3>
-                    <p class="slide-text">Real-world rewards are tied directly to their financial valuation (1 Rs = 2 XP milestone threshold). Points are never deducted or spent; passing an XP milestone permanently unlocks the node for real-world payout validation.</p>
+                    <h3 class="slide-title">[3/4] UNLOCKING REWARDS</h3>
+                    <p class="slide-text">You will list real-world rewards and their actual money cost. The app turns that price into an XP goal. You never spend your points; your hard work clears the milestone so you can claim the reward guilt-free.</p>
                 </div>
                 <div class="system-slide hidden">
-                    <h3 class="slide-title">[4/4] INTERVENTION PROTECTION</h3>
-                    <p class="slide-text">Use Postpone Tokens (PT) surgically to shield individual mandatory items on brutal days. Toggling Stasis Mode inside the panel freezes the entire system's penalty logic when you are sick, avoiding broken streak anxieties.</p>
+                    <h3 class="slide-title">[4/4] TASK RULES</h3>
+                    <p class="slide-text">Main and Side Tasks are mandatory. Finish them before your reset hour, or you lose points. Errands and Bonus Tasks are optional. Completed tasks stay crossed-out on your screen all day to keep you motivated.</p>
                 </div>
             </div>
 
-            <div class="slideshow-controls">
-                <button id="slide-prev-btn" class="secondary-btn costar-btn" onclick="changeSlide(-1)" disabled>Previous</button>
-                <button id="slide-next-btn" class="primary-btn costar-btn" onclick="changeSlide(1)">Next</button>
+            <div class="centered-btn-wrapper">
+                <button id="slide-prev-btn" class="secondary-btn btn-text" onclick="changeOnboardingSlide(-1)" disabled>Previous</button>
+                <button id="slide-next-btn" class="primary-btn btn-text" onclick="changeOnboardingSlide(1)">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="help-modal" class="modal-hidden">
+        <div class="modal-content animate-slide-up">
+            <div class="modal-header-row">
+                <h3 class="serif-title" style="margin:0;">SYSTEM MANUAL</h3>
+                <button class="close-x" onclick="closeHelpManualModal()">&times;</button>
+            </div>
+            <hr class="thin-line">
+            
+            <button class="secondary-btn btn-text" style="width:100%; margin-bottom:15px; border-color:var(--system-blue); color:var(--system-blue);" onclick="replayTutorialSlideshowFromManual()">▶️ Replay Tutorial Guide</button>
+            
+            <div class="faq-section">
+                <h4>💡 POSTPONE (PT) BUTTON</h4>
+                <p>Next to mandatory tasks is a yellow [PT] button. Having a terrible day? Click it to safely skip the task. You avoid the penalty loss, but get 0 XP.</p>
+            </div>
+            <div class="faq-section">
+                <h4>🔥 EARNING TOKENS</h4>
+                <p>You start with 3 PT tokens. Complete all mandatory tasks for 3 consecutive days to earn a "Perfect Streak" and get +1 free token.</p>
+            </div>
+            <div class="faq-section">
+                <h4>❄️ REST / SICK DAY MODE</h4>
+                <p>Turn this on in the Control Panel if you get sick or go on holiday. It freezes all penalties completely until you turn it off.</p>
             </div>
         </div>
     </div>
 
     <div id="night-shift-modal" class="modal-hidden">
         <div class="modal-content animate-slide-up">
-            <h2 class="serif-title">🌙 NIGHT SHIFT DIRECTIVE</h2>
-            <p class="system-subtitle">Unresolved mandatory allocations demand structural resolution.</p>
+            <div class="modal-header-row">
+                <h2 class="serif-title" style="margin:0;">🌙 NIGHT DIRECTIVE</h2>
+                <button class="close-x" onclick="dismissNightHub()">&times;</button>
+            </div>
+            <p style="font-size:0.8rem; color:var(--text-gray);">Unfinished mandatory tasks found.</p>
+            <hr class="thin-line">
+            <div id="night-hub-list"></div>
+        </div>
+    </div>
+
+    <div id="edit-task-modal" class="modal-hidden">
+        <div class="modal-content animate-slide-up">
+            <div class="modal-header-row">
+                <h3 class="serif-title" style="margin:0;">EDIT TASK</h3>
+                <button class="close-x" onclick="closeEditTaskModal()">&times;</button>
+            </div>
+            <hr class="thin-line">
+            <input type="hidden" id="edit-task-id">
+            <label>Task Name</label>
+            <input type="text" id="edit-task-title" style="margin-bottom:12px;">
+            <label>Classification</label>
+            <select id="edit-task-type" style="margin-bottom:12px;">
+                <option value="main">🔥 Main Task</option>
+                <option value="side">🛠️ Side Task</option>
+                <option value="errand">📜 Errand</option>
+                <option value="bonus">⭐ Bonus Task</option>
+            </select>
+            <label>Reward Points</label>
+            <input type="number" id="edit-task-reward" style="margin-bottom:16px;">
+            
+            <div class="centered-btn-wrapper" style="margin-top:0;">
+                <button class="primary-btn btn-text" onclick="saveTaskEdit()">Save Task</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="tomorrow-modal" class="modal-hidden">
+        <div class="modal-content animate-slide-up">
+            <div class="modal-header-row">
+                <h3 class="serif-title" style="margin:0;">🗓️ TOMORROW'S TASKS</h3>
+                <button class="close-x" onclick="closeTomorrowModal()">&times;</button>
+            </div>
             <hr class="thin-line">
             
-            <div id="night-hub-list" class="scroll-panel"></div>
+            <div class="reward-creation-box">
+                <h5 style="margin: 0 0 10px 0; color:#fff;">+ ADD NEW TASK</h5>
+                <input type="text" id="t-quest-title" placeholder="Task name...">
+                <select id="t-quest-type" style="margin-bottom:8px;">
+                    <option value="main">🔥 Main Task (+50 XP)</option>
+                    <option value="side" selected>🛠️ Side Task (+20 XP)</option>
+                    <option value="errand">📜 Errand (+75 XP)</option>
+                    <option value="bonus">⭐ Bonus Task (+15 XP)</option>
+                </select>
+                <select id="t-quest-frequency" onchange="toggleTomorrowCycleInput()" style="margin-bottom:8px;">
+                    <option value="daily" selected>🔁 Daily Habit</option>
+                    <option value="one-time">⚡ Single Event</option>
+                    <option value="cyclic">⏳ Interval Cycle</option>
+                </select>
+                <div id="t-custom-cycle-group" class="hidden">
+                    <input type="number" id="t-quest-cycle-days" value="3" placeholder="Every X Days" min="1" style="margin-bottom:8px;">
+                </div>
+                <div class="centered-btn-wrapper" style="margin-top:4px;">
+                    <button class="secondary-btn btn-text" onclick="addCustomTomorrowQuest()">Authorize</button>
+                </div>
+            </div>
+
+            <h4 class="serif-sub">UPCOMING HABITS (AUTO-GENERATED)</h4>
+            <div id="tomorrow-sandbox-list"></div>
+        </div>
+    </div>
+
+    <div id="settings-modal" class="modal-hidden">
+        <div class="settings-modal-content animate-slide-up">
+            <div class="modal-header-row">
+                <h3 class="serif-title" style="margin:0;">⚙️ CONTROL PANEL</h3>
+                <button class="close-x" onclick="closeSettingsModal()">&times;</button>
+            </div>
             
-            <div class="modal-actions" style="margin-top: 15px;">
-                <button class="primary-btn costar-btn" style="width: 100%;" onclick="dismissNightHub()">Push Through (Resume Engine)</button>
+            <div class="settings-tabs">
+                <button id="tab-btn-config" class="tab-btn active" onclick="switchSettingsTab('config')">Settings</button>
+                <button id="tab-btn-roster" class="tab-btn" onclick="switchSettingsTab('roster')">Milestones</button>
+                <button id="tab-btn-archive" class="tab-btn" onclick="switchSettingsTab('archive')">History</button>
+            </div>
+
+            <div id="tab-content-config" class="tab-pane">
+                <div class="form-group toggle-group">
+                    <label for="settings-stasis" style="margin:0; color:#fff;">❄️ Rest / Sick Day</label>
+                    <input type="checkbox" id="settings-stasis" onchange="toggleStasisMode()" style="width:auto; cursor:pointer;">
+                </div>
+                
+                <div class="form-group">
+                    <label>Doomsday Limit Date:</label>
+                    <div class="calendar-input-row">
+                        <input type="date" id="settings-boss-date">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Sleep Reset Hour:</label>
+                    <select id="settings-reset-hour">
+                        <option value="0">12:00 AM (Midnight)</option>
+                        <option value="1">01:00 AM</option>
+                        <option value="2">02:00 AM</option>
+                        <option value="3">03:00 AM (Recommended Anchor)</option>
+                        <option value="4">04:00 AM</option>
+                        <option value="5">05:00 AM</option>
+                        <option value="6">06:00 AM</option>
+                    </select>
+                </div>
+                <div class="centered-btn-wrapper" style="flex-direction:column; align-items:center;">
+                    <button class="primary-btn btn-text" onclick="saveSettings()">Save Settings</button>
+                    <button class="secondary-btn btn-text" style="color:var(--system-red); border-color:#3a1c1c;" onclick="triggerSystemWipe()">⚠️ Factory Reset App</button>
+                </div>
+            </div>
+
+            <div id="tab-content-roster" class="tab-pane hidden">
+                <div class="reward-creation-box">
+                    <h5 style="margin: 0 0 10px 0; color:#fff;">+ ADD REWARD</h5>
+                    <input type="text" id="new-reward-name" placeholder="Item Name...">
+                    <input type="number" id="new-reward-value" placeholder="Price Cost">
+                    <div class="centered-btn-wrapper" style="margin-top:4px;">
+                        <button class="secondary-btn btn-text" onclick="addCustomReward()">Save Reward</button>
+                    </div>
+                </div>
+                <h4 class="serif-sub">YOUR TARGETS</h4>
+                <div id="milestone-roster-list"></div>
+                <div class="centered-btn-wrapper">
+                    <button class="secondary-btn btn-text" style="color:var(--system-red); border-color:#3a1c1c;" onclick="purgeAllRewards()">💥 Purge All Rewards</button>
+                </div>
+            </div>
+
+            <div id="tab-content-archive" class="tab-pane hidden">
+                <h4 class="serif-sub">COMPLETED TASKS LOG</h4>
+                <div id="history-archive-list"></div>
             </div>
         </div>
     </div>
 
     <div id="setup-screen" class="hidden">
         <div class="setup-content animate-fade-in">
-            <h2 class="serif-title">SYSTEM AWAKENING</h2>
-            <p class="system-subtitle">Calibrate parameters to initialize the protocol.</p>
             
-            <div class="form-group">
-                <label for="setup-name">Identity Codename:</label>
-                <input type="text" id="setup-name" placeholder="e.g., Sung Jinwoo">
-                <span class="input-helper">Your system identifier profile designation.</span>
-            </div>
-
-            <div class="form-group">
-                <label for="setup-reset">Circadian Rollover Hour:</label>
-                <select id="setup-reset">
-                    <option value="0">12:00 AM (Midnight)</option>
-                    <option value="1">01:00 AM</option>
-                    <option value="2">02:00 AM</option>
-                    <option value="3" selected>03:00 AM (System Recommendation)</option>
-                    <option value="4">04:00 AM</option>
-                    <option value="5">05:00 AM</option>
-                    <option value="6">06:00 AM</option>
-                </select>
-                <span class="input-helper">The precise deadline hour when daily task metrics expire and structural rollover penalties compute.</span>
-            </div>
-
-            <div class="form-group">
-                <label for="setup-deadline">Doomsday Limit Target:</label>
-                <input type="date" id="setup-deadline" value="2026-08-01">
-                <span class="input-helper">Establishes the final milestone projection matrix window.</span>
-            </div>
-
-            <div class="reward-mandate-box">
-                <h4 class="serif-sub" style="margin-top:0; color:#fff;">🛡️ MANDATORY INITIAL PROFILE ROSTER</h4>
-                <p class="input-helper" style="margin-bottom: 10px;">ADHD Guardrail: You must seed the database with a minimum of 4 distinct tier targets based on valuation to restrict impulse padding loops.</p>
-                <div class="setup-reward-row"><input type="text" id="r1-name" value="Coffee Bar Luxury Allocation"> <input type="number" id="r1-val" value="150" placeholder="Rs"></div>
-                <div class="setup-reward-row"><input type="text" id="r2-name" value="Premium Core Apparel Upgrade"> <input type="number" id="r2-val" value="1000" placeholder="Rs"></div>
-                <div class="setup-reward-row"><input type="text" id="r3-name" value="Digital Entertainment Asset Swap"> <input type="number" id="r3-val" value="4000" placeholder="Rs"></div>
-                <div class="setup-reward-row"><input type="text" id="r4-name" value="S-Class Tattoo Session Unlock"> <input type="number" id="r4-val" value="10000" placeholder="Rs"></div>
-            </div>
-
-            <button class="primary-btn costar-btn" style="margin-top:15px;" onclick="initializeSystem()">Initialize Interface</button>
-        </div>
-    </div>
-
-    <div id="main-dashboard" class="hidden">
-        <div id="status-alerts-bar">
-            <span id="stasis-badge" class="badge hidden">❄️ REST/SICK PROTOCOL ACTIVE</span>
-        </div>
-
-        <div id="avatar-container" class="animate-fade-in">
-            <div id="avatar-graphic-frame" onclick="triggerAvatarUpload()">
-                <div id="avatar-aura-glow"></div>
-                <img id="avatar-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><rect width='80' height='80' fill='%23111'/><text x='50%' y='55%' font-family='sans-serif' font-size='10' fill='%23444' text-anchor='middle'>UPLOAD</text></svg>" alt="Identity Face Node">
-                <div id="avatar-rank-title">NOVICE</div>
-            </div>
-            <input type="file" id="avatar-file-input" class="hidden" accept="image/*" onchange="processAvatarUpload(this)">
-            
-            <div id="player-stats">
-                <h1 class="serif-name"><span id="username">---</span></h1>
-                <p class="meta-text">Rank Status: <span id="rank-display">---</span> | Level: <span id="level-display">-</span> | Streak: <span id="streak-display">0</span>d</p>
-                
-                <div id="daily-directive-msg">"Calibrating directive arrays..."</div>
-                <div id="dashboard-milestone-tracker">Next Target Locked: Counting metrics...</div>
-
-                <div class="economy-bar">
-                    <div class="eco-stat"><span>⚡ TOTAL XP</span><strong id="xp-display">0</strong></div>
-                    <div class="eco-stat"><span>⏳ TOKENS</span><strong id="pt-display">0</strong></div>
-                    <div class="eco-stat alert-text"><span>💀 DOOMSDAY</span><strong id="countdown-display">--</strong></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="quest-board" class="animate-fade-in">
-            <div class="quest-category">
-                <h3 class="category-header">🔥 MAIN OBJECTIVES <span class="header-desc">(Mandatory - Heavy Rollover Penalty)</span></h3>
-                <ul id="main-quest-list" class="quest-list"></ul>
-            </div>
-            
-            <div class="quest-category">
-                <h3 class="category-header">🛠️ SIDE DEVIATIONS <span class="header-desc">(Mandatory - Standard Rollover Penalty)</span></h3>
-                <ul id="side-quest-list" class="quest-list"></ul>
-            </div>
-            
-            <div class="quest-category">
-                <h3 class="category-header">📜 ERRAND REGISTRY <span class="header-desc">(Optional - Rollover Without Penalty)</span></h3>
-                <ul id="errand-quest-list" class="quest-list"></ul>
-            </div>
-            
-            <div class="quest-category">
-                <h3 class="category-header">⭐ BONUS INSIGHTS <span class="header-desc">(Optional Routine Upsides)</span></h3>
-                <ul id="bonus-quest-list" class="quest-list"></ul>
-            </div>
-            
-            <div class="quest-category completed-section">
-                <h3 class="category-header completed-header">✅ ARCHIVED TRANSACTION RECORDS</h3>
-                <ul id="completed-quest-list" class="quest-list"></ul>
-            </div>
-        </div>
-
-        <div id="action-bar">
-            <button id="add-quest-btn" class="primary-btn costar-btn">+ Register Objective</button>
-            <button id="settings-btn" class="secondary-btn costar-btn" onclick="openSettingsModal()">⚙️ Control Panel</button>
-            <button id="help-btn" class="secondary-btn costar-btn" onclick="openInitiationModal(true)" style="max-width: 50px; padding:0;">?</button>
-        </div>
-    </div>
-
-    <div id="quest-modal" class="modal-hidden">
-        <div class="modal-content animate-slide-up">
-            <h3 class="serif-title">NEW PROTOCOL OBJECTIVE</h3>
-            <hr class="thin-line">
-            
-            <label>Rapid Archetypes:</label>
-            <div class="suggestion-box">
-                <button class="chip" onclick="fillSuggestion('Water the plants', 'side', 'cyclic', 3)">+ Water Plants</button>
-                <button class="chip" onclick="fillSuggestion('Drink 2L Water', 'bonus', 'daily')">+ Drink Water</button>
-                <button class="chip" onclick="fillSuggestion('Deep Work Focus Block', 'main', 'daily')">+ Deep Work</button>
-                <button class="chip" onclick="fillSuggestion('Take Routine Medicine', 'side', 'cyclic', 7)">+ Med Routine</button>
-            </div>
-
-            <label for="quest-title">Objective Parameters:</label>
-            <input type="text" id="quest-title" placeholder="Define target performance criteria...">
-
-            <label for="quest-type">Target Classification:</label>
-            <select id="quest-type">
-                <option value="main">🔥 Main Objective (+50 XP - Critical Focus)</option>
-                <option value="side">🛠️ Side Deviation (+20 XP - Maintenance Habit)</option>
-                <option value="errand">📜 Errand Registry (+75 XP - Flexible Task)</option>
-                <option value="bonus">⭐ Bonus Insight (+15 XP - Small Health Win)</option>
-            </select>
-
-            <label for="quest-frequency">Recurrence Protocol:</label>
-            <select id="quest-frequency" onchange="toggleCycleInputVisibility()">
-                <option value="daily" selected>🔁 Daily Cyclical</option>
-                <option value="one-time">⚡ Single Dynamic Event</option>
-                <option value="cyclic">⏳ Interval Rotation (Every X Days)</option>
-            </select>
-
-            <div id="custom-cycle-group" class="hidden" style="margin-top: 12px;">
-                <label for="quest-cycle-days">Interval Length (Days):</label>
-                <input type="number" id="quest-cycle-days" value="7" min="1">
-            </div>
-
-            <label for="quest-schedule" style="margin-top: 12px;">Deployment Matrix Timeline:</label>
-            <select id="quest-schedule">
-                <option value="tomorrow" selected>🗓 Nighttime Buffer: Plan for Tomorrow (Anti-Cheat)</option>
-                <option value="today">🚀 Deploy Active Today (Impromptu Action)</option>
-            </select>
-
-            <div class="modal-actions">
-                <button class="secondary-btn costar-btn" onclick="closeModal()">Dismiss</button>
-                <button class="primary-btn costar-btn" onclick="addNewQuest()">Authorize</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="settings-modal" class="modal-hidden">
-        <div class="settings-modal-content animate-slide-up">
-            <div class="settings-header">
-                <h3 class="serif-title" style="margin:0;">SYSTEM MODULES</h3>
-                <button class="close-x" onclick="closeSettingsModal()">&times;</button>
-            </div>
-            
-            <div class="settings-tabs">
-                <button id="tab-btn-config" class="tab-btn active" onclick="switchSettingsTab('config')">Engine</button>
-                <button id="tab-btn-roster" class="tab-btn" onclick="switchSettingsTab('roster')">Milestones</button>
-                <button id="tab-btn-archive" class="tab-btn" onclick="switchSettingsTab('archive')">Chronicles</button>
-            </div>
-
-            <div id="tab-content-config" class="tab-pane">
-                <div class="form-group toggle-group">
-                    <label for="settings-stasis" style="margin:0; color:#fff;">❄️ Rest / Sick Day Protocol</label>
-                    <input type="checkbox" id="settings-stasis" onchange="toggleStasisMode()" style="width:auto; cursor:pointer;">
-                </div>
-                <span class="input-helper" style="display:block; margin:-10px 0 15px 0;">Stasis Hibernation: Halts penalty loops completely for illness or planned recovery windows without breaking streak metrics.</span>
-
+            <div id="setup-phase-1">
+                <h2 class="serif-title">SYSTEM REGISTRATION</h2>
+                <hr class="thin-line">
+                <div class="form-group"><label>Player Name:</label><input type="text" id="setup-name" placeholder="Your Name"></div>
                 <div class="form-group">
-                    <label for="settings-boss-date">Doomsday Matrix Target Limit:</label>
-                    <input type="date" id="settings-boss-date">
+                    <label>Region Setup:</label>
+                    <select id="setup-region" onchange="adaptRegionalFormatContext()">
+                        <option value="GMT">Global GMT Baseline</option>
+                        <option value="IST" selected>Asia (India Standard Time)</option>
+                        <option value="EST">North America (EST)</option>
+                        <option value="PST">North America (PST)</option>
+                    </select>
                 </div>
-
                 <div class="form-group">
-                    <label for="settings-reset-hour">Circadian Refresh Rollover:</label>
-                    <select id="settings-reset-hour">
-                        <option value="0">12:00 AM</option>
+                    <label>Currency:</label>
+                    <select id="setup-currency">
+                        <option value="₹">Rupee (₹) [1 = 2 XP]</option>
+                        <option value="$">Dollar ($) [1 = 100 XP]</option>
+                        <option value="€">Euro (€) [1 = 100 XP]</option>
+                        <option value="£">Pound (£) [1 = 125 XP]</option>
+                        <option value="¥">Yen (¥) [1 = 2 XP]</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Profile Picture:</label>
+                    <button class="secondary-btn btn-text" onclick="triggerSetupPhotoUpload()">Upload Photo</button>
+                    <input type="file" id="setup-file-input" class="hidden" accept="image/*" onchange="processSetupPhoto(this)">
+                    <div id="setup-photo-preview-msg" class="input-helper" style="text-align:center; color:var(--system-blue); margin-top:5px;"></div>
+                </div>
+                <div class="centered-btn-wrapper"><button class="primary-btn btn-text" onclick="advanceSetupToPhase2()">Next Step</button></div>
+            </div>
+
+            <div id="setup-phase-2" class="hidden">
+                <h2 class="serif-title">SYSTEM CALIBRATION</h2>
+                <hr class="thin-line">
+                <div class="form-group">
+                    <label>Doomsday Deadline Date:</label>
+                    <div class="calendar-input-row">
+                        <input type="date" id="setup-deadline">
+                        <button class="secondary-btn btn-text" style="width:auto; padding:0 16px; font-size:1.2rem;" onclick="triggerCalendarPicker()">📅</button>
+                    </div>
+                    <span id="date-format-tip" class="input-helper" style="color:var(--system-blue);">Format: DD-MM-YYYY</span>
+                </div>
+                <div class="form-group">
+                    <label>Sleep Reset Hour:</label>
+                    <select id="setup-reset">
+                        <option value="0">12:00 AM (Midnight)</option>
                         <option value="1">01:00 AM</option>
                         <option value="2">02:00 AM</option>
-                        <option value="3">03:00 AM</option>
+                        <option value="3" selected>03:00 AM (Recommended Anchor)</option>
                         <option value="4">04:00 AM</option>
                         <option value="5">05:00 AM</option>
                         <option value="6">06:00 AM</option>
                     </select>
                 </div>
-                <button class="primary-btn costar-btn" style="width:100%; margin-top:15px;" onclick="saveSettings()">Commit Parameters</button>
-                <button class="secondary-btn costar-btn" style="width:100%; color:var(--system-red); border-color:#3a1c1c; margin-top:10px;" onclick="triggerSystemWipe()">⚠️ Factory Purge Protocol</button>
-            </div>
-
-            <div id="tab-content-roster" class="tab-pane hidden">
-                <div class="reward-creation-box">
-                    <h5 style="margin: 0 0 12px 0; letter-spacing:1px; color:#fff;">+ MANIFEST TARGET ALLOCATION</h5>
-                    <div style="display:flex; flex-direction:column; gap:10px;">
-                        <input type="text" id="new-reward-name" placeholder="Target Description (e.g., Acquire New Apparel)">
-                        <input type="number" id="new-reward-value" placeholder="Monetary Value Equivalent (Rs)" min="1">
-                        <button class="gold-btn" style="width: 100%;" onclick="addCustomReward()">Inject Target Objective</button>
+                
+                <div class="reward-mandate-box">
+                    <h4 style="margin:0 0 10px 0; font-size:0.8rem; color:#fff; text-align:center;">🏆 STARTING REWARDS (Add Up To 10)</h4>
+                    <div id="wizard-rewards-wrapper">
+                        <div class="setup-reward-row"><input type="text" class="wiz-r-name" value="Coffee Treat"><input type="number" class="wiz-r-val" value="150"><button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>
+                        <div class="setup-reward-row"><input type="text" class="wiz-r-name" value="Buy New Shirt"><input type="number" class="wiz-r-val" value="1000"><button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>
+                        <div class="setup-reward-row"><input type="text" class="wiz-r-name" value="New Video Game"><input type="number" class="wiz-r-val" value="3000"><button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>
+                        <div class="setup-reward-row"><input type="text" class="wiz-r-name" value="Weekend Getaway"><input type="number" class="wiz-r-val" value="10000"><button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>
+                    </div>
+                    <div class="centered-btn-wrapper" style="margin-top:8px;">
+                        <button class="secondary-btn btn-text" style="height:36px;" onclick="addRewardRowInWizard()">+ Add Reward Line</button>
                     </div>
                 </div>
-                <h4 class="serif-sub">ACTIVE PROCUREMENT TARGETS</h4>
-                <div id="milestone-roster-list" class="scroll-panel"></div>
+                <div class="centered-btn-wrapper"><button class="primary-btn btn-text" onclick="finalizeSetupWizard()">Begin Quest</button></div>
             </div>
 
-            <div id="tab-content-archive" class="tab-pane hidden">
-                <h4 class="serif-sub">HISTORICAL METRIC RECORDS</h4>
-                <div id="history-archive-list" class="scroll-panel"></div>
-            </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <div id="main-dashboard" class="hidden">
+        <div id="status-alerts-bar">
+            <span id="stasis-badge" class="badge hidden">❄️ REST MODE ACTIVE</span>
+        </div>
+
+        <div id="avatar-container" class="animate-fade-in">
+            <div id="instagram-avatar-circle" onclick="triggerDashboardPhotoUpload()">
+                <div id="avatar-aura-glow"></div>
+                <img id="avatar-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111'/><text x='50%' y='55%' font-family='sans-serif' font-size='10' fill='%23555' text-anchor='middle'>IMG</text></svg>">
+                <div id="avatar-rank-title">NOVICE</div>
+            </div>
+            <input type="file" id="dashboard-file-input" class="hidden" accept="image/*" onchange="processDashboardPhoto(this)">
+            
+            <div id="player-stats">
+                <h1 class="serif-name" id="username">---</h1>
+                <p class="meta-text">Rank: <span id="rank-display" style="font-weight:bold;">---</span> | Level: <span id="level-display">-</span> | Streak: <span id="streak-display">0</span>d</p>
+                
+                <div id="daily-directive-msg">Welcome! Tap 'Tomorrow's Tasks' at the bottom to plan out your upcoming routines.</div>
+                <div id="dashboard-milestone-tracker">Next Target: Loading...</div>
+
+                <div class="economy-bar">
+                    <div class="eco-stat"><span>⚡ TOTAL XP</span><strong id="xp-display">0</strong></div>
+                    <div class="eco-stat"><span>⏳ TOKENS</span><strong id="pt-display">0</strong></div>
+                    <div class="eco-stat alert-text"><span>💀 DEADLINE</span><strong id="countdown-display">--</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="quest-board" class="animate-fade-in">
+            <div class="quest-category"><h3 class="category-header">🔥 MAIN TASKS <span class="header-desc">(Mandatory)</span></h3><ul id="main-quest-list" class="quest-list"></ul></div>
+            <div class="quest-category"><h3 class="category-header">🛠️ SIDE TASKS <span class="header-desc">(Mandatory)</span></h3><ul id="side-quest-list" class="quest-list"></ul></div>
+            <div class="quest-category"><h3 class="category-header">📜 ERRANDS <span class="header-desc">(Optional)</span></h3><ul id="errand-quest-list" class="quest-list"></ul></div>
+            <div class="quest-category"><h3 class="category-header">⭐ BONUS TASKS <span class="header-desc">(Optional)</span></h3><ul id="bonus-quest-list" class="quest-list"></ul></div>
+            <div class="quest-category completed-section"><h3 class="category-header completed-header">✅ COMPLETED TODAY</h3><ul id="completed-quest-list" class="quest-list"></ul></div>
+        </div>
+
+        <div class="nav-row" id="action-bar">
+            <button id="add-tomorrow-btn" class="primary-btn btn-text" style="flex: 4;" onclick="openTomorrowModal()">🗓️ Tomorrow</button>
+            <button id="settings-btn" class="secondary-btn btn-text" style="flex: 4;" onclick="openSettingsModal()">⚙️ Settings</button>
+            <button id="help-btn" class="secondary-btn btn-text" style="flex: 2; font-size:1.1rem;" onclick="openHelpManualModal()">?</button>
+        </div>
+    </div>
+
+    <script>
+        let player = null; let quests = []; let dayLogs = {}; 
+        let onboardingSlideIndex = 0; let temporarySetupPhotoData = null;
+
+        const defaultRewards = { main: 50, side: 20, errand: 75, bonus: 15 };
+        const currencyRatios = { "₹": 2, "$": 100, "€": 100, "£": 125, "¥": 2, "CHF": 100 };
+
+        const systemDirectives = [
+            "The System monitors your execution variables. Proceed with absolute precision.",
+            "Executive latency detected. Isolate your active focus block immediately.",
+            "A continuous matrix streak charges your token bank. Do not yield momentum.",
+            "Do not accumulate task inventory debt. Execution yields absolute clarity."
+        ];
+
+        function triggerAudioFeedback(type) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator(); const gain = ctx.createGain();
+                osc.connect(gain); gain.connect(ctx.destination);
+                if (type === 'complete') {
+                    osc.type = 'sine'; osc.frequency.setValueAtTime(440.00, ctx.currentTime); osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.08);  
+                    gain.gain.setValueAtTime(0.03, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+                    osc.start(); osc.stop(ctx.currentTime + 0.3);
+                } else if (type === 'levelup') {
+                    osc.type = 'triangle'; osc.frequency.setValueAtTime(523.25, ctx.currentTime); osc.frequency.setValueAtTime(1046.50, ctx.currentTime + 0.25); 
+                    gain.gain.setValueAtTime(0.05, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+                    osc.start(); osc.stop(ctx.currentTime + 0.6);
+                }
+            } catch (e) {}
+        }
+
+        function getLogicalDateStr() {
+            if (!player) return new Date().toISOString().split('T')[0];
+            const now = new Date(); const offset = new Date(now.getTime() - (parseInt(player.resetHour) * 60 * 60 * 1000));
+            return `${offset.getFullYear()}-${String(offset.getMonth() + 1).padStart(2, '0')}-${String(offset.getDate()).padStart(2, '0')}`;
+        }
+        function parseLogicalDate(dateStr) { if (!dateStr) return new Date(); const p = dateStr.split('-'); return new Date(p[0], p[1] - 1, p[2]); }
+
+        function rotateDirectiveMessage() {
+            const el = document.getElementById("daily-directive-msg");
+            if (el && player && !player.isDay0Buffer) {
+                el.innerText = systemDirectives[Math.floor(Math.random() * systemDirectives.length)];
+            }
+        }
+
+        window.adaptRegionalFormatContext = function() {
+            const region = document.getElementById("setup-region").value;
+            const tipEl = document.getElementById("date-format-tip");
+            if(tipEl) tipEl.innerText = (region === "EST" || region === "PST") ? "Format: MM-DD-YYYY" : "Format: DD-MM-YYYY";
+        };
+        window.triggerCalendarPicker = function() {
+            const dateInput = document.getElementById("setup-deadline");
+            if (dateInput && typeof dateInput.showPicker === 'function') dateInput.showPicker();
+            else if (dateInput) dateInput.focus();
+        };
+
+        function setDefaultSetupDate() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const datePicker = document.getElementById("setup-deadline");
+            if (datePicker) {
+                datePicker.value = `${year}-${month}-${day}`;
+            }
+        }
+
+        function loadData() {
+            const savedPlayer = localStorage.getItem("adhdmaxxing_v6_ultra_player");
+            const savedQuests = localStorage.getItem("adhdmaxxing_v6_ultra_quests");
+            const savedLogs = localStorage.getItem("adhdmaxxing_v6_ultra_logs");
+
+            if (savedPlayer && savedQuests) {
+                player = JSON.parse(savedPlayer); quests = JSON.parse(savedQuests);
+                if (savedLogs) dayLogs = JSON.parse(savedLogs);
+                document.getElementById("setup-screen").classList.add("hidden");
+                document.getElementById("main-dashboard").classList.remove("hidden");
+                if (player.avatarDataUrl) document.getElementById("avatar-img").src = player.avatarDataUrl;
+                
+                checkTimeLapse(); calculateProgression(); updateScreen(); rotateDirectiveMessage();
+                if (!player.isDay0Buffer) checkNightShiftConditions();
+            } else {
+                document.getElementById("setup-screen").classList.remove("hidden");
+                setDefaultSetupDate();
+            }
+        }
+
+        window.advanceSetupToPhase2 = function() {
+            if (!document.getElementById("setup-name").value.trim()) return alert("Provide a Player Name.");
+            document.getElementById("setup-screen").classList.add("hidden");
+            onboardingSlideIndex = 0; renderOnboardingSlide();
+            document.getElementById("tutorial-modal").classList.remove("modal-hidden");
+        };
+
+        window.changeOnboardingSlide = function(direction) {
+            const slides = document.querySelectorAll(".system-slide");
+            onboardingSlideIndex += direction;
+            if (onboardingSlideIndex >= slides.length) {
+                document.getElementById("tutorial-modal").classList.add("modal-hidden");
+                if (player && player.name) return; 
+                document.getElementById("setup-screen").classList.remove("hidden");
+                document.getElementById("setup-phase-1").classList.add("hidden");
+                document.getElementById("setup-phase-2").classList.remove("hidden");
+                adaptRegionalFormatContext(); return;
+            }
+            renderOnboardingSlide();
+        };
+
+        function renderOnboardingSlide() {
+            const slides = document.querySelectorAll(".system-slide");
+            slides.forEach((slide, idx) => slide.classList.toggle("hidden", idx !== onboardingSlideIndex));
+            document.getElementById("slide-prev-btn").disabled = (onboardingSlideIndex === 0);
+            document.getElementById("slide-next-btn").innerText = (onboardingSlideIndex === slides.length - 1) ? (player ? "Close Guide" : "Proceed") : "Next";
+        }
+        window.replayTutorialSlideshowFromManual = function() { closeHelpManualModal(); onboardingSlideIndex = 0; renderOnboardingSlide(); document.getElementById("tutorial-modal").classList.remove("modal-hidden"); };
+
+        window.addRewardRowInWizard = function() {
+            const c = document.getElementById("wizard-rewards-wrapper");
+            if (c.querySelectorAll(".setup-reward-row").length >= 10) return alert("10 max levels.");
+            const div = document.createElement("div"); div.className = "setup-reward-row";
+            div.innerHTML = `<input type="text" class="wiz-r-name" placeholder="Item Name"> <input type="number" class="wiz-r-val" value="500"> <button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button>`;
+            c.appendChild(div); div.querySelector(".wiz-r-name").focus();
+        };
+
+        window.finalizeSetupWizard = function() {
+            const nameInput = document.getElementById("setup-name").value.trim();
+            if (!nameInput) return alert("Please enter a Player Name.");
+
+            let compiledRewards = [];
+            const rNames = document.querySelectorAll(".wiz-r-name"); 
+            const rVals = document.querySelectorAll(".wiz-r-val");
+            for(let i=0; i<rNames.length; i++) {
+                let n = rNames[i].value.trim(); let v = parseInt(rVals[i].value);
+                if(n && !isNaN(v) && v > 0) compiledRewards.push({ id: Date.now()+i, name: n, value: v, claimed: false });
+            }
+            if (compiledRewards.length < 4) return alert("System Guardrail: Please list at least 4 starting rewards.");
+
+            player = {
+                name: nameInput,
+                region: document.getElementById("setup-region").value,
+                currency: document.getElementById("setup-currency").value,
+                level: 1, rank: "Novice", xp: 0, postponeTokens: 3, perfectStreak: 0, stasisMode: false,
+                resetHour: document.getElementById("setup-reset").value,
+                bossDeadline: document.getElementById("setup-deadline").value,
+                lastLoginDate: "", 
+                isDay0Buffer: true, 
+                avatarDataUrl: temporarySetupPhotoData, customRewards: compiledRewards
+            };
+            player.lastLoginDate = getLogicalDateStr();
+
+            quests = [
+                { id: 'base_m1', type: "main", title: "Deep Work Focus Block", reward: 50, completed: false, isDaily: true, workdaysOnly: true },
+                { id: 'base_s1', type: "side", title: "10-Minute Walk", reward: 20, completed: false, isDaily: true },
+                { id: 'base_s2', type: "side", title: "Clear Workspace", reward: 20, completed: false, isDaily: true },
+                { id: 'base_b1', type: "bonus", title: "Drink 2L Water", reward: 15, completed: false, isDaily: true }
+            ];
+            dayLogs = {}; saveData(); loadData();
+        };
+
+        window.triggerSetupPhotoUpload = function() { document.getElementById("setup-file-input").click(); };
+        
+        window.processSetupPhoto = function(input) { 
+            if (input.files && input.files[0]) { 
+                const r = new FileReader(); 
+                r.onload = e => { 
+                    temporarySetupPhotoData = e.target.result; 
+                    const msgNode = document.getElementById("setup-photo-preview-msg");
+                    if(msgNode) msgNode.innerText = "Photo loaded successfully!"; 
+                }; 
+                r.readAsDataURL(input.files[0]); 
+            } 
+        };
+        
+        window.triggerDashboardPhotoUpload = function() { document.getElementById("dashboard-file-input").click(); };
+        window.processDashboardPhoto = function(input) { if (input.files && input.files[0]) { const r = new FileReader(); r.onload = e => { player.avatarDataUrl = e.target.result; document.getElementById("avatar-img").src = player.avatarDataUrl; saveData(); }; r.readAsDataURL(input.files[0]); } };
+
+        function checkNightShiftConditions() {
+            if (!player) return; const h = new Date().getHours();
+            if (h < 20 && h >= parseInt(player.resetHour)) { dismissNightHub(); return; }
+            const pending = quests.filter(q => !q.completed && !q.scheduledForTomorrow && (q.type === 'main' || q.type === 'side'));
+            const c = document.getElementById("night-hub-list");
+            c.innerHTML = pending.length === 0 ? `<div style="text-align:center; color:var(--system-blue); padding:10px; font-weight:bold;">All tasks cleared for the night!</div>` : "";
+            pending.forEach(q => {
+                c.innerHTML += `<div class="roster-card" style="border-color:var(--system-red);"><div><span>${q.title}</span></div><div class="flex-buttons"><button class="gold-btn pt-btn" style="height:36px;" onclick="postponeSingleQuest('${q.id}'); checkNightShiftConditions();">PT</button><button class="gold-btn" style="height:36px;" onclick="completeQuestDirectly('${q.id}'); setTimeout(checkNightShiftConditions, 100);">DONE</button></div></div>`;
+            });
+            document.getElementById("night-shift-modal").classList.remove("modal-hidden");
+        }
+        window.dismissNightHub = function() { document.getElementById("night-shift-modal").classList.add("modal-hidden"); };
+
+        function checkTimeLapse() {
+            const todayStr = getLogicalDateStr(); if (player.lastLoginDate === todayStr) return;
+            quests.forEach(q => { if (q.scheduledForTomorrow) q.scheduledForTomorrow = false; });
+            if (player.isDay0Buffer || player.stasisMode) {
+                player.isDay0Buffer = false; quests.forEach(q => { if (q.isDaily || q.cycle) q.completed = false; });
+                player.lastLoginDate = todayStr; saveData(); return;
+            }
+            const y = parseLogicalDate(player.lastLoginDate); const isW = (y.getDay() === 0 || y.getDay() === 6);
+            let pen = 0; let missed = 0; let tot = 0;
+            quests.forEach(q => {
+                if (q.workdaysOnly && isW) { if (q.isDaily || q.cycle) q.completed = false; return; }
+                if (q.type === 'main' || q.type === 'side') {
+                    tot++;
+                    if (!q.completed) {
+                        if (q.cycle && q.lastDone && Math.floor((y - parseLogicalDate(q.lastDone))/86400000) < q.cycle) return;
+                        missed++; pen += Math.floor(q.reward * 1.5);
+                    }
+                }
+                if (q.isDaily || q.cycle) q.completed = false;
+            });
+            if (!isW && missed === 0 && tot > 0) { player.perfectStreak++; if (player.perfectStreak % 3 === 0) player.postponeTokens++; } 
+            else if (missed > 0) player.perfectStreak = 0;
+            if (pen > 0) { player.xp = Math.max(0, player.xp - pen); alert(`⚠️ Rollover Penalty: Missed tasks caused a -${pen} XP drop.`); }
+            quests = quests.filter(q => !q.completed || q.isDaily || q.cycle);
+            player.lastLoginDate = todayStr; saveData();
+        }
+
+        function calculateProgression() {
+            if (!player) return; const old = player.level; player.level = Math.floor(player.xp / 100) + 1;
+            if (player.level > old && old > 0) triggerAudioFeedback('levelup');
+            if (player.level >= 10) player.rank = "S-Class"; else if (player.level >= 6) player.rank = "Elite"; else if (player.level >= 3) player.rank = "Awakened"; else player.rank = "Novice";
+            document.body.className = `rank-${player.rank.toLowerCase()}`;
+            document.getElementById("avatar-rank-title").innerText = player.rank;
+        }
+
+        function updateScreen() {
+            if (!player) return;
+            document.getElementById("username").innerText = player.name; document.getElementById("level-display").innerText = player.level;
+            document.getElementById("rank-display").innerText = player.rank; document.getElementById("xp-display").innerText = player.xp;
+            document.getElementById("pt-display").innerText = player.postponeTokens; document.getElementById("streak-display").innerText = player.perfectStreak;
+            
+            const diff = parseLogicalDate(player.bossDeadline).setHours(0,0,0,0) - parseLogicalDate(getLogicalDateStr()).setHours(0,0,0,0);
+            document.getElementById("countdown-display").innerText = Math.ceil(diff / 86400000) >= 0 ? `${Math.ceil(diff / 86400000)}d` : "0d";
+            document.getElementById("stasis-badge").classList.toggle("hidden", !player.stasisMode);
+
+            const s = [...player.customRewards].sort((a,b) => a.value - b.value); const m = currencyRatios[player.currency] || 2;
+            const t = s.find(r => !r.claimed && player.xp < (r.value * m));
+            const tr = document.getElementById("dashboard-milestone-tracker");
+            if (t) { let d = Math.ceil(((t.value * m) - player.xp) / 130); tr.innerText = `🛡️ Next Unlock: ${t.name} [Est. ${d<=0?1:d} Days]`; } 
+            else { const u = s.find(r => !r.claimed); tr.innerText = u ? `🏆 Unlocked: ${u.name} Ready to Claim` : "All Rewards Claimed 🏆"; }
+            renderQuests();
+        }
+
+        function renderQuests() {
+            const lists = { main: document.getElementById("main-quest-list"), side: document.getElementById("side-quest-list"), errand: document.getElementById("errand-quest-list"), bonus: document.getElementById("bonus-quest-list"), completed: document.getElementById("completed-quest-list") };
+            Object.values(lists).forEach(l => { if (l) l.innerHTML = ""; });
+            const tod = getLogicalDateStr(); const isW = (new Date().getDay() === 0 || new Date().getDay() === 6);
+
+            quests.forEach(q => {
+                if (q.scheduledForTomorrow) return;
+                if (q.workdaysOnly && isW && !q.completed) return;
+                if (q.cycle && q.lastDone && !q.completed && Math.floor((parseLogicalDate(tod) - parseLogicalDate(q.lastDone))/86400000) < q.cycle) return;
+
+                const li = document.createElement("li"); li.className = "quest-item";
+                let f = q.isDaily ? "🔄 " : q.cycle ? `⏳ ` : "⚡ ";
+                if (q.completed) {
+                    li.innerHTML = `<span style="text-decoration:line-through; color:var(--text-gray);">${f}${q.title}</span><button class="gold-btn" style="border-color:var(--text-dark); color:var(--text-gray);" onclick="undoQuest('${q.id}')">UNDO</button>`;
+                    lists.completed.appendChild(li);
+                } else {
+                    li.innerHTML = `<span>${f}${q.title} <strong style="color:var(--text-gray); font-size:0.8rem;">(+${q.reward})</strong></span>
+                        <div class="flex-buttons">
+                            <button class="gold-btn" style="border-color:var(--text-dark); padding:0 8px;" onclick="openEditTaskModal('${q.id}')">✏️</button>
+                            ${(q.type==='main'||q.type==='side') ? `<button class="gold-btn pt-btn" onclick="postponeSingleQuest('${q.id}')">PT</button>` : ''}
+                            <button class="gold-btn" onclick="animateCompleteQuest(this, '${q.id}')">COMPLETE</button>
+                        </div>`;
+                    lists[q.type].appendChild(li);
+                }
+            });
+        }
+
+        // Inline Live Editing
+        window.openEditTaskModal = function(id) {
+            const q = quests.find(x => x.id == id); if(!q) return;
+            document.getElementById("edit-task-id").value = q.id;
+            document.getElementById("edit-task-title").value = q.title;
+            document.getElementById("edit-task-type").value = q.type;
+            document.getElementById("edit-task-reward").value = q.reward;
+            document.getElementById("edit-task-modal").classList.remove("modal-hidden");
+        };
+        window.closeEditTaskModal = function() { document.getElementById("edit-task-modal").classList.add("modal-hidden"); };
+        window.saveTaskEdit = function() {
+            const id = document.getElementById("edit-task-id").value;
+            const q = quests.find(x => x.id == id);
+            if(q) {
+                q.title = document.getElementById("edit-task-title").value.trim() || q.title;
+                q.type = document.getElementById("edit-task-type").value;
+                q.reward = parseInt(document.getElementById("edit-task-reward").value) || q.reward;
+                saveData(); updateScreen();
+            }
+            closeEditTaskModal();
+        };
+
+        window.animateCompleteQuest = function(btn, id) { btn.closest('.quest-item').classList.add('completed-decay'); setTimeout(() => completeQuestDirectly(id), 400); };
+        function completeQuestDirectly(id) { const q = quests.find(x=>x.id==id); if(!q) return; triggerAudioFeedback('complete'); player.xp += q.reward; q.completed = true; if(q.cycle) q.lastDone = getLogicalDateStr(); logCompletedTaskToArchive(q.title, q.reward); calculateProgression(); saveData(); updateScreen(); }
+        window.undoQuest = function(id) { const q = quests.find(x=>x.id==id); if(!q) return; player.xp = Math.max(0, player.xp - q.reward); q.completed = false; if(q.cycle) q.lastDone = null; removeTaskFromArchiveLog(q.title); calculateProgression(); saveData(); updateScreen(); };
+        window.postponeSingleQuest = function(id) { if(player.postponeTokens<=0) return alert("No PT tokens left!"); const q = quests.find(x=>x.id==id); if(q) { player.postponeTokens--; q.completed = true; if(q.cycle){ let y=parseLogicalDate(getLogicalDateStr()); y.setDate(y.getDate()-(q.cycle-1)); q.lastDone=`${y.getFullYear()}-${String(y.getMonth()+1).padStart(2,'0')}-${String(y.getDate()).padStart(2,'0')}`; } logCompletedTaskToArchive(`[POSTPONED]: ${q.title}`, 0); saveData(); updateScreen(); } };
+
+        window.openTomorrowModal = function() { renderTomorrowSandboxList(); document.getElementById("tomorrow-modal").classList.remove("modal-hidden"); };
+        window.closeTomorrowModal = function() { document.getElementById("tomorrow-modal").classList.add("modal-hidden"); };
+        window.toggleTomorrowCycleInput = function() { document.getElementById("t-custom-cycle-group").classList.toggle("hidden", document.getElementById("t-quest-frequency").value !== "cyclic"); };
+
+        function renderTomorrowSandboxList() {
+            const c = document.getElementById("tomorrow-sandbox-list"); c.innerHTML = "";
+            quests.forEach(q => {
+                c.innerHTML += `<div class="roster-card"><div><span style="font-weight:bold; ${q.scheduledForTomorrow ? 'color:var(--system-blue);' : ''}">${q.title}</span><div style="font-size:0.65rem; color:var(--text-gray);">${q.type.toUpperCase()} Task (+${q.reward} Pt) ${q.scheduledForTomorrow?'[PLAN]':'[AUTO]'}</div></div><button onclick="removeQuestFromTomorrow('${q.id}')" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>`;
+            });
+        }
+
+        window.addCustomTomorrowQuest = function() {
+            let t = document.getElementById("t-quest-title").value.trim(); let tp = document.getElementById("t-quest-type").value; let f = document.getElementById("t-quest-frequency").value;
+            if(!t) return alert("Task requires a name.");
+            let item = { id: Date.now(), type: tp, title: t, reward: defaultRewards[tp], completed: false, scheduledForTomorrow: true };
+            if(f==="daily") item.isDaily = true; else if(f==="cyclic") { item.cycle = parseInt(document.getElementById("t-quest-cycle-days").value) || 3; item.lastDone = null; }
+            quests.push(item); document.getElementById("t-quest-title").value = ""; saveData(); renderTomorrowSandboxList(); updateScreen();
+        };
+        window.removeQuestFromTomorrow = function(id) { quests = quests.filter(q => q.id != id); saveData(); renderTomorrowSandboxList(); updateScreen(); };
+
+        window.toggleStasisMode = function() { player.stasisMode = document.getElementById("settings-stasis").checked; saveData(); updateScreen(); };
+        window.switchSettingsTab = function(tName) { document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden')); document.getElementById(`tab-btn-${tName}`).classList.add('active'); document.getElementById(`tab-content-${tName}`).classList.remove('hidden'); if (tName === 'roster') populateRewardShopPanel(); if (tName === 'archive') populateArchivePanel(); };
+
+        function populateRewardShopPanel() {
+            const p = document.getElementById("milestone-roster-list"); p.innerHTML = ""; const m = currencyRatios[player.currency] || 2;
+            player.customRewards.forEach(r => {
+                let req = r.value * m; let isU = player.xp >= req;
+                let btn = r.claimed ? `<span>Claimed ✅</span>` : isU ? `<button class="gold-btn" onclick="claimReward(${r.id})">CLAIM</button>` : `<span>LOCK (Need ${req - player.xp} XP)</span>`;
+                p.innerHTML += `<div class="roster-card" style="border-color:${isU&&!r.claimed?'var(--text-gray)':'var(--border-silver)'};">
+                    <div><div style="font-weight:bold; ${r.claimed?'text-decoration:line-through; color:var(--text-dark);':''}">${r.name}</div><div style="font-size:0.75rem; color:var(--text-gray);">${req} XP (${player.currency}${r.value})</div></div>
+                    <div class="flex-buttons"><button onclick="editCustomReward(${r.id})" style="background:none; border:none; color:var(--text-gray); cursor:pointer;">✏️</button>${btn}<button onclick="deleteCustomReward(${r.id})" style="background:none; border:none; color:var(--system-red); cursor:pointer;">🗑️</button></div></div>`;
+            });
+        }
+
+        window.addCustomReward = function() { let n = document.getElementById("new-reward-name").value.trim(); let v = parseInt(document.getElementById("new-reward-value").value); if(!n || isNaN(v) || v<=0) return; player.customRewards.push({ id: Date.now(), name: n, value: v, claimed: false }); document.getElementById("new-reward-name").value = ""; document.getElementById("new-reward-value").value = ""; saveData(); updateScreen(); populateRewardShopPanel(); };
+        window.deleteCustomReward = function(id) { player.customRewards = player.customRewards.filter(r => r.id != id); saveData(); updateScreen(); populateRewardShopPanel(); };
+        window.purgeAllRewards = function() { if(confirm("Permanently wipe all rewards?")) { player.customRewards = []; saveData(); updateScreen(); populateRewardShopPanel(); } };
+        window.editCustomReward = function(id) { const r = player.customRewards.find(x => x.id == id); if(r) { const nn = prompt("Edit Item Name:", r.name); if(nn) { const nv = prompt("Edit Cost:", r.value); if(nv && !isNaN(nv)) { r.name = nn; r.value = parseInt(nv); saveData(); updateScreen(); populateRewardShopPanel(); } } } };
+
+        window.claimReward = function(id) { const r = player.customRewards.find(x => x.id == id); const m = currencyRatios[player.currency] || 2; if(!r || player.xp < (r.value * m)) return; r.claimed = true; triggerAudioFeedback('levelup'); logCompletedTaskToArchive(`[CLAIMED]: ${r.name}`, 0, true, r.id); saveData(); updateScreen(); populateRewardShopPanel(); };
+        window.revokeRewardClaim = function(dayStr, idx, tid) { const t = player.customRewards.find(r => r.id == tid); if(t) t.claimed = false; dayLogs[dayStr].itemsLogged.splice(idx, 1); dayLogs[dayStr].totalXPEarned = dayLogs[dayStr].itemsLogged.reduce((sum, i) => sum + i.reward, 0); saveData(); calculateProgression(); updateScreen(); populateArchivePanel(); };
+
+        function populateArchivePanel() {
+            const p = document.getElementById("history-archive-list"); p.innerHTML = ""; const days = Object.keys(dayLogs).sort().reverse();
+            if(days.length===0){ p.innerHTML = `<div style="text-align:center; color:var(--text-dark); padding:20px; font-style:italic;">No logs yet.</div>`; return; }
+            days.forEach(d => {
+                let m = dayLogs[d].itemsLogged.map((i, idx) => `<div style="font-size:0.8rem; display:flex; justify-content:space-between; margin-bottom:6px;"><span>• ${i.title} <span style="font-size:0.7rem; color:var(--text-dark);">(${i.time})</span> ${i.isRewardClaim?`<button onclick="revokeRewardClaim('${d}', ${idx}, ${i.rewardId})" style="background:none; border:1px solid var(--text-dark); color:var(--text-gray); font-size:0.65rem; cursor:pointer;">REVOKE</button>`:''}</span><span style="color:${i.isRewardClaim?'var(--system-gold)':'var(--system-blue)'}; font-weight:bold;">+${i.reward} Pt</span></div>`).join('');
+                p.innerHTML += `<div class="archive-card" style="flex-direction:column; align-items:stretch;"><div style="display:flex; justify-content:space-between; font-weight:bold; margin-bottom:8px; font-size:0.85rem; border-bottom:1px solid var(--border-silver); padding-bottom:6px;"><span>${d}</span><span>Net: ${dayLogs[d].totalXPEarned} Pt</span></div><div>${m}</div></div>`;
+            });
+        }
+
+        window.openHelpManualModal = function() { document.getElementById("help-modal").classList.remove("modal-hidden"); };
+        window.closeHelpManualModal = function() { document.getElementById("help-modal").classList.add("modal-hidden"); };
+
+        function logCompletedTaskToArchive(taskTitle, xpValue, isRC=false, rID=null) { const d = getLogicalDateStr(); if(!dayLogs[d]) dayLogs[d] = { totalXPEarned: 0, itemsLogged: [] }; dayLogs[d].itemsLogged.push({ title: taskTitle, reward: xpValue, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), isRewardClaim: isRC, rewardId: rID }); dayLogs[d].totalXPEarned += xpValue; saveData(); }
+        function removeTaskFromArchiveLog(taskTitle) { const d = getLogicalDateStr(); if(dayLogs[d]) { const idx = dayLogs[d].itemsLogged.findIndex(i => i.title === taskTitle); if(idx !== -1) { dayLogs[d].totalXPEarned -= dayLogs[d].itemsLogged[idx].reward; dayLogs[d].itemsLogged.splice(idx, 1); saveData(); } } }
+
+        window.openSettingsModal = function() { if(player){ document.getElementById("settings-boss-date").value = player.bossDeadline || ""; document.getElementById("settings-reset-hour").value = player.resetHour || "3"; document.getElementById("settings-stasis").checked = player.stasisMode || false; } switchSettingsTab('config'); document.getElementById("settings-modal").classList.remove("modal-hidden"); };
+        window.closeSettingsModal = function() { document.getElementById("settings-modal").classList.add("modal-hidden"); };
+        window.saveSettings = function() { if(!player) return closeSettingsModal(); player.bossDeadline = document.getElementById("settings-boss-date").value; player.resetHour = document.getElementById("settings-reset-hour").value; saveData(); updateScreen(); closeSettingsModal(); };
+        window.triggerSystemWipe = function() { if(confirm("Erase all tracking profile layers? This operation is permanent.")) { localStorage.clear(); location.reload(); } };
+
+        function saveData() { localStorage.setItem("adhdmaxxing_v6_ultra_player", JSON.stringify(player)); localStorage.setItem("adhdmaxxing_v6_ultra_quests", JSON.stringify(quests)); localStorage.setItem("adhdmaxxing_v6_ultra_logs", JSON.stringify(dayLogs)); }
+        
+        document.addEventListener("DOMContentLoaded", loadData);
+    </script>
 </body>
 </html>
