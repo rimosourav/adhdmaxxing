@@ -410,13 +410,13 @@
 
             <div id="tab-content-roster" class="tab-pane hidden">
                 <div class="reward-creation-box">
-                    <h5 style="margin: 0 0 10px 0; color:#fff;">+ INJECT DYNAMIC MID-ARC LOOT</h5>
-                    <input type="text" id="new-reward-name" placeholder="Reward name...">
+                    <h5 style="margin: 0 0 10px 0; color:#fff;">+ ADD REWARD</h5>
+                    <input type="text" id="new-reward-name" placeholder="Item Name...">
                     <div class="centered-btn-wrapper" style="margin-top:4px;">
-                        <button class="secondary-btn btn-text" onclick="addCustomRewardShop()">Inject Reward</button>
+                        <button class="secondary-btn btn-text" onclick="addCustomRewardShop()">Save Reward</button>
                     </div>
                 </div>
-                <h4 class="serif-sub">YOUR TIMELINE VAULT</h4>
+                <h4 class="serif-sub">YOUR TARGETS</h4>
                 <div id="milestone-roster-list" class="isolated-scroll-panel"></div>
                 <div class="centered-btn-wrapper">
                     <button class="secondary-btn btn-text" style="color:var(--system-red); border-color:#3a1c1c;" onclick="purgeAllRewards()">💥 Purge All Loot</button>
@@ -424,13 +424,13 @@
             </div>
 
             <div id="tab-content-archive" class="tab-pane hidden">
-                <h4 class="serif-sub">HISTORICAL ARCHIVE ARCHITECTURE</h4>
+                <h4 class="serif-sub">COMPLETED QUESTS LOG</h4>
                 <div id="history-archive-list" class="isolated-scroll-panel"></div>
             </div>
 
             <div id="tab-content-manual" class="tab-pane hidden">
                 <h4 class="serif-sub" style="margin-top:0;">SYSTEM HANDBOOK</h4>
-                <div class="isolated-scroll-panel" style="max-height: 330px;">
+                <div class="isolated-scroll-panel" style="max-height: 290px;">
                     <div class="faq-section">
                         <h4>🔥 QUEST CATEGORY SPECS</h4>
                         <p><strong>Main Quests:</strong> Heavy blocks (+50 XP). Mandatory.<br><strong>Side Quests:</strong> Structural core habits (+20 XP). Mandatory.<br><br>Both carry heavy rollover penalties if left unfinished before your sleep reset anchor.</p>
@@ -542,7 +542,7 @@
                 
                 <div class="reward-mandate-box">
                     <h4 style="margin:0 0 10px 0; font-size:0.8rem; color:#fff; text-align:center;">🏆 REWARD BRAIN-DUMP</h4>
-                    <p style="font-size: 0.65rem; color:var(--text-gray); text-align:center; margin-top:0;">List at least <strong>4 rewards</strong>. Tap items to edit text.<br>Top = Easiest Treat, Bottom = Ultimate Prize.</p>
+                    <p style="font-size: 0.65rem; color:var(--text-gray); text-align:center; margin-top:0;">List at least <strong>4 rewards</strong>. Tap any item to edit it.<br>Top = Easiest Treat, Bottom = Ultimate Prize.</p>
                     
                     <div class="setup-reward-row">
                         <input type="text" id="wizard-brain-dump-input" placeholder="Type a new reward...">
@@ -618,11 +618,17 @@
         let player = null; let quests = []; let dayLogs = {}; 
         let taskSlideIndex = 0; let systemSlideIndex = 0; 
         let temporarySetupPhotoData = null;
-        let setupBrainDumpRewards = ["Buy Clothes and Serums", "Trolley for the weekend trip", "Tattoo research", "Flight Tickets"];
+        
+        let setupBrainDumpRewards = [
+            "Buy Clothes and Serums", 
+            "Trolley for the weekend trip", 
+            "Tattoo research", 
+            "Flight Tickets"
+        ];
 
         const defaultRewards = { main: 50, side: 20, errand: 75, bonus: 15 };
 
-        // Core RPG Exponential Progression Scaling Math Engine
+        // Exponential XP RPG Curve logic
         function getRequiredXpForLevel(level) {
             if (level <= 1) return 0;
             return Math.floor(100 * Math.pow(level - 1, 1.5));
@@ -634,7 +640,7 @@
             return level;
         }
 
-        // Pyramid Rank Logic Structure (9 Cycles to Complete)
+        // 9-Cycle Pyramid Ranks Setup
         function resolveRankAndAuraTitle(cycleNum) {
             if (cycleNum >= 10) return { title: "ELITE", className: "rank-elite" };
             if (cycleNum >= 8)  return { title: `VETERAN ${romanize(cycleNum - 7)}`, className: "rank-veteran" };
@@ -729,7 +735,6 @@
             }
         }
 
-        // --- STEP WIZARD VALIDATION FLOWS ---
         window.advanceToTaskDemo = function() {
             if (!document.getElementById("setup-name").value.trim()) return alert("Provide a Player Name.");
             document.getElementById("setup-screen").classList.add("hidden");
@@ -836,7 +841,6 @@
             document.getElementById("slide-sys-next-btn").innerText = (systemSlideIndex === slides.length - 1) ? "Calibrate" : "Next";
         }
 
-        // --- REWARD BRAIN DUMP TAP-TO-EDIT & SORT ARCHITECTURE ---
         window.addRewardToBrainDump = function() {
             const input = document.getElementById("wizard-brain-dump-input");
             const val = input.value.trim();
@@ -892,25 +896,22 @@
             });
         }
 
-        // DYNAMIC HYPOTHETICAL YIELD ALGORITHM LOGIC
         function calibrateRewardMilestonesFromYieldPool(targetDeadline, startingXp, rewardList) {
             const today = parseLogicalDate(getLogicalDateStr());
             const targetDate = parseLogicalDate(targetDeadline);
             const daysDiff = Math.max(1, Math.ceil((targetDate.setHours(0,0,0,0) - today.setHours(0,0,0,0)) / 86400000));
             
-            // Sum all active mandatory daily tasks to calculate predictable baseline output
             let estimatedDailyYield = quests.reduce((sum, q) => {
                 if (q.type === 'main' || q.type === 'side') { return sum + (q.reward || 0); }
                 return sum;
             }, 0);
-            if (estimatedDailyYield <= 0) estimatedDailyYield = 70; // Fallback anchor protection
+            if (estimatedDailyYield <= 0) estimatedDailyYield = 70;
             
             const maxYieldPool = daysDiff * estimatedDailyYield;
             let compiledRewards = [];
             const len = rewardList.length;
 
             rewardList.forEach((rName, i) => {
-                // Exponential spacing coefficient math across the achievable timeline pool
                 let progressFactor = (i + 1) / len;
                 let exponentialOffset = Math.floor(maxYieldPool * Math.pow(progressFactor, 1.5));
                 let targetXpBoundary = startingXp + exponentialOffset;
@@ -943,13 +944,12 @@
                     bossDate = `${fallback.getFullYear()}-${String(fallback.getMonth()+1).padStart(2,'0')}-${String(fallback.getDate()).padStart(2,'0')}`;
                 }
 
-                // Inject calibrated dynamically scaled rewards array
                 let compiledRewards = calibrateRewardMilestonesFromYieldPool(bossDate, 0, setupBrainDumpRewards);
 
                 player = {
                     name: nameInput,
                     region: document.getElementById("setup-region").value,
-                    cycleCount: 1, // Global Pyramid Track Start
+                    cycleCount: 1, 
                     level: 1, rank: "Novice I", xp: 0, postponeTokens: 3, perfectStreak: 0, stasisMode: false,
                     resetHour: document.getElementById("setup-reset").value,
                     bossDeadline: bossDate,
@@ -964,7 +964,6 @@
             }
         };
 
-        // --- AIRTIGHT CANVAS BASE64 AUTO-COMPRESSION STORAGE ARCHITECTURE ---
         function compressImage(base64Str, maxWidth, maxHeight, callback) {
             let img = new Image();
             img.src = base64Str;
@@ -976,7 +975,7 @@
                 canvas.width = width; canvas.height = height;
                 let ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
-                callback(canvas.toDataURL('image/jpeg', 0.6)); // Balanced compression layer
+                callback(canvas.toDataURL('image/jpeg', 0.6));
             };
         }
 
@@ -1026,22 +1025,16 @@
             } 
         };
 
-        // --- DOOMSDAY ANNUAL TIMELINE TRANSITION POPUP PROTOCOLS ---
-        let doomsdayBrainDumpRewards = ["Buy Clothes and Serums", "Trolley for the weekend trip", "Tattoo research", "Flight Tickets"];
-        
         function checkDoomsdayTimelineExpiration() {
             if (!player) return;
             const diff = parseLogicalDate(player.bossDeadline).setHours(0,0,0,0) - parseLogicalDate(getLogicalDateStr()).setHours(0,0,0,0);
             if (diff <= 0) {
-                // If past or matching deadline, throw the modal overlay interceptor block completely
                 document.getElementById("doomsday-modal").classList.remove("modal-hidden");
                 document.body.classList.add("modal-open");
                 
-                // Set default tomorrow date picker fallback inside modal
-                let tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 41); // Simulation metric baseline
+                let tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 41);
                 document.getElementById("dd-new-deadline").value = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth()+1).padStart(2,'0')}-${String(tomorrow.getDate()).padStart(2,'0')}`;
                 
-                // If user hits Cycle 10, shift title to Annual Victory celebration parameters
                 if(player.cycleCount >= 9) {
                     document.getElementById("dd-modal-title").innerText = "🏆 ANNUAL VICTORY ERA";
                     document.getElementById("dd-modal-desc").innerHTML = "<strong>CRITICAL ACHIEVEMENT UNLOCKED: ELITE RANK ATTAINED.</strong><br>Would you like to initiate New Game Plus Year 2 Reset or calibrate another tracking layer?";
@@ -1087,12 +1080,11 @@
             doomsdayBrainDumpRewards = doomsdayBrainDumpRewards.filter(r => r.trim() !== "");
             if(doomsdayBrainDumpRewards.length < 4) return alert("Provide a minimum of 4 sorted rewards.");
 
-            // PRESTIGE COUNTER AND REPLAY INTERVAL LEVEL RESET LAYER
             player.cycleCount++;
-            player.xp = 0; // Fresh early-game scaling dopamine boost reset
+            player.xp = 0; 
             player.level = 1;
             player.bossDeadline = newDeadline;
-            player.isDay0Buffer = true; // Safe cushion buffer layer for rollover checks
+            player.isDay0Buffer = true; 
             
             player.customRewards = calibrateRewardMilestonesFromYieldPool(newDeadline, 0, doomsdayBrainDumpRewards);
             
@@ -1145,14 +1137,13 @@
 
         function calculateProgression() {
             if (!player) return; 
-            if (!player.cycleCount) player.cycleCount = 1; // Safeguard backward data models
+            if (!player.cycleCount) player.cycleCount = 1; 
             
             const oldLevel = player.level; 
             player.level = calculateCurrentLevel(player.xp);
             
             if (player.level > oldLevel && oldLevel > 0) triggerAudioFeedback('levelup');
             
-            // Execute decoupled localized rank tracking maps
             let rankMetrics = resolveRankAndAuraTitle(player.cycleCount);
             player.rank = rankMetrics.title;
             
@@ -1167,7 +1158,6 @@
             document.getElementById("rank-display").innerText = player.rank; 
             document.getElementById("xp-display").innerText = player.xp;
             
-            // Render progress math boundaries visually to single target focus track
             let currentLevelBaseXp = getRequiredXpForLevel(player.level);
             let nextLevelTargetXp = getRequiredXpForLevel(player.level + 1);
             let totalXpGapInTier = nextLevelTargetXp - currentLevelBaseXp;
@@ -1176,10 +1166,6 @@
             document.getElementById("xp-current-display").innerText = playerProgressInsideTier;
             document.getElementById("xp-needed-display").innerText = totalXpGapInTier;
 
-            let percentageFill = Math.min(100, Math.max(0, (playerProgress = (player.xp - currentLevelMinXp = currentLevelBaseXp) / totalXpGapInTier) * 100));
-            let pBar = document.getElementById("avatar-aura-glow"); // Directly inyect aura modifications if needed
-            
-            // Physical target bar mapping logic inside container limits
             const s = [...player.customRewards].sort((a,b) => a.targetXp - b.targetXp);
             const nextRewardObj = s.find(r => !r.claimed);
             const trackerNode = document.getElementById("dashboard-milestone-tracker");
@@ -1192,7 +1178,7 @@
                 
                 let barTotalSegment = nextRewardObj.targetXp - currentTrackBase;
                 let barProgressSegment = player.xp - currentTrackBase;
-                let fillPercent = Math.min(100, Math.max(0, (barProgressSegment / barTotalSegment) * 100));
+                let fillPercent = Math.min(100, Math.max(0, (barProgressSegment / (barTotalSegment || 1)) * 100));
                 
                 fillNode.style.width = `${fillPercent}%`;
                 if (player.xp >= nextRewardObj.targetXp) {
@@ -1353,7 +1339,7 @@
         window.addCustomRewardShop = function() { 
             let n = document.getElementById("new-reward-name").value.trim(); if(!n) return; 
             let maxTargetXp = player.customRewards.length > 0 ? Math.max(...player.customRewards.map(r => r.targetXp)) : player.xp;
-            let nextTarget = maxTargetXp + 500; // Inline injection tier offset buffer
+            let nextTarget = maxTargetXp + 500; 
             player.customRewards.push({ id: Date.now(), name: n, targetXp: nextTarget, unlockLevel: calculateCurrentLevel(nextTarget), claimed: false }); 
             document.getElementById("new-reward-name").value = ""; saveData(); updateScreen(); populateRewardShopPanel(); 
         };
