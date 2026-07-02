@@ -201,7 +201,7 @@
         .faq-section p { margin: 0; font-size: 0.75rem; color: var(--text-gray); line-height: 1.4; }
         
         .system-slide { background: var(--panel-dark); padding: 20px; border: 1px solid var(--border-silver); min-height: 110px; }
-        .slide-title { font-size: 0.75rem; color: var(--system-gold); margin: 0 0 8px 0; }
+        .slide-title font-size: 0.75rem; color: var(--system-gold); margin: 0 0 8px 0; }
         .slide-text { font-size: 0.75rem; color: #fff; line-height: 1.4; margin: 0; }
 
         .settings-tabs { display: grid; grid-template-columns: repeat(4, 1fr); max-width: 100%; margin: 14px auto; gap: 4px; }
@@ -585,6 +585,18 @@
         </div>
     </div>
 
+    <div id="avatar-edit-modal" class="modal-hidden">
+        <div class="modal-content animate-slide-up" style="max-width: 320px; text-align: center;">
+            <div class="modal-header-row" style="margin-bottom: 16px;">
+                <h3 class="serif-title" style="margin:0; width: 100%;">PROFILE PHOTO</h3>
+            </div>
+            <hr class="thin-line" style="margin-bottom: 16px;">
+            <button class="primary-btn btn-text" style="margin-bottom: 12px; border-color: var(--system-blue); color: var(--system-blue); background: transparent;" onclick="triggerDashboardPhotoUpload(); closeAvatarModal();">📷 New Photo</button>
+            <button class="secondary-btn btn-text" style="margin-bottom: 12px; color: var(--system-red); border-color: #3a1c1c;" onclick="removeDashboardPhoto(); closeAvatarModal();">🗑️ Remove Photo</button>
+            <button class="secondary-btn btn-text" onclick="closeAvatarModal()">Cancel</button>
+        </div>
+    </div>
+
     <div id="main-dashboard" class="hidden">
         <div id="status-alerts-bar">
             <span id="stasis-badge" class="badge hidden">❄️ REST MODE ACTIVE</span>
@@ -661,22 +673,6 @@
 
         const defaultRewards = { main: 50, side: 20, errand: 75, bonus: 15 };
 
-        // Core Image Base64 Compression Engine
-        function compressImage(base64Str, maxWidth, maxHeight, callback) {
-            let img = new Image();
-            img.src = base64Str;
-            img.onload = () => {
-                let canvas = document.createElement('canvas');
-                let width = img.width; let height = img.height;
-                if (width > height) { if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; } } 
-                else { if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; } }
-                canvas.width = width; canvas.height = height;
-                let ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-                callback(canvas.toDataURL('image/jpeg', 0.6));
-            };
-        }
-
         // --- NATIVE INTERACTIVE CANVAS FRAMING SYSTEM FUNCTIONS ---
         function initFramingModalPipeline(rawDataUrl, completionCallback) {
             activeFramingCallback = completionCallback;
@@ -686,12 +682,10 @@
                 framingCanvas = document.getElementById("framing-canvas");
                 fCtx = framingCanvas.getContext("2d");
                 
-                // Establish automated asset scaling calculations to map baseline container boundaries
                 let horizontalScaleFactor = framingCanvas.width / framingImg.width;
                 let verticalScaleFactor = framingCanvas.height / framingImg.height;
-                imgScale = Math.max(horizontalScaleFactor, verticalScaleFactor);
+                let imgScale = Math.max(horizontalScaleFactor, verticalScaleFactor);
                 
-                // Automatically calculate centered axis placement vectors
                 imgX = (framingCanvas.width - framingImg.width * imgScale) / 2;
                 imgY = (framingCanvas.height - framingImg.height * imgScale) / 2;
                 
@@ -707,7 +701,6 @@
             fCtx.clearRect(0, 0, framingCanvas.width, framingCanvas.height);
             fCtx.drawImage(framingImg, imgX, imgY, framingImg.width * imgScale, framingImg.height * imgScale);
             
-            // Build out composite shading parameters to generate local avatar mask overlay
             fCtx.save();
             fCtx.fillStyle = "rgba(0, 0, 0, 0.75)";
             fCtx.beginPath();
@@ -716,7 +709,6 @@
             fCtx.fill();
             fCtx.restore();
             
-            // Render active targeted masking wireframe guide circle
             fCtx.strokeStyle = "var(--system-blue)";
             fCtx.lineWidth = 2;
             fCtx.beginPath();
@@ -727,7 +719,6 @@
         function bindFramingTouchEventsOnce() {
             if (framingCanvas.dataset.eventsBound === "true") return;
             
-            // Mouse Drag Bind Hooks
             framingCanvas.addEventListener('mousedown', (e) => {
                 isDragging = true;
                 startX = e.clientX - imgX;
@@ -741,7 +732,6 @@
             });
             window.addEventListener('mouseup', () => { isDragging = false; });
 
-            // Mobile Safari/Chrome Native Touch Interface Interaction Translators
             framingCanvas.addEventListener('touchstart', (e) => {
                 if (e.touches.length === 1) {
                     isDragging = true;
@@ -754,7 +744,7 @@
                 imgX = e.touches[0].clientX - startX;
                 imgY = e.touches[0].clientY - startY;
                 executeRenderFramingLoop();
-                e.preventDefault(); // Lock mobile scroll bounce shifts during alignment manipulation
+                e.preventDefault(); 
             }, { passive: false });
             window.addEventListener('touchend', () => { isDragging = false; });
 
@@ -773,12 +763,10 @@
             exportCanvas.height = 250;
             let eCtx = exportCanvas.getContext("2d");
             
-            // Execute absolute circular cropping overlay clip parameter mapping
             eCtx.beginPath();
             eCtx.arc(125, 125, 125, 0, Math.PI * 2);
             eCtx.clip();
             
-            // Flatten the currently adjusted visualization map into output resolution scale parameters
             eCtx.drawImage(framingCanvas, 0, 0, 250, 250);
             
             let structuredOutputBase64 = exportCanvas.toDataURL("image/jpeg", 0.7);
@@ -1056,48 +1044,6 @@
             });
         }
 
-        // Predictive Day-By-Day Income Scaling Simulation Math
-        function calibrateRewardMilestonesFromYieldPool(targetDeadline, startingXp, rewardList) {
-            const today = parseLogicalDate(getLogicalDateStr());
-            const targetDate = parseLogicalDate(targetDeadline);
-            const daysDiff = Math.max(1, Math.ceil((targetDate.setHours(0,0,0,0) - today.setHours(0,0,0,0)) / 86400000));
-            
-            let baselineDailyQuests = quests.filter(q => q.type === 'main' || q.type === 'side');
-            
-            let simulatedXp = startingXp;
-            let simulatedLevel = calculateCurrentLevel(simulatedXp);
-            
-            for (let day = 0; day < daysDiff; day++) {
-                let dayIncome = 0;
-                baselineDailyQuests.forEach(q => {
-                    dayIncome += getScaledQuestReward(q.type, simulatedLevel);
-                });
-                if (dayIncome === 0) dayIncome = getScaledQuestReward('side', simulatedLevel);
-                simulatedXp += dayIncome;
-                simulatedLevel = calculateCurrentLevel(simulatedXp);
-            }
-            
-            const maxYieldPool = simulatedXp - startingXp;
-            let compiledRewards = [];
-            const len = rewardList.length;
-
-            rewardList.forEach((rName, i) => {
-                let progressFactor = (i + 1) / len;
-                let exponentialOffset = Math.floor(maxYieldPool * Math.pow(progressFactor, 1.5));
-                let targetXpBoundary = startingXp + exponentialOffset;
-                let targetUnlockLevel = calculateCurrentLevel(targetXpBoundary);
-
-                compiledRewards.push({
-                    id: Date.now() + i + Math.random(),
-                    name: rName,
-                    targetXp: targetXpBoundary,
-                    unlockLevel: targetUnlockLevel,
-                    claimed: false
-                });
-            });
-            return compiledRewards;
-        }
-
         window.triggerSetupPhotoUpload = function() { document.getElementById("setup-file-input").click(); };
         window.processSetupPhoto = function(input) { 
             if (input.files && input.files[0]) { 
@@ -1176,6 +1122,51 @@
             });
         }
 
+        window.finalizeDoomsdayTimelineReset = function() {
+            const newDeadline = document.getElementById("dd-new-deadline").value;
+            if(!newDeadline) return alert("Select a future timeline anchor date.");
+            
+            doomsdayBrainDumpRewards = doomsdayBrainDumpRewards.filter(r => r.trim() !== "");
+            if(doomsdayBrainDumpRewards.length < 4) return alert("Provide a minimum of 4 sorted rewards.");
+
+            player.cycleCount++;
+            player.xp = 0; 
+            player.level = 1;
+            player.bossDeadline = newDeadline;
+            player.isDay0Buffer = true; 
+            
+            player.customRewards = calibrateRewardMilestonesFromYieldPool(newDeadline, 0, doomsdayBrainDumpRewards);
+            
+            document.getElementById("doomsday-modal").classList.add("modal-hidden");
+            document.body.classList.remove("modal-open");
+            
+            saveData(); calculateProgression(); updateScreen();
+            alert(`⚡ Timeline calibrated. Welcome to Cycle ${player.cycleCount}. Profile reset executed.`);
+        };
+
+        window.dismissNightHub = function() { document.getElementById("night-shift-modal").classList.add("modal-hidden"); };
+
+        window.openEditTaskModal = function(id) {
+            const q = quests.find(x => x.id == id); if(!q) return;
+            document.getElementById("edit-task-id").value = q.id;
+            document.getElementById("edit-task-title").value = q.title;
+            document.getElementById("edit-task-type").value = q.type;
+            
+            let freq = "one-time";
+            if (q.isDaily) freq = "daily";
+            else if (q.cycle) freq = "cyclic";
+            
+            document.getElementById("edit-task-frequency").value = freq;
+            document.getElementById("edit-task-cycle-days").value = q.cycle || 3;
+            toggleEditCycleInput();
+
+            document.getElementById("edit-task-modal").classList.remove("modal-hidden");
+            document.body.classList.add("modal-open");
+        };
+        window.closeEditTaskModal = function() { 
+            document.getElementById("edit-task-modal").classList.add("modal-hidden"); 
+            document.body.classList.remove("modal-open");
+        };
         window.saveTaskEdit = function() {
             const id = document.getElementById("edit-task-id").value;
             const q = quests.find(x => x.id == id);
@@ -1193,32 +1184,41 @@
             closeEditTaskModal();
         };
 
-        window.addCustomTomorrowQuest = function() {
-            let t = document.getElementById("t-quest-title").value.trim(); let tp = document.getElementById("t-quest-type").value; let f = document.getElementById("t-quest-frequency").value;
-            if(!t) return alert("Quest requires a name.");
-            let item = { id: Date.now(), type: tp, title: t, completed: false, scheduledForTomorrow: true };
-            if(f==="daily") item.isDaily = true; else if(f==="cyclic") { item.cycle = parseInt(document.getElementById("t-quest-cycle-days").value) || 3; item.lastDone = null; }
-            quests.push(item); document.getElementById("t-quest-title").value = ""; saveData(); renderTomorrowSandboxList(); updateScreen();
+        window.animateCompleteQuest = function(btn, id) { 
+            const q = quests.find(x => x.id == id);
+            if (q && (q.type === 'main' || q.type === 'side')) {
+                btn.closest('.quest-item').classList.add('completed-decay'); 
+                setTimeout(() => completeQuestDirectly(id), 400); 
+            } else {
+                completeQuestDirectly(id);
+            }
         };
 
-        window.addCustomRewardShop = function() { 
-            let n = document.getElementById("new-reward-name").value.trim(); if(!n) return; 
-            let maxTargetXp = player.customRewards.length > 0 ? Math.max(...player.customRewards.map(r => r.targetXp)) : player.xp;
-            let nextTarget = maxTargetXp + 500; 
-            player.customRewards.push({ id: Date.now(), name: n, targetXp: nextTarget, unlockLevel: calculateCurrentLevel(nextTarget), claimed: false }); 
-            document.getElementById("new-reward-name").value = ""; saveData(); updateScreen(); populateRewardShopPanel(); 
+        window.undoQuest = function(id) { 
+            const q = quests.find(x=>x.id==id); if(!q) return; 
+            let calculatedReward = getScaledQuestReward(q.type, player.level);
+            if (q.wasPostponed) {
+                player.postponeTokens++; q.wasPostponed = false;
+                removeTaskFromArchiveLog(`[POSTPONED]: ${q.title}`); 
+            } else {
+                player.xp = Math.max(0, player.xp - calculatedReward); 
+                removeTaskFromArchiveLog(q.title); 
+            }
+            q.completed = false; if(q.cycle) q.lastDone = null;
+            calculateProgression(); saveData(); updateScreen(); 
         };
 
-        window.closeSettingsModal = function() { document.getElementById("settings-modal").classList.add("modal-hidden"); document.body.classList.remove("modal-open"); };
-        window.saveSettings = function() { if(!player) return closeSettingsModal(); player.bossDeadline = document.getElementById("settings-boss-date").value; player.resetHour = document.getElementById("settings-reset-hour").value; saveData(); updateScreen(); checkDoomsdayTimelineExpiration(); closeSettingsModal(); };
-        window.triggerSystemWipe = function() { if(confirm("Erase all tracking profile layers? This operation is permanent.")) { localStorage.clear(); location.reload(); } };
-
-        window.toggleEditCycleInput = function() {
-            document.getElementById("edit-custom-cycle-group").classList.toggle("hidden", document.getElementById("edit-task-frequency").value !== "cyclic");
-        };
-        window.closeEditTaskModal = function() { 
-            document.getElementById("edit-task-modal").classList.add("modal-hidden"); 
-            document.body.classList.remove("modal-open");
+        window.postponeSingleQuest = function(id) { 
+            if(player.postponeTokens<=0) return alert("No PT tokens left!"); 
+            const q = quests.find(x=>x.id==id); 
+            if(q) { 
+                player.postponeTokens--; q.completed = true; q.wasPostponed = true; 
+                if(q.cycle){ 
+                    let y=parseLogicalDate(getLogicalDateStr()); y.setDate(y.getDate()-(q.cycle-1)); 
+                    q.lastDone=`${y.getFullYear()}-${String(y.getMonth()+1).padStart(2,'0')}-${String(y.getDate()).padStart(2,'0')}`; 
+                } 
+                logCompletedTaskToArchive(`[POSTPONED]: ${q.title}`, 0); saveData(); updateScreen(); 
+            } 
         };
 
         window.openTomorrowModal = function() { renderTomorrowSandboxList(); document.getElementById("tomorrow-modal").classList.remove("modal-hidden"); document.body.classList.add("modal-open"); };
@@ -1233,28 +1233,26 @@
             if (cycleDays > 0) { document.getElementById("t-quest-cycle-days").value = cycleDays; }
         };
 
-        function renderTomorrowSandboxList() {
-            const c = document.getElementById("tomorrow-sandbox-list"); c.innerHTML = "";
-            quests.forEach(q => {
-                let fLabel = q.isDaily ? "Daily" : q.cycle ? `${q.cycle}d` : "Once";
-                c.innerHTML += `<div class="roster-card"><div><span style="font-weight:bold; ${q.scheduledForTomorrow ? 'color:var(--system-blue);' : ''}">${q.title}</span><div style="font-size:0.65rem; color:var(--text-gray);">${q.type.toUpperCase()} Quest (${fLabel}) ${q.scheduledForTomorrow?'[PLAN]':'[AUTO]'}</div></div><button onclick="removeQuestFromTomorrow('${q.id}')" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>`;
-            });
-        }
+        window.addCustomTomorrowQuest = function() {
+            let t = document.getElementById("t-quest-title").value.trim(); let tp = document.getElementById("t-quest-type").value; let f = document.getElementById("t-quest-frequency").value;
+            if(!t) return alert("Quest requires a name.");
+            let item = { id: Date.now(), type: tp, title: t, completed: false, scheduledForTomorrow: true };
+            if(f==="daily") item.isDaily = true; else if(f==="cyclic") { item.cycle = parseInt(document.getElementById("t-quest-cycle-days").value) || 3; item.lastDone = null; }
+            quests.push(item); document.getElementById("t-quest-title").value = ""; saveData(); renderTomorrowSandboxList(); updateScreen();
+        };
         window.removeQuestFromTomorrow = function(id) { quests = quests.filter(q => q.id != id); saveData(); renderTomorrowSandboxList(); updateScreen(); };
 
         window.toggleStasisMode = function() { player.stasisMode = document.getElementById("settings-stasis").checked; saveData(); updateScreen(); };
         window.switchSettingsTab = function(tName) { document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden')); document.getElementById(`tab-btn-${tName}`).classList.add('active'); document.getElementById(`tab-content-${tName}`).classList.remove('hidden'); if (tName === 'roster') populateRewardShopPanel(); if (tName === 'archive') populateArchivePanel(); };
 
-        function populateRewardShopPanel() {
-            const p = document.getElementById("milestone-roster-list"); p.innerHTML = "";
-            player.customRewards.forEach(r => {
-                let isU = player.xp >= r.targetXp;
-                let btn = r.claimed ? `<span>Claimed ✅</span>` : isU ? `<button class="gold-btn" onclick="claimReward(${r.id})">CLAIM</button>` : `<span style="font-size:0.6rem;">LOCK (Need Lvl ${r.unlockLevel})</span>`;
-                p.innerHTML += `<div class="roster-card" style="border-color:${isU&&!r.claimed?'var(--text-gray)':'var(--border-silver)'};">
-                    <div><div style="font-weight:bold; ${r.claimed?'text-decoration:line-through; color:var(--text-dark);':''}">${r.name}</div><div style="font-size:0.75rem; color:var(--text-gray);">Unlocks at Level ${r.unlockLevel}</div></div>
-                    <div class="flex-buttons"><button onclick="editCustomReward(${r.id})" style="background:none; border:none; color:var(--text-gray); cursor:pointer;">✏️</button>${btn}<button onclick="deleteCustomReward(${r.id})" style="background:none; border:none; color:var(--system-red); cursor:pointer;">🗑️</button></div></div>`;
-            });
-        }
+        window.addCustomRewardShop = function() { 
+            let n = document.getElementById("new-reward-name").value.trim(); if(!n) return; 
+            let maxTargetXp = player.customRewards.length > 0 ? Math.max(...player.customRewards.map(r => r.targetXp)) : player.xp;
+            let nextTarget = maxTargetXp + 500; 
+            player.customRewards.push({ id: Date.now(), name: n, targetXp: nextTarget, unlockLevel: calculateCurrentLevel(nextTarget), claimed: false }); 
+            document.getElementById("new-reward-name").value = ""; saveData(); updateScreen(); populateRewardShopPanel(); 
+        };
+        
         window.deleteCustomReward = function(id) { player.customRewards = player.customRewards.filter(r => r.id != id); saveData(); updateScreen(); populateRewardShopPanel(); };
         window.purgeAllRewards = function() { if(confirm("Permanently wipe all rewards?")) { player.customRewards = []; saveData(); updateScreen(); populateRewardShopPanel(); } };
         window.editCustomReward = function(id) { 
@@ -1268,14 +1266,16 @@
         window.claimReward = function(id) { const r = player.customRewards.find(x => x.id == id); if(!r || player.xp < r.targetXp) return; r.claimed = true; triggerAudioFeedback('levelup'); logCompletedTaskToArchive(`[CLAIMED]: ${r.name}`, 0, true, r.id); saveData(); updateScreen(); populateRewardShopPanel(); };
         window.revokeRewardClaim = function(dayStr, idx, tid) { const t = player.customRewards.find(r => r.id == tid); if(t) t.claimed = false; dayLogs[dayStr].itemsLogged.splice(idx, 1); dayLogs[dayStr].totalXPEarned = dayLogs[dayStr].itemsLogged.reduce((sum, i) => sum + i.reward, 0); saveData(); calculateProgression(); updateScreen(); populateArchivePanel(); };
 
-        function populateArchivePanel() {
-            const p = document.getElementById("history-archive-list"); p.innerHTML = ""; const days = Object.keys(dayLogs).sort().reverse();
-            if(days.length===0){ p.innerHTML = `<div style="text-align:center; color:var(--text-dark); padding:20px; font-style:italic;">No logs yet.</div>`; return; }
-            days.forEach(d => {
-                let m = dayLogs[d].itemsLogged.map((i, idx) => `<div style="font-size:0.8rem; display:flex; justify-content:space-between; margin-bottom:6px;"><span>• ${i.title} <span style="font-size:0.7rem; color:var(--text-dark);">(${i.time})</span> ${i.isRewardClaim?`<button onclick="revokeRewardClaim('${d}', ${idx}, ${i.rewardId})" style="background:none; border:1px solid var(--text-dark); color:var(--text-gray); font-size:0.65rem; cursor:pointer;">REVOKE</button>`:''}</span><span style="color:${i.isRewardClaim?'var(--system-gold)':'var(--system-blue)'}; font-weight:bold;">+${i.reward} Pt</span></div>`).join('');
-                p.innerHTML += `<div class="archive-card" style="flex-direction:column; align-items:stretch;"><div style="display:flex; justify-content:space-between; font-weight:bold; margin-bottom:8px; font-size:0.85rem; border-bottom:1px solid var(--border-silver); padding-bottom:6px;"><span>${d}</span><span>Net: ${dayLogs[d].totalXPEarned} Pt</span></div><div>${m}</div></div>`;
-            });
-        }
+        window.toggleEditCycleInput = function() {
+            document.getElementById("edit-custom-cycle-group").classList.toggle("hidden", document.getElementById("edit-task-frequency").value !== "cyclic");
+        };
+        window.closeSettingsModal = function() { document.getElementById("settings-modal").classList.add("modal-hidden"); document.body.classList.remove("modal-open"); };
+
+        window.openAvatarModal = function() { document.getElementById("avatar-edit-modal").classList.remove("modal-hidden"); document.body.classList.add("modal-open"); };
+        window.closeAvatarModal = function() { document.getElementById("avatar-edit-modal").classList.add("modal-hidden"); document.body.classList.remove("modal-open"); };
+        window.removeDashboardPhoto = function() { player.avatarDataUrl = null; document.getElementById("avatar-img").src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111'/><text x='50%' y='55%' font-family='sans-serif' font-size='10' fill='%23555' text-anchor='middle'>IMG</text></svg>"; saveData(); };
+        window.saveSettings = function() { player.bossDeadline = document.getElementById("settings-boss-date").value || player.bossDeadline; player.resetHour = document.getElementById("settings-reset-hour").value; saveData(); updateScreen(); closeSettingsModal(); alert("Settings updated successfully."); };
+        window.triggerSystemWipe = function() { if(confirm("CRITICAL: Wipe data completely? All logs, XP data and items will be deleted forever.")) { localStorage.clear(); location.reload(); } };
 
         function completeQuestDirectly(id) { 
             const q = quests.find(x=>x.id==id); if(!q) return; 
@@ -1440,30 +1440,130 @@
             });
         }
 
-        window.openSettingsModal = function() { if(player){ document.getElementById("settings-boss-date").value = player.bossDeadline || ""; document.getElementById("settings-reset-hour").value = player.resetHour || "3"; document.getElementById("settings-stasis").checked = player.stasisMode || false; } switchSettingsTab('config'); document.getElementById("settings-modal").classList.remove("modal-hidden"); document.body.classList.add("modal-open"); };
-        window.openEditTaskModal = function(id) {
-            const q = quests.find(x => x.id == id); if(!q) return;
-            document.getElementById("edit-task-id").value = q.id;
-            document.getElementById("edit-task-title").value = q.title;
-            document.getElementById("edit-task-type").value = q.type;
-            
-            let freq = "one-time";
-            if (q.isDaily) freq = "daily";
-            else if (q.cycle) freq = "cyclic";
-            
-            document.getElementById("edit-task-frequency").value = freq;
-            document.getElementById("edit-task-cycle-days").value = q.cycle || 3;
-            toggleEditCycleInput();
+        function renderTomorrowSandboxList() {
+            const c = document.getElementById("tomorrow-sandbox-list"); c.innerHTML = "";
+            quests.forEach(q => {
+                let fLabel = q.isDaily ? "Daily" : q.cycle ? `${q.cycle}d` : "Once";
+                c.innerHTML += `<div class="roster-card"><div><span style="font-weight:bold; ${q.scheduledForTomorrow ? 'color:var(--system-blue);' : ''}">${q.title}</span><div style="font-size:0.65rem; color:var(--text-gray);">${q.type.toUpperCase()} Quest (${fLabel}) ${q.scheduledForTomorrow?'[PLAN]':'[AUTO]'}</div></div><button onclick="removeQuestFromTomorrow('${q.id}')" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>`;
+            });
+        }
 
-            document.getElementById("edit-task-modal").classList.remove("modal-hidden");
-            document.body.classList.add("modal-open");
+        function populateRewardShopPanel() {
+            const p = document.getElementById("milestone-roster-list"); p.innerHTML = "";
+            player.customRewards.forEach(r => {
+                let isU = player.xp >= r.targetXp;
+                let btn = r.claimed ? `<span>Claimed ✅</span>` : isU ? `<button class="gold-btn" onclick="claimReward(${r.id})">CLAIM</button>` : `<span style="font-size:0.6rem;">LOCK (Need Lvl ${r.unlockLevel})</span>`;
+                p.innerHTML += `<div class="roster-card" style="border-color:${isU&&!r.claimed?'var(--text-gray)':'var(--border-silver)'};">
+                    <div><div style="font-weight:bold; ${r.claimed?'text-decoration:line-through; color:var(--text-dark);':''}">${r.name}</div><div style="font-size:0.75rem; color:var(--text-gray);">Unlocks at Level ${r.unlockLevel}</div></div>
+                    <div class="flex-buttons"><button onclick="editCustomReward(${r.id})" style="background:none; border:none; color:var(--text-gray); cursor:pointer;">✏️</button>${btn}<button onclick="deleteCustomReward(${r.id})" style="background:none; border:none; color:var(--system-red); cursor:pointer;">🗑️</button></div></div>`;
+            });
+        }
+
+        function populateArchivePanel() {
+            const p = document.getElementById("history-archive-list"); p.innerHTML = ""; const days = Object.keys(dayLogs).sort().reverse();
+            if(days.length===0){ p.innerHTML = `<div style="text-align:center; color:var(--text-dark); padding:20px; font-style:italic;">No logs yet.</div>`; return; }
+            days.forEach(d => {
+                let m = dayLogs[d].itemsLogged.map((i, idx) => `<div style="font-size:0.8rem; display:flex; justify-content:space-between; margin-bottom:6px;"><span>• ${i.title} <span style="font-size:0.7rem; color:var(--text-dark);">(${i.time})</span> ${i.isRewardClaim?`<button onclick="revokeRewardClaim('${d}', ${idx}, ${i.rewardId})" style="background:none; border:1px solid var(--text-dark); color:var(--text-gray); font-size:0.65rem; cursor:pointer;">REVOKE</button>`:''}</span><span style="color:${i.isRewardClaim?'var(--system-gold)':'var(--system-blue)'}; font-weight:bold;">+${i.reward} Pt</span></div>`).join('');
+                p.innerHTML += `<div class="archive-card" style="flex-direction:column; align-items:stretch;"><div style="display:flex; justify-content:space-between; font-weight:bold; margin-bottom:8px; font-size:0.85rem; border-bottom:1px solid var(--border-silver); padding-bottom:6px;"><span>${d}</span><span>Net: ${dayLogs[d].totalXPEarned} Pt</span></div><div>${m}</div></div>`;
+            });
+        }
+
+        /* --- ADDED MANDATORY SYSTEM ENGINE FUNCTIONS TO RESOLVE ARCHITECTURE FAILURES --- */
+        function saveData() {
+            localStorage.setItem("adhdmaxxing_v6_ultra_player", JSON.stringify(player));
+            localStorage.setItem("adhdmaxxing_v6_ultra_quests", JSON.stringify(quests));
+            localStorage.setItem("adhdmaxxing_v6_ultra_logs", JSON.stringify(dayLogs));
+        }
+
+        function logCompletedTaskToArchive(title, reward, isRewardClaim = false, rewardId = null) {
+            const todayStr = getLogicalDateStr();
+            if (!dayLogs[todayStr]) {
+                dayLogs[todayStr] = { itemsLogged: [], totalXPEarned: 0 };
+            }
+            const now = new Date();
+            const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            dayLogs[todayStr].itemsLogged.push({
+                title: title,
+                time: timeStr,
+                reward: reward,
+                isRewardClaim: isRewardClaim,
+                rewardId: rewardId
+            });
+            dayLogs[todayStr].totalXPEarned = dayLogs[todayStr].itemsLogged.reduce((sum, item) => sum + item.reward, 0);
+            saveData();
+        }
+
+        function removeTaskFromArchiveLog(title) {
+            const todayStr = getLogicalDateStr();
+            if (dayLogs[todayStr] && dayLogs[todayStr].itemsLogged) {
+                const idx = dayLogs[todayStr].itemsLogged.findIndex(item => item.title === title);
+                if (idx !== -1) {
+                    dayLogs[todayStr].itemsLogged.splice(idx, 1);
+                }
+                dayLogs[todayStr].totalXPEarned = dayLogs[todayStr].itemsLogged.reduce((sum, item) => sum + item.reward, 0);
+            }
+            saveData();
+        }
+
+        function calibrateRewardMilestonesFromYieldPool(deadlineDate, currentXp, rewardPool) {
+            return rewardPool.map((rewardName, i) => {
+                const targetXp = currentXp + (i + 1) * 400; 
+                return {
+                    id: Date.now() + i,
+                    name: rewardName,
+                    targetXp: targetXp,
+                    unlockLevel: calculateCurrentLevel(targetXp),
+                    claimed: false
+                };
+            });
+        }
+
+        window.finalizeSetupWizard = function() {
+            const name = document.getElementById("setup-name").value.trim();
+            const region = document.getElementById("setup-region").value;
+            const deadline = document.getElementById("setup-deadline").value;
+            const resetHour = document.getElementById("setup-reset").value;
+
+            if (!name) return alert("Provide a Player Name.");
+            if (!deadline) return alert("Select a Doomsday Deadline Date.");
+            
+            setupBrainDumpRewards = setupBrainDumpRewards.filter(r => r.trim() !== "");
+            if (setupBrainDumpRewards.length < 4) {
+                return alert("Please provide at least 4 rewards in your Brain-Dump list.");
+            }
+
+            player = {
+                name: name,
+                region: region,
+                bossDeadline: deadline,
+                resetHour: resetHour,
+                xp: 0,
+                level: 1,
+                perfectStreak: 0,
+                postponeTokens: 3,
+                cycleCount: 1,
+                stasisMode: false,
+                isDay0Buffer: true,
+                lastLoginDate: getLogicalDateStr(),
+                avatarDataUrl: temporarySetupPhotoData || null
+            };
+
+            player.customRewards = calibrateRewardMilestonesFromYieldPool(deadline, 0, setupBrainDumpRewards);
+
+            document.getElementById("setup-screen").classList.add("hidden");
+            document.getElementById("main-dashboard").classList.remove("hidden");
+
+            if (player.avatarDataUrl) {
+                document.getElementById("avatar-img").src = player.avatarDataUrl;
+            }
+
+            saveData();
+            calculateProgression();
+            updateScreen();
+            rotateDirectiveMessage();
+            alert("⚔️ System calibrated. Welcome to your productivity arc!");
         };
-        window.closeEditTaskModal = function() { document.getElementById("edit-task-modal").classList.add("modal-hidden"); document.body.classList.remove("modal-open"); };
 
-        function logCompletedTaskToArchive(taskTitle, xpValue, isRC=false, rID=null) { const d = getLogicalDateStr(); if(!dayLogs[d]) dayLogs[d] = { totalXPEarned: 0, itemsLogged: [] }; dayLogs[d].itemsLogged.push({ title: taskTitle, reward: xpValue, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), isRewardClaim: isRC, rewardId: rID }); dayLogs[d].totalXPEarned += xpValue; saveData(); }
-        function removeTaskFromArchiveLog(taskTitle) { const d = getLogicalDateStr(); if(dayLogs[d]) { const idx = dayLogs[d].itemsLogged.findIndex(i => i.title === taskTitle); if(idx !== -1) { dayLogs[d].totalXPEarned -= dayLogs[d].itemsLogged[idx].reward; dayLogs[d].itemsLogged.splice(idx, 1); saveData(); } } }
-        function saveData() { localStorage.setItem("adhdmaxxing_v6_ultra_player", JSON.stringify(player)); localStorage.setItem("adhdmaxxing_v6_ultra_quests", JSON.stringify(quests)); localStorage.setItem("adhdmaxxing_v6_ultra_logs", JSON.stringify(dayLogs)); }
-        
         document.addEventListener("DOMContentLoaded", loadData);
     </script>
 </body>
