@@ -321,10 +321,18 @@
                 <option value="errand">📜 Errand</option>
                 <option value="bonus">⭐ Bonus Quest</option>
             </select>
-            <label>Reward Points</label>
-            <input type="number" id="edit-task-reward" style="margin-bottom:16px;">
+            <label>Repeatability</label>
+            <select id="edit-task-frequency" onchange="toggleEditCycleInput()" style="margin-bottom:12px;">
+                <option value="daily">🔁 Daily Habit</option>
+                <option value="one-time">⚡ Single Event</option>
+                <option value="cyclic">⏳ Interval Cycle</option>
+            </select>
+            <div id="edit-custom-cycle-group" class="hidden">
+                <label>Interval Days</label>
+                <input type="number" id="edit-task-cycle-days" min="1" style="margin-bottom:16px;">
+            </div>
             
-            <div class="centered-btn-wrapper" style="margin-top:0;">
+            <div class="centered-btn-wrapper" style="margin-top:4px;">
                 <button class="primary-btn btn-text" onclick="saveTaskEdit()">Save Quest</button>
             </div>
         </div>
@@ -339,21 +347,21 @@
             <hr class="thin-line">
             
             <div class="reward-creation-box">
-                <h5 style="margin: 0 0 10px 0; color:#fff;">+ QUICK ADD PRESETS</h5>
+                <h5 style="margin: 0 0 10px 0; color:#fff;">⚡ QUICK REFILL FORMS</h5>
                 <div class="suggestion-box">
-                    <div class="chip" onclick="quickAddTomorrowTask('Exam/Study Prep', 'main', true, 0)">+ Exam Prep <span class="chip-meta">(Daily)</span></div>
-                    <div class="chip" onclick="quickAddTomorrowTask('Office Project', 'main', true, 0)">+ Project <span class="chip-meta">(Daily)</span></div>
-                    <div class="chip" onclick="quickAddTomorrowTask('Read 10 Pages', 'side', true, 0)">+ Read <span class="chip-meta">(Daily)</span></div>
-                    <div class="chip" onclick="quickAddTomorrowTask('Pay Bills', 'errand', false, 30)">+ Pay Bills <span class="chip-meta">(30d)</span></div>
+                    <div class="chip" onclick="populateTomorrowForm('Deep Work / Study Session', 'main', 'daily', 0)">+ Study Prep <span class="chip-meta">(Daily)</span></div>
+                    <div class="chip" onclick="populateTomorrowForm('Office Project Sprint', 'main', 'daily', 0)">+ Project <span class="chip-meta">(Daily)</span></div>
+                    <div class="chip" onclick="populateTomorrowForm('Read 10 Pages', 'side', 'daily', 0)">+ Read <span class="chip-meta">(Daily)</span></div>
+                    <div class="chip" onclick="populateTomorrowForm('Pay Rent & Bills', 'errand', 'one-time', 0)">+ Pay Bills <span class="chip-meta">(Once)</span></div>
                 </div>
 
                 <h5 style="margin: 15px 0 10px 0; color:#fff; border-top: 1px dashed var(--border-silver); padding-top:15px;">+ CREATE CUSTOM QUEST</h5>
                 <input type="text" id="t-quest-title" placeholder="Quest name...">
                 <select id="t-quest-type" style="margin-bottom:8px;">
-                    <option value="main">🔥 Main Quest (+50 XP)</option>
-                    <option value="side" selected>🛠️ Side Quest (+20 XP)</option>
-                    <option value="errand">📜 Errand (+75 XP)</option>
-                    <option value="bonus">⭐ Bonus Quest (+15 XP)</option>
+                    <option value="main">🔥 Main Quest</option>
+                    <option value="side" selected>🛠️ Side Quest</option>
+                    <option value="errand">📜 Errand</option>
+                    <option value="bonus">⭐ Bonus Quest</option>
                 </select>
                 <select id="t-quest-frequency" onchange="toggleTomorrowCycleInput()" style="margin-bottom:8px;">
                     <option value="daily" selected>🔁 Daily Habit</option>
@@ -439,11 +447,11 @@
                 <div class="manual-scroll-panel">
                     <div class="faq-section">
                         <h4>🔥 QUEST CATEGORY SPECS</h4>
-                        <p><strong>Main Quests:</strong> Heavy blocks (+50 XP). Mandatory.<br><strong>Side Quests:</strong> Structural core habits (+20 XP). Mandatory.<br><br>Both carry heavy rollover penalties if left unfinished before your sleep reset anchor.</p>
+                        <p><strong>Main Quests:</strong> Heavy focus blocks (+50 XP). Mandatory.<br><strong>Side Quests:</strong> Structural core habits (+20 XP). Mandatory.<br><br>Both carry heavy rollover penalties if left unfinished before your sleep reset anchor.</p>
                     </div>
                     <div class="faq-section">
                         <h4>📜 OPTIONAL OBJECTIVES</h4>
-                        <p><strong>Errands:</strong> Single/cyclic chores (+75 XP).<br><strong>Bonus Quests:</strong> Wellness boosts (+15 XP).<br><br>Both are completely optional. They carry zero penalty metrics if missed.</p>
+                        <p><strong>Errands:</strong> Single/cyclic chores (+75 XP).<br><strong>Bonus Quests:</strong> Wellness boosts (+15 XP).<br><br>Both are completely optional. They can be stacked repeatedly and carry zero penalties if missed.</p>
                     </div>
                     <div class="faq-section">
                         <h4>⚡ EXECUTION UTILITIES</h4>
@@ -491,14 +499,14 @@
                 <div id="setup-tasks-list" class="list-containment-box"></div>
 
                 <div class="reward-creation-box">
-                    <h5 style="margin: 0 0 10px 0; color:#fff;">+ QUICK ADD PRESETS</h5>
+                    <h5 style="margin: 0 0 10px 0; color:#fff;">⚡ QUICK REFILL FORMS</h5>
                     <div class="suggestion-box">
-                        <div class="chip" onclick="quickAddSetupTask('Exam/Study Prep', 'main', true, 0)">+ Exam Prep <span class="chip-meta">(Daily)</span></div>
-                        <div class="chip" onclick="quickAddSetupTask('Office Project', 'main', true, 0)">+ Project <span class="chip-meta">(Daily)</span></div>
-                        <div class="chip" onclick="quickAddSetupTask('10-Min Walk', 'side', true, 0)">+ 10-Min Walk <span class="chip-meta">(Daily)</span></div>
-                        <div class="chip" onclick="quickAddSetupTask('Read 10 Pages', 'side', true, 0)">+ Read <span class="chip-meta">(Daily)</span></div>
-                        <div class="chip" onclick="quickAddSetupTask('Water Plants', 'errand', false, 3)">+ Water Plants <span class="chip-meta">(3d)</span></div>
-                        <div class="chip" onclick="quickAddSetupTask('Pay Bills', 'errand', false, 30)">+ Pay Bills <span class="chip-meta">(30d)</span></div>
+                        <div class="chip" onclick="populateSetupForm('Deep Work / Study Session', 'main', 'daily', 0)">+ Exam Prep <span class="chip-meta">(Daily)</span></div>
+                        <div class="chip" onclick="populateSetupForm('Office Project Sprint', 'main', 'daily', 0)">+ Project <span class="chip-meta">(Daily)</span></div>
+                        <div class="chip" onclick="populateSetupForm('10-Min Walk', 'side', 'daily', 0)">+ 10-Min Walk <span class="chip-meta">(Daily)</span></div>
+                        <div class="chip" onclick="populateSetupForm('Read 10 Pages', 'side', 'daily', 0)">+ Read <span class="chip-meta">(Daily)</span></div>
+                        <div class="chip" onclick="populateSetupForm('Water House Plants', 'errand', 'cyclic', 3)">+ Water Plants <span class="chip-meta">(3d)</span></div>
+                        <div class="chip" onclick="populateSetupForm('Pay Credit Card Statement', 'errand', 'one-time', 0)">+ Pay Bills <span class="chip-meta">(Once)</span></div>
                     </div>
 
                     <h5 style="margin: 15px 0 10px 0; color:#fff; border-top: 1px dashed var(--border-silver); padding-top:15px;">+ CREATE CUSTOM QUEST</h5>
@@ -555,7 +563,7 @@
                         <button class="primary-btn btn-text" style="flex:1;" onclick="addRewardToBrainDump()">ADD</button>
                     </div>
 
-                    <div id="wizard-rewards-wrapper" class="list-containment-box" style="margin-top:12px;"></div>
+                    <div id="wizard-rewards-wrapper" class="list-containment-box"></div>
                 </div>
                 <div class="centered-btn-wrapper"><button class="primary-btn btn-text" onclick="finalizeSetupWizard()">Begin Quest</button></div>
             </div>
@@ -609,8 +617,8 @@
         <div id="quest-board" class="animate-fade-in">
             <div class="quest-category"><h3 class="category-header">🔥 MAIN QUESTS <span class="header-desc">(Mandatory)</span></h3><ul id="main-quest-list" class="quest-list"></ul></div>
             <div class="quest-category"><h3 class="category-header">🛠️ SIDE QUESTS <span class="header-desc">(Mandatory)</span></h3><ul id="side-quest-list" class="quest-list"></ul></div>
-            <div class="quest-category"><h3 class="category-header">📜 ERRANDS <span class="header-desc">(Optional)</span></h3><ul id="errand-quest-list" class="quest-list"></ul></div>
-            <div class="quest-category"><h3 class="category-header">⭐ BONUS QUESTS <span class="header-desc">(Optional)</span></h3><ul id="bonus-quest-list" class="quest-list"></ul></div>
+            <div class="quest-category"><h3 class="category-header">📜 ERRANDS <span class="header-desc">(Optional Stack)</span></h3><ul id="errand-quest-list" class="quest-list"></ul></div>
+            <div class="quest-category"><h3 class="category-header">⭐ BONUS QUESTS <span class="header-desc">(Optional Stack)</span></h3><ul id="bonus-quest-list" class="quest-list"></ul></div>
             <div class="quest-category completed-section"><h3 class="category-header completed-header">✅ COMPLETED TODAY</h3><ul id="completed-quest-list" class="quest-list"></ul></div>
         </div>
 
@@ -641,7 +649,12 @@
 
         const defaultRewards = { main: 50, side: 20, errand: 75, bonus: 15 };
 
-        // Exponential XP RPG Curve logic
+        // Core Level Payout Scaling Engine
+        function getScaledQuestReward(baseType, currentLevel) {
+            const base = defaultRewards[baseType] || 20;
+            return Math.floor(base * (1 + (currentLevel - 1) * 0.1));
+        }
+
         function getRequiredXpForLevel(level) {
             if (level <= 1) return 0;
             return Math.floor(100 * Math.pow(level - 1, 1.5));
@@ -739,10 +752,10 @@
             } else {
                 document.getElementById("setup-screen").classList.remove("hidden");
                 quests = [
-                    { id: Date.now(), type: "main", title: "Deep Work / Study Session", reward: 50, completed: false, isDaily: true },
-                    { id: Date.now()+1, type: "errand", title: "Clear Workspace", reward: 75, completed: false, isDaily: true },
-                    { id: Date.now()+2, type: "bonus", title: "Take a Bath", reward: 15, completed: false, isDaily: true },
-                    { id: Date.now()+3, type: "bonus", title: "Cut Nails", reward: 15, completed: false, cycle: 10, lastDone: null }
+                    { id: Date.now(), type: "main", title: "Deep Work / Study Session", completed: false, isDaily: true },
+                    { id: Date.now()+1, type: "errand", title: "Clear Workspace", completed: false, isDaily: true },
+                    { id: Date.now()+2, type: "bonus", title: "Take a Bath", completed: false, isDaily: true },
+                    { id: Date.now()+3, type: "bonus", title: "Cut Nails", completed: false, cycle: 10, lastDone: null }
                 ];
                 setDefaultSetupDate();
             }
@@ -783,42 +796,30 @@
             quests.forEach(q => {
                 let fLabel = q.isDaily ? "(Daily)" : q.cycle ? `(${q.cycle}d)` : "(Once)";
                 c.innerHTML += `
-                <div class="setup-reward-row" style="background: var(--panel-dark); padding: 8px; border: 1px solid var(--border-silver); margin-bottom: 6px; align-items: flex-end;">
-                    <div style="flex: 3; display: flex; flex-direction: column;">
-                        <span style="font-size:0.6rem; color:var(--text-gray); margin-bottom:4px; font-weight:bold;">${q.type.toUpperCase()} ${fLabel}</span>
-                        <input type="text" value="${q.title}" onchange="updateSetupTask('${q.id}', 'title', this.value)" style="height:36px; padding:8px;">
+                <div class="setup-reward-row" style="background: var(--panel-dark); padding: 8px; border: 1px solid var(--border-silver); margin-bottom: 6px; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-size:0.65rem; color:var(--text-gray); font-weight:bold; text-transform:uppercase;">${q.type} ${fLabel}</span>
+                        <span style="font-size:0.85rem; color:#fff; margin-top:2px;">${q.title}</span>
                     </div>
-                    <div style="flex: 1; display: flex; flex-direction: column;">
-                        <span style="font-size:0.6rem; color:var(--text-gray); margin-bottom:4px; font-weight:bold;">XP</span>
-                        <input type="number" value="${q.reward}" onchange="updateSetupTask('${q.id}', 'reward', this.value)" style="height:36px; padding:8px;">
-                    </div>
-                    <button onclick="removeSetupTask('${q.id}')" style="background:none; border:none; color:var(--system-red); font-size:1.2rem; cursor:pointer; padding-bottom:6px; margin-left:4px;">🗑️</button>
+                    <button onclick="removeSetupTask('${q.id}')" style="background:none; border:none; color:var(--system-red); font-size:1.2rem; cursor:pointer;">🗑️</button>
                 </div>`;
             });
         }
 
-        window.updateSetupTask = function(id, field, val) {
-            let q = quests.find(x => x.id == id);
-            if(q) {
-                if(field === 'title') q.title = val;
-                if(field === 'reward') q.reward = parseInt(val) || 0;
-            }
-        };
-
         window.toggleSetupCycleInput = function() { document.getElementById("setup-t-custom-cycle-group").classList.toggle("hidden", document.getElementById("setup-t-quest-frequency").value !== "cyclic"); };
         
-        window.quickAddSetupTask = function(title, type, isDaily, cycleDays) {
-            let item = { id: Date.now()+Math.random(), type: type, title: title, reward: defaultRewards[type], completed: false };
-            if (isDaily) item.isDaily = true;
-            else if (cycleDays > 0) { item.cycle = cycleDays; item.lastDone = null; }
-            quests.push(item);
-            renderSetupTasksList();
+        window.populateSetupForm = function(title, type, frequency, cycleDays) {
+            document.getElementById("setup-t-quest-title").value = title;
+            document.getElementById("setup-t-quest-type").value = type;
+            document.getElementById("setup-t-quest-frequency").value = frequency;
+            toggleSetupCycleInput();
+            if(cycleDays > 0) { document.getElementById("setup-t-quest-cycle-days").value = cycleDays; }
         };
 
         window.addSetupTask = function() {
             let t = document.getElementById("setup-t-quest-title").value.trim(); let tp = document.getElementById("setup-t-quest-type").value; let f = document.getElementById("setup-t-quest-frequency").value;
             if(!t) return alert("Quest requires a name.");
-            let item = { id: Date.now(), type: tp, title: t, reward: defaultRewards[tp], completed: false };
+            let item = { id: Date.now(), type: tp, title: t, completed: false };
             if(f==="daily") item.isDaily = true; else if(f==="cyclic") { item.cycle = parseInt(document.getElementById("setup-t-quest-cycle-days").value) || 3; item.lastDone = null; }
             quests.push(item); document.getElementById("setup-t-quest-title").value = ""; renderSetupTasksList();
         };
@@ -909,18 +910,28 @@
             });
         }
 
+        // Predictive Day-By-Day Income Scaling Simulation Math
         function calibrateRewardMilestonesFromYieldPool(targetDeadline, startingXp, rewardList) {
             const today = parseLogicalDate(getLogicalDateStr());
             const targetDate = parseLogicalDate(targetDeadline);
             const daysDiff = Math.max(1, Math.ceil((targetDate.setHours(0,0,0,0) - today.setHours(0,0,0,0)) / 86400000));
             
-            let estimatedDailyYield = quests.reduce((sum, q) => {
-                if (q.type === 'main' || q.type === 'side') { return sum + (q.reward || 0); }
-                return sum;
-            }, 0);
-            if (estimatedDailyYield <= 0) estimatedDailyYield = 70;
+            let baselineDailyQuests = quests.filter(q => q.type === 'main' || q.type === 'side');
             
-            const maxYieldPool = daysDiff * estimatedDailyYield;
+            let simulatedXp = startingXp;
+            let simulatedLevel = calculateCurrentLevel(simulatedXp);
+            
+            for (let day = 0; day < daysDiff; day++) {
+                let dayIncome = 0;
+                baselineDailyQuests.forEach(q => {
+                    dayIncome += getScaledQuestReward(q.type, simulatedLevel);
+                });
+                if (dayIncome === 0) dayIncome = getScaledQuestReward('side', simulatedLevel);
+                simulatedXp += dayIncome;
+                simulatedLevel = calculateCurrentLevel(simulatedXp);
+            }
+            
+            const maxYieldPool = simulatedXp - startingXp;
             let compiledRewards = [];
             const len = rewardList.length;
 
@@ -1124,6 +1135,15 @@
         function checkTimeLapse() {
             const todayStr = getLogicalDateStr(); if (player.lastLoginDate === todayStr) return;
             quests.forEach(q => { if (q.scheduledForTomorrow) q.scheduledForTomorrow = false; });
+            
+            // Filter and purge one-time optionals that passed their lifecycle window
+            quests = quests.filter(q => {
+                if (q.completed && (q.type === 'errand' || q.type === 'bonus') && !q.isDaily && !q.cycle) {
+                    return false;
+                }
+                return true;
+            });
+
             if (player.isDay0Buffer || player.stasisMode) {
                 player.isDay0Buffer = false; quests.forEach(q => { if (q.isDaily || q.cycle) q.completed = false; });
                 player.lastLoginDate = todayStr; saveData(); return;
@@ -1136,7 +1156,7 @@
                     tot++;
                     if (!q.completed) {
                         if (q.cycle && q.lastDone && Math.floor((y - parseLogicalDate(q.lastDone))/86400000) < q.cycle) return;
-                        missed++; pen += Math.floor(q.reward * 1.5);
+                        missed++; pen += Math.floor(getScaledQuestReward(q.type, player.level) * 1.5);
                     }
                 }
                 if (q.isDaily || q.cycle) q.completed = false;
@@ -1144,7 +1164,7 @@
             if (!isW && missed === 0 && tot > 0) { player.perfectStreak++; if (player.perfectStreak % 3 === 0) player.postponeTokens++; } 
             else if (missed > 0) player.perfectStreak = 0;
             if (pen > 0) { player.xp = Math.max(0, player.xp - pen); alert(`⚠️ Rollover Penalty: Missed quests caused a -${pen} XP drop.`); }
-            quests = quests.filter(q => !q.completed || q.isDaily || q.cycle);
+            
             player.lastLoginDate = todayStr; saveData();
         }
 
@@ -1229,29 +1249,46 @@
 
                 const li = document.createElement("li"); li.className = "quest-item";
                 let f = q.isDaily ? "🔄 " : q.cycle ? `⏳ ` : "⚡ ";
+                let scaledVal = getScaledQuestReward(q.type, player.level);
                 
-                if (q.completed) {
+                // Multi-instance execution stacking for optional tasks
+                let isOptional = (q.type === 'errand' || q.type === 'bonus');
+
+                if (q.completed && !isOptional) {
                     let titleDisplay = q.wasPostponed ? `<strong style="color:var(--system-gold);">[PT]</strong> ${q.title}` : q.title;
                     li.innerHTML = `<span style="text-decoration:line-through; color:var(--text-gray);">${f}${titleDisplay}</span><button class="gold-btn" style="border-color:var(--text-dark); color:var(--text-gray);" onclick="undoQuest('${q.id}')">UNDO</button>`;
                     lists.completed.appendChild(li);
                 } else {
-                    li.innerHTML = `<span>${f}${q.title} <strong style="color:var(--text-gray); font-size:0.8rem;">(+${q.reward})</strong></span>
+                    let stackLabel = (isOptional && q.completed) ? ` <span style="color:var(--system-blue); font-weight:bold;">(Done)</span>` : '';
+                    li.innerHTML = `<span>${f}${q.title}${stackLabel} <strong style="color:var(--text-gray); font-size:0.8rem;">(+${scaledVal} XP)</strong></span>
                         <div class="flex-buttons">
                             <button class="gold-btn" style="border-color:var(--text-dark); padding:0 8px;" onclick="openEditTaskModal('${q.id}')">✏️</button>
                             ${(q.type==='main'||q.type==='side') ? `<button class="gold-btn pt-btn" onclick="postponeSingleQuest('${q.id}')">PT</button>` : ''}
-                            <button class="gold-btn" onclick="animateCompleteQuest(this, '${q.id}')">COMPLETE</button>
+                            <button class="gold-btn" onclick="animateCompleteQuest(this, '${q.id}')">${isOptional ? '+ STACK' : 'COMPLETE'}</button>
                         </div>`;
                     lists[q.type].appendChild(li);
                 }
             });
         }
 
+        window.toggleEditCycleInput = function() {
+            document.getElementById("edit-custom-cycle-group").classList.toggle("hidden", document.getElementById("edit-task-frequency").value !== "cyclic");
+        };
+
         window.openEditTaskModal = function(id) {
             const q = quests.find(x => x.id == id); if(!q) return;
             document.getElementById("edit-task-id").value = q.id;
             document.getElementById("edit-task-title").value = q.title;
             document.getElementById("edit-task-type").value = q.type;
-            document.getElementById("edit-task-reward").value = q.reward;
+            
+            let freq = "one-time";
+            if (q.isDaily) freq = "daily";
+            else if (q.cycle) freq = "cyclic";
+            
+            document.getElementById("edit-task-frequency").value = freq;
+            document.getElementById("edit-task-cycle-days").value = q.cycle || 3;
+            toggleEditCycleInput();
+
             document.getElementById("edit-task-modal").classList.remove("modal-hidden");
             document.body.classList.add("modal-open");
         };
@@ -1265,31 +1302,49 @@
             if(q) {
                 q.title = document.getElementById("edit-task-title").value.trim() || q.title;
                 q.type = document.getElementById("edit-task-type").value;
-                q.reward = parseInt(document.getElementById("edit-task-reward").value) || q.reward;
+                
+                let freq = document.getElementById("edit-task-frequency").value;
+                if (freq === "daily") { q.isDaily = true; delete q.cycle; }
+                else if (freq === "one-time") { delete q.isDaily; delete q.cycle; }
+                else if (freq === "cyclic") { q.isDaily = false; q.cycle = parseInt(document.getElementById("edit-task-cycle-days").value) || 3; }
+                
                 saveData(); updateScreen();
             }
             closeEditTaskModal();
         };
 
-        window.animateCompleteQuest = function(btn, id) { btn.closest('.quest-item').classList.add('completed-decay'); setTimeout(() => completeQuestDirectly(id), 400); };
+        window.animateCompleteQuest = function(btn, id) { 
+            const q = quests.find(x => x.id == id);
+            if (q && (q.type === 'main' || q.type === 'side')) {
+                btn.closest('.quest-item').classList.add('completed-decay'); 
+                setTimeout(() => completeQuestDirectly(id), 400); 
+            } else {
+                completeQuestDirectly(id);
+            }
+        };
         
         function completeQuestDirectly(id) { 
             const q = quests.find(x=>x.id==id); if(!q) return; 
             triggerAudioFeedback('complete'); 
-            player.xp += q.reward; 
+            
+            let calculatedReward = getScaledQuestReward(q.type, player.level);
+            player.xp += calculatedReward; 
+            
             q.completed = true; q.wasPostponed = false; 
             if(q.cycle) q.lastDone = getLogicalDateStr(); 
-            logCompletedTaskToArchive(q.title, q.reward); 
+            
+            logCompletedTaskToArchive(q.title, calculatedReward); 
             calculateProgression(); saveData(); updateScreen(); 
         }
 
         window.undoQuest = function(id) { 
             const q = quests.find(x=>x.id==id); if(!q) return; 
+            let calculatedReward = getScaledQuestReward(q.type, player.level);
             if (q.wasPostponed) {
                 player.postponeTokens++; q.wasPostponed = false;
                 removeTaskFromArchiveLog(`[POSTPONED]: ${q.title}`); 
             } else {
-                player.xp = Math.max(0, player.xp - q.reward); 
+                player.xp = Math.max(0, player.xp - calculatedReward); 
                 removeTaskFromArchiveLog(q.title); 
             }
             q.completed = false; if(q.cycle) q.lastDone = null;
@@ -1313,23 +1368,26 @@
         window.closeTomorrowModal = function() { document.getElementById("tomorrow-modal").classList.add("modal-hidden"); document.body.classList.remove("modal-open"); };
         window.toggleTomorrowCycleInput = function() { document.getElementById("t-custom-cycle-group").classList.toggle("hidden", document.getElementById("t-quest-frequency").value !== "cyclic"); };
 
+        window.populateTomorrowForm = function(title, type, frequency, cycleDays) {
+            document.getElementById("t-quest-title").value = title;
+            document.getElementById("t-quest-type").value = type;
+            document.getElementById("t-quest-frequency").value = frequency;
+            toggleTomorrowCycleInput();
+            if (cycleDays > 0) { document.getElementById("t-quest-cycle-days").value = cycleDays; }
+        };
+
         function renderTomorrowSandboxList() {
             const c = document.getElementById("tomorrow-sandbox-list"); c.innerHTML = "";
             quests.forEach(q => {
-                c.innerHTML += `<div class="roster-card"><div><span style="font-weight:bold; ${q.scheduledForTomorrow ? 'color:var(--system-blue);' : ''}">${q.title}</span><div style="font-size:0.65rem; color:var(--text-gray);">${q.type.toUpperCase()} Quest (+${q.reward} Pt) ${q.scheduledForTomorrow?'[PLAN]':'[AUTO]'}</div></div><button onclick="removeQuestFromTomorrow('${q.id}')" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>`;
+                let fLabel = q.isDaily ? "Daily" : q.cycle ? `${q.cycle}d` : "Once";
+                c.innerHTML += `<div class="roster-card"><div><span style="font-weight:bold; ${q.scheduledForTomorrow ? 'color:var(--system-blue);' : ''}">${q.title}</span><div style="font-size:0.65rem; color:var(--text-gray);">${q.type.toUpperCase()} Quest (${fLabel}) ${q.scheduledForTomorrow?'[PLAN]':'[AUTO]'}</div></div><button onclick="removeQuestFromTomorrow('${q.id}')" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>`;
             });
         }
-
-        window.quickAddTomorrowTask = function(title, type, isDaily, cycleDays) {
-            let item = { id: Date.now()+Math.random(), type: type, title: title, reward: defaultRewards[type], completed: false, scheduledForTomorrow: true };
-            if (isDaily) item.isDaily = true; else if (cycleDays > 0) { item.cycle = cycleDays; item.lastDone = null; }
-            quests.push(item); saveData(); renderTomorrowSandboxList(); updateScreen();
-        };
 
         window.addCustomTomorrowQuest = function() {
             let t = document.getElementById("t-quest-title").value.trim(); let tp = document.getElementById("t-quest-type").value; let f = document.getElementById("t-quest-frequency").value;
             if(!t) return alert("Quest requires a name.");
-            let item = { id: Date.now(), type: tp, title: t, reward: defaultRewards[tp], completed: false, scheduledForTomorrow: true };
+            let item = { id: Date.now(), type: tp, title: t, completed: false, scheduledForTomorrow: true };
             if(f==="daily") item.isDaily = true; else if(f==="cyclic") { item.cycle = parseInt(document.getElementById("t-quest-cycle-days").value) || 3; item.lastDone = null; }
             quests.push(item); document.getElementById("t-quest-title").value = ""; saveData(); renderTomorrowSandboxList(); updateScreen();
         };
