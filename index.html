@@ -451,7 +451,7 @@
                     </div>
                     <div class="faq-section">
                         <h4>📜 OPTIONAL OBJECTIVES</h4>
-                        <p><strong>Errands:</strong> Single/cyclic chores (+75 XP).<br><strong>Bonus Quests:</strong> Wellness boosts (+15 XP).<br><br>Both are completely optional. They can be stacked repeatedly and carry zero penalties if missed.</p>
+                        <p><strong>Errands:</strong> Single/cyclic chores (+75 XP). *Optional.*<br><strong>Bonus Quests:</strong> Wellness boosts (+15 XP). *Optional.*<br><br>Both are completely optional. They can be stacked repeatedly and carry zero penalties if missed.</p>
                     </div>
                     <div class="faq-section">
                         <h4>⚡ EXECUTION UTILITIES</h4>
@@ -494,7 +494,7 @@
             <div id="setup-phase-tasks" class="hidden">
                 <h2 class="serif-title">ESTABLISH QUESTS</h2>
                 <hr class="thin-line">
-                <p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:16px;">These are your starting quests. Delete or add new ones below.</p>
+                <p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:16px;">These are your starting quests. Customize the names or add more below.</p>
                 
                 <div id="setup-tasks-list" class="list-containment-box"></div>
 
@@ -796,15 +796,22 @@
             quests.forEach(q => {
                 let fLabel = q.isDaily ? "(Daily)" : q.cycle ? `(${q.cycle}d)` : "(Once)";
                 c.innerHTML += `
-                <div class="setup-reward-row" style="background: var(--panel-dark); padding: 8px; border: 1px solid var(--border-silver); margin-bottom: 6px; align-items: center; justify-content: space-between;">
-                    <div style="display: flex; flex-direction: column;">
-                        <span style="font-size:0.65rem; color:var(--text-gray); font-weight:bold; text-transform:uppercase;">${q.type} ${fLabel}</span>
-                        <span style="font-size:0.85rem; color:#fff; margin-top:2px;">${q.title}</span>
+                <div class="setup-reward-row" style="background: var(--panel-dark); padding: 8px; border: 1px solid var(--border-silver); margin-bottom: 6px; align-items: flex-end;">
+                    <div style="flex: 1; display: flex; flex-direction: column; width: 100%;">
+                        <span style="font-size:0.6rem; color:var(--text-gray); margin-bottom:4px; font-weight:bold; text-transform:uppercase;">${q.type} ${fLabel}</span>
+                        <input type="text" value="${q.title}" onchange="updateSetupTask('${q.id}', 'title', this.value)" style="height:36px; padding:8px; width: 100%;">
                     </div>
-                    <button onclick="removeSetupTask('${q.id}')" style="background:none; border:none; color:var(--system-red); font-size:1.2rem; cursor:pointer;">🗑️</button>
+                    <button onclick="removeSetupTask('${q.id}')" style="background:none; border:none; color:var(--system-red); font-size:1.2rem; cursor:pointer; margin-left:8px; padding-bottom:4px;">🗑️</button>
                 </div>`;
             });
         }
+
+        window.updateSetupTask = function(id, field, val) {
+            let q = quests.find(x => x.id == id);
+            if(q) {
+                if(field === 'title') q.title = val;
+            }
+        };
 
         window.toggleSetupCycleInput = function() { document.getElementById("setup-t-custom-cycle-group").classList.toggle("hidden", document.getElementById("setup-t-quest-frequency").value !== "cyclic"); };
         
@@ -988,67 +995,6 @@
             }
         };
 
-        function compressImage(base64Str, maxWidth, maxHeight, callback) {
-            let img = new Image();
-            img.src = base64Str;
-            img.onload = () => {
-                let canvas = document.createElement('canvas');
-                let width = img.width; let height = img.height;
-                if (width > height) { if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; } } 
-                else { if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; } }
-                canvas.width = width; canvas.height = height;
-                let ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-                callback(canvas.toDataURL('image/jpeg', 0.6));
-            };
-        }
-
-        window.openAvatarModal = function() { 
-            document.getElementById("avatar-edit-modal").classList.remove("modal-hidden"); 
-            document.body.classList.add("modal-open");
-        };
-        window.closeAvatarModal = function() { 
-            document.getElementById("avatar-edit-modal").classList.add("modal-hidden"); 
-            document.body.classList.remove("modal-open");
-        };
-        window.removeDashboardPhoto = function() { 
-            if(player) {
-                player.avatarDataUrl = null; 
-                document.getElementById("avatar-img").src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111'/><text x='50%' y='55%' font-family='sans-serif' font-size='10' fill='%23555' text-anchor='middle'>IMG</text></svg>";
-                saveData();
-            }
-        };
-
-        window.triggerSetupPhotoUpload = function() { document.getElementById("setup-file-input").click(); };
-        window.processSetupPhoto = function(input) { 
-            if (input.files && input.files[0]) { 
-                const r = new FileReader(); 
-                r.onload = e => { 
-                    compressImage(e.target.result, 250, 250, (compressedData) => {
-                        temporarySetupPhotoData = compressedData; 
-                        const msgNode = document.getElementById("setup-photo-preview-msg");
-                        if(msgNode) msgNode.innerText = "Photo optimized successfully!"; 
-                    });
-                }; 
-                r.readAsDataURL(input.files[0]); 
-            } 
-        };
-        
-        window.triggerDashboardPhotoUpload = function() { document.getElementById("dashboard-file-input").click(); };
-        window.processDashboardPhoto = function(input) { 
-            if (input.files && input.files[0]) { 
-                const r = new FileReader(); 
-                r.onload = e => { 
-                    compressImage(e.target.result, 250, 250, (compressedData) => {
-                        player.avatarDataUrl = compressedData; 
-                        document.getElementById("avatar-img").src = player.avatarDataUrl; 
-                        saveData(); 
-                    });
-                }; 
-                r.readAsDataURL(input.files[0]); 
-            } 
-        };
-
         function checkDoomsdayTimelineExpiration() {
             if (!player) return;
             const diff = parseLogicalDate(player.bossDeadline).setHours(0,0,0,0) - parseLogicalDate(getLogicalDateStr()).setHours(0,0,0,0);
@@ -1136,7 +1082,6 @@
             const todayStr = getLogicalDateStr(); if (player.lastLoginDate === todayStr) return;
             quests.forEach(q => { if (q.scheduledForTomorrow) q.scheduledForTomorrow = false; });
             
-            // Filter and purge one-time optionals that passed their lifecycle window
             quests = quests.filter(q => {
                 if (q.completed && (q.type === 'errand' || q.type === 'bonus') && !q.isDaily && !q.cycle) {
                     return false;
@@ -1251,7 +1196,6 @@
                 let f = q.isDaily ? "🔄 " : q.cycle ? `⏳ ` : "⚡ ";
                 let scaledVal = getScaledQuestReward(q.type, player.level);
                 
-                // Multi-instance execution stacking for optional tasks
                 let isOptional = (q.type === 'errand' || q.type === 'bonus');
 
                 if (q.completed && !isOptional) {
