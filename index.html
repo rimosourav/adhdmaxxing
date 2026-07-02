@@ -27,6 +27,12 @@
             align-items: flex-start; min-height: 100vh; box-sizing: border-box;
         }
 
+        body.modal-open {
+            overflow: hidden !important;
+            position: fixed;
+            width: 100%;
+        }
+
         .serif-title { font-family: "Georgia", serif; font-weight: 400; letter-spacing: 0.08em; margin: 0 0 8px 0; text-transform: uppercase; font-size: 1.25rem; text-align: center; }
         .serif-sub { font-family: "Georgia", serif; font-style: italic; font-weight: 400; color: var(--text-gray); margin: 16px 0 8px 0; font-size: 0.9rem; text-align: center; }
         .thin-line { border: 0; height: 1px; background: var(--border-silver); margin: 12px 0; }
@@ -52,12 +58,14 @@
             border: 2px solid var(--text-dark); position: relative;
             display: flex; justify-content: center; align-items: center; margin-bottom: 14px;
             cursor: pointer;
+            transition: var(--transition);
         }
         #avatar-img { width: calc(100% - 4px); height: calc(100% - 4px); border-radius: 50%; object-fit: cover; filter: grayscale(100%); }
         #avatar-rank-title {
             font-size: 0.55rem; font-weight: 900; letter-spacing: 0.1em;
             position: absolute; bottom: -6px; z-index: 5; color: var(--text-gray);
             background: #000; border: 1px solid var(--border-silver); padding: 1px 6px; text-transform: uppercase;
+            white-space: nowrap;
         }
 
         .serif-name { font-family: "Georgia", serif; font-weight: 400; margin: 0; font-size: 1.6rem; letter-spacing: 0.05em; }
@@ -65,16 +73,22 @@
         #daily-directive-msg { font-family: "Georgia", serif; font-style: italic; font-size: 0.85rem; border-left: 2px solid var(--system-blue); padding-left: 10px; margin: 12px 0; color: var(--text-pure); text-align: left; line-height: 1.3; }
         #dashboard-milestone-tracker { font-size: 0.75rem; font-weight: bold; color: var(--system-gold); margin: 10px 0 14px 0; text-align: left; width: 100%; word-break: break-word; }
 
+        /* Progress Bar Styling */
+        .p-bar-container { width: 100%; background: #111; border: 1px solid var(--border-silver); height: 6px; margin: 6px 0 12px 0; border-radius: 3px; overflow: hidden; }
+        .p-bar-fill { height: 100%; background: var(--system-blue); width: 0%; transition: width 0.4s ease; }
+        .p-bar-fill.gold-fill { background: var(--system-gold); }
+
         .economy-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 14px; background: #000; border: 1px solid var(--border-silver); padding: 8px; width: 100%; box-sizing: border-box; }
         .eco-stat { display: flex; flex-direction: column; align-items: center; }
         .eco-stat span { font-size: 0.55rem; font-weight: bold; color: var(--text-gray); margin-bottom: 2px; }
         .eco-stat strong { font-size: 0.9rem; color: var(--text-pure); }
         .alert-text strong { color: var(--system-red); }
 
-        body.rank-novice #instagram-avatar-circle { border-color: var(--text-dark); }
-        body.rank-awakened #instagram-avatar-circle { border-color: var(--system-blue); box-shadow: 0 0 12px rgba(0, 221, 255, 0.2); }
-        body.rank-elite #instagram-avatar-circle { border-color: var(--system-purple); box-shadow: 0 0 16px rgba(175, 82, 222, 0.25); }
-        body.rank-s-class #instagram-avatar-circle { border-color: var(--system-gold); box-shadow: 0 0 24px rgba(255, 204, 0, 0.35); }
+        /* Color Graded Ranks Architecture Styling */
+        body.rank-novice #instagram-avatar-circle { border-color: var(--text-dark); box-shadow: none; }
+        body.rank-awakened #instagram-avatar-circle { border-color: var(--system-blue); box-shadow: 0 0 14px rgba(0, 221, 255, 0.4); }
+        body.rank-veteran #instagram-avatar-circle { border-color: var(--system-purple); box-shadow: 0 0 14px rgba(175, 82, 222, 0.4); }
+        body.rank-elite #instagram-avatar-circle { border-color: var(--system-gold); box-shadow: 0 0 18px rgba(255, 204, 0, 0.5); }
 
         /* Quest Lists */
         .quest-category { margin-bottom: 18px; }
@@ -146,28 +160,34 @@
         .gold-btn:hover { background: var(--text-pure); color: #000; }
         .pt-btn { border-color: var(--system-gold) !important; color: var(--system-gold) !important; }
 
-        /* Perfect Center Alignment for 40-40-20 Navigation */
+        /* Perfect Center Alignment for 50-50 Simplified Balance */
         .nav-row {
             display: flex; justify-content: center; align-items: center; gap: 8px;
-            width: 100%; max-width: 320px; margin: 24px auto 0 auto; box-sizing: border-box;
+            width: 100%; max-width: 400px; margin: 24px auto 0 auto; box-sizing: border-box;
         }
-        .nav-row button { height: 46px; padding: 0; }
+        .nav-row button { height: 46px; }
         .centered-btn-wrapper { display: flex; justify-content: center; width: 100%; max-width: 320px; margin: 18px auto 0 auto; gap: 8px; }
         
         .modal-header-row { display: flex; justify-content: space-between; align-items: center; }
         .close-x { background: transparent; border: none; color: var(--text-gray); font-size: 1.5rem; cursor: pointer; padding: 0; line-height: 1; }
 
-        /* Modals */
-        #quest-modal, #settings-modal, #tutorial-tasks-modal, #tutorial-system-modal, #night-shift-modal, #tomorrow-modal, #edit-task-modal, #avatar-edit-modal {
+        /* Modals Architecture with Isolated Box Scroll */
+        #settings-modal, #tutorial-tasks-modal, #tutorial-system-modal, #night-shift-modal, #tomorrow-modal, #edit-task-modal, #avatar-edit-modal, #doomsday-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.95); z-index: 9999;
+            background: rgba(0, 0, 0, 0.96); z-index: 9999;
             display: flex; justify-content: center; align-items: flex-start;
             padding: 40px 12px; box-sizing: border-box; overflow-y: auto;
         }
         
         .modal-content, .settings-modal-content, .setup-content {
             background: var(--bg-black); border: 1px solid var(--border-silver);
-            padding: 24px; width: 100%; max-width: 440px; box-sizing: border-box; margin: 0 auto;
+            padding: 24px; width: 100%; max-width: 460px; box-sizing: border-box; margin: 0 auto;
+        }
+
+        /* Scroll Isolation Containment Panel */
+        .isolated-scroll-panel {
+            max-height: 280px; overflow-y: auto; border: 1px solid var(--border-silver);
+            padding: 10px; background: #020203; margin-bottom: 12px;
         }
 
         .faq-section { background: var(--panel-dark); border: 1px solid var(--border-silver); padding: 12px; margin-bottom: 10px; }
@@ -178,8 +198,8 @@
         .slide-title { font-size: 0.75rem; color: var(--system-gold); margin: 0 0 8px 0; }
         .slide-text { font-size: 0.75rem; color: #fff; line-height: 1.4; margin: 0; }
 
-        .settings-tabs { display: flex; justify-content: center; max-width: 320px; margin: 14px auto; gap: 4px; }
-        .tab-btn { flex: 1; height: 38px; display: flex; justify-content: center; align-items: center; background: transparent; border: 1px solid var(--border-silver); color: var(--text-gray); cursor: pointer; font-size: 0.7rem; text-transform: uppercase; }
+        .settings-tabs { display: grid; grid-template-columns: repeat(4, 1fr); max-width: 100%; margin: 14px auto; gap: 4px; }
+        .tab-btn { height: 38px; display: flex; justify-content: center; align-items: center; background: transparent; border: 1px solid var(--border-silver); color: var(--text-gray); cursor: pointer; font-size: 0.65rem; text-transform: uppercase; padding: 0 2px; text-align: center; }
         .tab-btn.active { background: var(--panel-dark); border-color: var(--text-pure); color: var(--text-pure); font-weight: bold; }
 
         .roster-card, .archive-card { background: var(--panel-dark); border: 1px solid var(--border-silver); padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; box-sizing: border-box; }
@@ -187,6 +207,34 @@
     </style>
 </head>
 <body>
+
+    <div id="doomsday-modal" class="modal-hidden">
+        <div class="modal-content animate-fade-in">
+            <h2 class="serif-title" id="dd-modal-title">⏳ TIMELINE COLLAPSED</h2>
+            <p style="font-size:0.75rem; color:var(--text-gray); text-align:center; margin-top:0;" id="dd-modal-desc">Your deadline has arrived. Calibrate your next major real-world chapter block.</p>
+            <hr class="thin-line">
+            
+            <div class="form-group">
+                <label>New Target Deadline:</label>
+                <input type="date" id="dd-new-deadline">
+            </div>
+
+            <div class="reward-mandate-box">
+                <h4 style="margin:0 0 10px 0; font-size:0.8rem; color:#fff; text-align:center;">🏆 CHAPTER REWARD TRACK</h4>
+                <p style="font-size: 0.65rem; color:var(--text-gray); text-align:center; margin-top:0;">Input at least 4 new rewards arranged from top (easiest) to bottom (ultimate prize).</p>
+                
+                <div class="setup-reward-row">
+                    <input type="text" id="dd-brain-dump-input" placeholder="Type new reward treat...">
+                    <button class="primary-btn btn-text" style="flex:1;" onclick="addRewardToDoomsdayDump()">ADD</button>
+                </div>
+                <div id="dd-rewards-wrapper" class="isolated-scroll-panel" style="margin-top:12px;"></div>
+            </div>
+            
+            <div class="centered-btn-wrapper" id="dd-submit-btn-wrapper">
+                <button class="primary-btn btn-text" onclick="finalizeDoomsdayTimelineReset()">Calibrate New Arc</button>
+            </div>
+        </div>
+    </div>
 
     <div id="tutorial-tasks-modal" class="modal-hidden">
         <div class="modal-content animate-fade-in">
@@ -234,31 +282,6 @@
             <div class="centered-btn-wrapper">
                 <button id="slide-sys-prev-btn" class="secondary-btn btn-text" onclick="changeSystemSlide(-1)" disabled>Previous</button>
                 <button id="slide-sys-next-btn" class="primary-btn btn-text" onclick="changeSystemSlide(1)">Next</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="help-modal" class="modal-hidden">
-        <div class="modal-content animate-slide-up">
-            <div class="modal-header-row">
-                <h3 class="serif-title" style="margin:0;">SYSTEM MANUAL</h3>
-                <button class="close-x" onclick="closeHelpManualModal()">&times;</button>
-            </div>
-            <hr class="thin-line">
-            
-            <button class="secondary-btn btn-text" style="width:100%; margin-bottom:15px; border-color:var(--system-blue); color:var(--system-blue);" onclick="replayTutorialSlideshowFromManual()">▶️ Replay Tutorial Guide</button>
-            
-            <div class="faq-section">
-                <h4>💡 POSTPONE (PT) BUTTON</h4>
-                <p>Next to mandatory quests is a yellow [PT] button. Having a terrible day? Click it to safely skip the quest. You avoid the penalty loss, but get 0 XP.</p>
-            </div>
-            <div class="faq-section">
-                <h4>🔥 EARNING TOKENS</h4>
-                <p>You start with 3 PT tokens. Complete all mandatory quests for 3 consecutive days to earn a "Perfect Streak" and get +1 free token.</p>
-            </div>
-            <div class="faq-section">
-                <h4>❄️ REST / SICK DAY MODE</h4>
-                <p>Turn this on in the Control Panel if you get sick or go on holiday. It freezes all penalties completely until you turn it off.</p>
             </div>
         </div>
     </div>
@@ -340,7 +363,7 @@
             </div>
 
             <h4 class="serif-sub">UPCOMING QUESTS (AUTO-GENERATED)</h4>
-            <div id="tomorrow-sandbox-list"></div>
+            <div id="tomorrow-sandbox-list" class="isolated-scroll-panel"></div>
         </div>
     </div>
 
@@ -352,9 +375,10 @@
             </div>
             
             <div class="settings-tabs">
-                <button id="tab-btn-config" class="tab-btn active" onclick="switchSettingsTab('config')">Settings</button>
-                <button id="tab-btn-roster" class="tab-btn" onclick="switchSettingsTab('roster')">Milestones</button>
-                <button id="tab-btn-archive" class="tab-btn" onclick="switchSettingsTab('archive')">History</button>
+                <button id="tab-btn-config" class="tab-btn active" onclick="switchSettingsTab('config')">Config</button>
+                <button id="tab-btn-roster" class="tab-btn" onclick="switchSettingsTab('roster')">Loot</button>
+                <button id="tab-btn-archive" class="tab-btn" onclick="switchSettingsTab('archive')">Logs</button>
+                <button id="tab-btn-manual" class="tab-btn" onclick="switchSettingsTab('manual')">Manual</button>
             </div>
 
             <div id="tab-content-config" class="tab-pane">
@@ -380,33 +404,50 @@
                 </div>
                 <div class="centered-btn-wrapper" style="flex-direction:column; align-items:center;">
                     <button class="primary-btn btn-text" onclick="saveSettings()">Save Settings</button>
-                    <button class="secondary-btn btn-text" style="color:var(--system-red); border-color:#3a1c1c;" onclick="triggerSystemWipe()">⚠️ Factory Reset App</button>
+                    <button class="secondary-btn btn-text" style="color:var(--system-red); border-color:#3a1c1c;" onclick="triggerSystemWipe()">⚠️ Factory Reset Profile</button>
                 </div>
             </div>
 
             <div id="tab-content-roster" class="tab-pane hidden">
                 <div class="reward-creation-box">
-                    <h5 style="margin: 0 0 10px 0; color:#fff;">+ ADD REWARD</h5>
-                    <div class="suggestion-box">
-                        <div class="chip" onclick="document.getElementById('new-reward-name').value='Cinema Ticket';">+ Cinema</div>
-                        <div class="chip" onclick="document.getElementById('new-reward-name').value='Fancy Dinner';">+ Dinner</div>
-                        <div class="chip" onclick="document.getElementById('new-reward-name').value='Flight Tickets';">+ Flight Tickets</div>
-                    </div>
-                    <input type="text" id="new-reward-name" placeholder="Item Name...">
+                    <h5 style="margin: 0 0 10px 0; color:#fff;">+ INJECT DYNAMIC MID-ARC LOOT</h5>
+                    <input type="text" id="new-reward-name" placeholder="Reward name...">
                     <div class="centered-btn-wrapper" style="margin-top:4px;">
-                        <button class="secondary-btn btn-text" onclick="addCustomRewardShop()">Save Reward</button>
+                        <button class="secondary-btn btn-text" onclick="addCustomRewardShop()">Inject Reward</button>
                     </div>
                 </div>
-                <h4 class="serif-sub">YOUR TARGETS</h4>
-                <div id="milestone-roster-list"></div>
+                <h4 class="serif-sub">YOUR TIMELINE VAULT</h4>
+                <div id="milestone-roster-list" class="isolated-scroll-panel"></div>
                 <div class="centered-btn-wrapper">
-                    <button class="secondary-btn btn-text" style="color:var(--system-red); border-color:#3a1c1c;" onclick="purgeAllRewards()">💥 Purge All Rewards</button>
+                    <button class="secondary-btn btn-text" style="color:var(--system-red); border-color:#3a1c1c;" onclick="purgeAllRewards()">💥 Purge All Loot</button>
                 </div>
             </div>
 
             <div id="tab-content-archive" class="tab-pane hidden">
-                <h4 class="serif-sub">COMPLETED QUESTS LOG</h4>
-                <div id="history-archive-list"></div>
+                <h4 class="serif-sub">HISTORICAL ARCHIVE ARCHITECTURE</h4>
+                <div id="history-archive-list" class="isolated-scroll-panel"></div>
+            </div>
+
+            <div id="tab-content-manual" class="tab-pane hidden">
+                <h4 class="serif-sub" style="margin-top:0;">SYSTEM HANDBOOK</h4>
+                <div class="isolated-scroll-panel" style="max-height: 330px;">
+                    <div class="faq-section">
+                        <h4>🔥 QUEST CATEGORY SPECS</h4>
+                        <p><strong>Main Quests:</strong> Heavy blocks (+50 XP). Mandatory.<br><strong>Side Quests:</strong> Structural core habits (+20 XP). Mandatory.<br><br>Both carry heavy rollover penalties if left unfinished before your sleep reset anchor.</p>
+                    </div>
+                    <div class="faq-section">
+                        <h4>📜 OPTIONAL OBJECTIVES</h4>
+                        <p><strong>Errands:</strong> Single/cyclic chores (+75 XP).<br><strong>Bonus Quests:</strong> Wellness boosts (+15 XP).<br><br>Both are completely optional. They carry zero penalty metrics if missed.</p>
+                    </div>
+                    <div class="faq-section">
+                        <h4>⚡ EXECUTION UTILITIES</h4>
+                        <p><strong>[COMPLETE]:</strong> Claims full quest baseline rewards.<br><strong>[PT]:</strong> Safely skips a mandatory quest using 1 Postpone token. Yields 0 XP but nullifies penalties.<br><strong>[UNDO]:</strong> Rolls back state and dynamically handles token/XP structural values.</p>
+                    </div>
+                    <div class="faq-section">
+                        <h4>🛡️ PYRAMID PRESTIGE PROGRESSION</h4>
+                        <p>Survive complete Doomsday chapters to scale up your lifetime cycle profile tier badge and aura colors:<br><br><strong>Novice I-IV:</strong> Cycles 1-4 (Gunmetal)<br><strong>Awakened I-III:</strong> Cycles 5-7 (Neon Blue)<br><strong>Veteran I-II:</strong> Cycles 8-9 (Amethyst Purple)<br><strong>Elite:</strong> Cycle 10+ (Radiant Gold Master)</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -441,7 +482,7 @@
                 <hr class="thin-line">
                 <p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:16px;">These are your starting quests. Delete or add new ones below.</p>
                 
-                <div id="setup-tasks-list" style="margin-bottom:20px;"></div>
+                <div id="setup-tasks-list" class="isolated-scroll-panel" style="max-height: 240px;"></div>
 
                 <div class="reward-creation-box">
                     <h5 style="margin: 0 0 10px 0; color:#fff;">+ QUICK ADD PRESETS</h5>
@@ -452,17 +493,15 @@
                         <div class="chip" onclick="quickAddSetupTask('Read 10 Pages', 'side', true, 0)">+ Read <span class="chip-meta">(Daily)</span></div>
                         <div class="chip" onclick="quickAddSetupTask('Water Plants', 'errand', false, 3)">+ Water Plants <span class="chip-meta">(3d)</span></div>
                         <div class="chip" onclick="quickAddSetupTask('Pay Bills', 'errand', false, 30)">+ Pay Bills <span class="chip-meta">(30d)</span></div>
-                        <div class="chip" onclick="quickAddSetupTask('Protein Shake', 'bonus', true, 0)">+ Protein <span class="chip-meta">(Daily)</span></div>
-                        <div class="chip" onclick="quickAddSetupTask('Take Meds', 'bonus', true, 0)">+ Take Meds <span class="chip-meta">(Daily)</span></div>
                     </div>
 
                     <h5 style="margin: 15px 0 10px 0; color:#fff; border-top: 1px dashed var(--border-silver); padding-top:15px;">+ CREATE CUSTOM QUEST</h5>
                     <input type="text" id="setup-t-quest-title" placeholder="Quest name...">
                     <select id="setup-t-quest-type" style="margin-bottom:8px;">
-                        <option value="main">🔥 Main Quest (+50 XP)</option>
-                        <option value="side" selected>🛠️ Side Quest (+20 XP)</option>
-                        <option value="errand">📜 Errand (+75 XP)</option>
-                        <option value="bonus">⭐ Bonus Quest (+15 XP)</option>
+                        <option value="main">🔥 Main Quest</option>
+                        <option value="side" selected>🛠️ Side Quest</option>
+                        <option value="errand">📜 Errand</option>
+                        <option value="bonus">⭐ Bonus Quest</option>
                     </select>
                     <select id="setup-t-quest-frequency" onchange="toggleSetupCycleInput()" style="margin-bottom:8px;">
                         <option value="daily" selected>🔁 Daily Habit</option>
@@ -503,15 +542,14 @@
                 
                 <div class="reward-mandate-box">
                     <h4 style="margin:0 0 10px 0; font-size:0.8rem; color:#fff; text-align:center;">🏆 REWARD BRAIN-DUMP</h4>
-                    <p style="font-size: 0.65rem; color:var(--text-gray); text-align:center; margin-top:0;">List at least <strong>4 rewards</strong>. Tap any item to edit it.<br>Top = Easiest Treat, Bottom = Ultimate Prize.</p>
+                    <p style="font-size: 0.65rem; color:var(--text-gray); text-align:center; margin-top:0;">List at least <strong>4 rewards</strong>. Tap items to edit text.<br>Top = Easiest Treat, Bottom = Ultimate Prize.</p>
                     
                     <div class="setup-reward-row">
                         <input type="text" id="wizard-brain-dump-input" placeholder="Type a new reward...">
                         <button class="primary-btn btn-text" style="flex:1;" onclick="addRewardToBrainDump()">ADD</button>
                     </div>
 
-                    <div id="wizard-rewards-wrapper" style="margin-top:12px;">
-                        </div>
+                    <div id="wizard-rewards-wrapper" class="isolated-scroll-panel" style="max-height:180px; margin-top:12px;"></div>
                 </div>
                 <div class="centered-btn-wrapper"><button class="primary-btn btn-text" onclick="finalizeSetupWizard()">Begin Quest</button></div>
             </div>
@@ -525,8 +563,8 @@
                 <h3 class="serif-title" style="margin:0; width: 100%;">PROFILE PHOTO</h3>
             </div>
             <hr class="thin-line" style="margin-bottom: 16px;">
-            <button class="primary-btn btn-text" style="margin-bottom: 12px; border-color: var(--system-blue); color: var(--system-blue); background: transparent;" onclick="triggerDashboardPhotoUpload(); closeAvatarModal();">📷 Upload New Photo</button>
-            <button class="secondary-btn btn-text" style="margin-bottom: 12px; color: var(--system-red); border-color: #3a1c1c;" onclick="removeDashboardPhoto(); closeAvatarModal();">🗑️ Remove Current Photo</button>
+            <button class="primary-btn btn-text" style="margin-bottom: 12px; border-color: var(--system-blue); color: var(--system-blue); background: transparent;" onclick="triggerDashboardPhotoUpload(); closeAvatarModal();">📷 New Photo</button>
+            <button class="secondary-btn btn-text" style="margin-bottom: 12px; color: var(--system-red); border-color: #3a1c1c;" onclick="removeDashboardPhoto(); closeAvatarModal();">🗑️ Remove Photo</button>
             <button class="secondary-btn btn-text" onclick="closeAvatarModal()">Cancel</button>
         </div>
     </div>
@@ -540,15 +578,17 @@
             <div id="instagram-avatar-circle" onclick="openAvatarModal()">
                 <div id="avatar-aura-glow"></div>
                 <img id="avatar-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111'/><text x='50%' y='55%' font-family='sans-serif' font-size='10' fill='%23555' text-anchor='middle'>IMG</text></svg>">
-                <div id="avatar-rank-title">NOVICE</div>
+                <div id="avatar-rank-title">NOVICE I</div>
             </div>
             <input type="file" id="dashboard-file-input" class="hidden" accept="image/*" onchange="processDashboardPhoto(this)">
             
             <div id="player-stats">
                 <h1 class="serif-name" id="username">---</h1>
                 <p class="meta-text">Rank: <span id="rank-display" style="font-weight:bold;">---</span> | Level: <span id="level-display">-</span> | Streak: <span id="streak-display">0</span>d</p>
-                <div style="font-size:0.65rem; color:var(--text-gray); margin-top:-8px; margin-bottom:12px;">XP to next level: <span id="xp-next-display">0</span></div>
+                <div style="font-size:0.65rem; color:var(--text-gray); margin-top:-8px; margin-bottom:4px;">XP inside cycle tier: <span id="xp-current-display">0</span> / <span id="xp-needed-display">0</span></div>
                 
+                <div class="p-bar-container"><div id="dashboard-progress-fill" class="p-bar-fill"></div></div>
+
                 <div id="daily-directive-msg">Welcome! Tap 'Tomorrow' at the bottom to plan out your upcoming routines.</div>
                 <div id="dashboard-milestone-tracker">Next Target: Loading...</div>
 
@@ -569,9 +609,8 @@
         </div>
 
         <div class="nav-row" id="action-bar">
-            <button id="add-tomorrow-btn" class="primary-btn btn-text" style="flex: 4;" onclick="openTomorrowModal()">🗓️ Tomorrow</button>
-            <button id="settings-btn" class="secondary-btn btn-text" style="flex: 4;" onclick="openSettingsModal()">⚙️ Settings</button>
-            <button id="help-btn" class="secondary-btn btn-text" style="flex: 2; font-size:1.1rem;" onclick="openHelpManualModal()">?</button>
+            <button id="add-tomorrow-btn" class="primary-btn btn-text" style="flex: 1;" onclick="openTomorrowModal()">🗓️ Tomorrow</button>
+            <button id="settings-btn" class="secondary-btn btn-text" style="flex: 1;" onclick="openSettingsModal()">⚙️ Control Panel</button>
         </div>
     </div>
 
@@ -579,18 +618,11 @@
         let player = null; let quests = []; let dayLogs = {}; 
         let taskSlideIndex = 0; let systemSlideIndex = 0; 
         let temporarySetupPhotoData = null;
-        
-        // Updated Default Pre-filled Rewards List
-        let setupBrainDumpRewards = [
-            "Buy Clothes and Serums", 
-            "Trolley for the weekend trip", 
-            "GTA6", 
-            "New Tattoo"
-        ];
+        let setupBrainDumpRewards = ["Buy Clothes and Serums", "Trolley for the weekend trip", "Tattoo research", "Flight Tickets"];
 
         const defaultRewards = { main: 50, side: 20, errand: 75, bonus: 15 };
 
-        // Exponential XP RPG Curve logic
+        // Core RPG Exponential Progression Scaling Math Engine
         function getRequiredXpForLevel(level) {
             if (level <= 1) return 0;
             return Math.floor(100 * Math.pow(level - 1, 1.5));
@@ -600,6 +632,21 @@
             let level = 1;
             while (xp >= getRequiredXpForLevel(level + 1)) { level++; }
             return level;
+        }
+
+        // Pyramid Rank Logic Structure (9 Cycles to Complete)
+        function resolveRankAndAuraTitle(cycleNum) {
+            if (cycleNum >= 10) return { title: "ELITE", className: "rank-elite" };
+            if (cycleNum >= 8)  return { title: `VETERAN ${romanize(cycleNum - 7)}`, className: "rank-veteran" };
+            if (cycleNum >= 5)  return { title: `AWAKENED ${romanize(cycleNum - 4)}`, className: "rank-awakened" };
+            return { title: `NOVICE ${romanize(cycleNum)}`, className: "rank-novice" };
+        }
+
+        function romanize(num) {
+            const lut = {M:1000,CM:900,D:500,CD:400,C:100,XC:90,L:50,XL:40,X:10,IX:9,V:5,IV:4,I:1};
+            let res = '';
+            for (let i in lut) { while (num >= lut[i]) { res += i; num -= lut[i]; } }
+            return res;
         }
 
         const systemDirectives = [
@@ -652,9 +699,7 @@
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
             const datePicker = document.getElementById("setup-deadline");
-            if (datePicker) {
-                datePicker.value = `${year}-${month}-${day}`;
-            }
+            if (datePicker) { datePicker.value = `${year}-${month}-${day}`; }
         }
 
         function loadData() {
@@ -671,6 +716,7 @@
                 
                 checkTimeLapse(); calculateProgression(); updateScreen(); rotateDirectiveMessage();
                 if (!player.isDay0Buffer) checkNightShiftConditions();
+                checkDoomsdayTimelineExpiration();
             } else {
                 document.getElementById("setup-screen").classList.remove("hidden");
                 quests = [
@@ -683,13 +729,13 @@
             }
         }
 
-        // --- NEW WIZARD FLOW ---
-
+        // --- STEP WIZARD VALIDATION FLOWS ---
         window.advanceToTaskDemo = function() {
             if (!document.getElementById("setup-name").value.trim()) return alert("Provide a Player Name.");
             document.getElementById("setup-screen").classList.add("hidden");
             taskSlideIndex = 0; renderTaskSlide();
             document.getElementById("tutorial-tasks-modal").classList.remove("modal-hidden");
+            document.body.classList.add("modal-open");
         };
 
         window.changeTaskSlide = function(direction) {
@@ -697,6 +743,7 @@
             taskSlideIndex += direction;
             if (taskSlideIndex >= slides.length) {
                 document.getElementById("tutorial-tasks-modal").classList.add("modal-hidden");
+                document.body.classList.remove("modal-open");
                 document.getElementById("setup-screen").classList.remove("hidden");
                 document.getElementById("setup-phase-1").classList.add("hidden");
                 document.getElementById("setup-phase-tasks").classList.remove("hidden");
@@ -763,6 +810,7 @@
             document.getElementById("setup-screen").classList.add("hidden");
             systemSlideIndex = 0; renderSystemSlide();
             document.getElementById("tutorial-system-modal").classList.remove("modal-hidden");
+            document.body.classList.add("modal-open");
         };
 
         window.changeSystemSlide = function(direction) {
@@ -770,6 +818,7 @@
             systemSlideIndex += direction;
             if (systemSlideIndex >= slides.length) {
                 document.getElementById("tutorial-system-modal").classList.add("modal-hidden");
+                document.body.classList.remove("modal-open");
                 document.getElementById("setup-screen").classList.remove("hidden");
                 document.getElementById("setup-phase-tasks").classList.add("hidden");
                 document.getElementById("setup-phase-2").classList.remove("hidden");
@@ -787,7 +836,7 @@
             document.getElementById("slide-sys-next-btn").innerText = (systemSlideIndex === slides.length - 1) ? "Calibrate" : "Next";
         }
 
-        // --- REWARD BRAIN DUMP & SORTING LOGIC ---
+        // --- REWARD BRAIN DUMP TAP-TO-EDIT & SORT ARCHITECTURE ---
         window.addRewardToBrainDump = function() {
             const input = document.getElementById("wizard-brain-dump-input");
             const val = input.value.trim();
@@ -800,11 +849,7 @@
 
         window.updateBrainDumpReward = function(index, val) {
             val = val.trim();
-            if(val === "") {
-                deleteBrainDumpReward(index);
-            } else {
-                setupBrainDumpRewards[index] = val;
-            }
+            if(val === "") { deleteBrainDumpReward(index); } else { setupBrainDumpRewards[index] = val; }
         };
 
         window.moveRewardUp = function(index) {
@@ -847,27 +892,50 @@
             });
         }
 
+        // DYNAMIC HYPOTHETICAL YIELD ALGORITHM LOGIC
+        function calibrateRewardMilestonesFromYieldPool(targetDeadline, startingXp, rewardList) {
+            const today = parseLogicalDate(getLogicalDateStr());
+            const targetDate = parseLogicalDate(targetDeadline);
+            const daysDiff = Math.max(1, Math.ceil((targetDate.setHours(0,0,0,0) - today.setHours(0,0,0,0)) / 86400000));
+            
+            // Sum all active mandatory daily tasks to calculate predictable baseline output
+            let estimatedDailyYield = quests.reduce((sum, q) => {
+                if (q.type === 'main' || q.type === 'side') { return sum + (q.reward || 0); }
+                return sum;
+            }, 0);
+            if (estimatedDailyYield <= 0) estimatedDailyYield = 70; // Fallback anchor protection
+            
+            const maxYieldPool = daysDiff * estimatedDailyYield;
+            let compiledRewards = [];
+            const len = rewardList.length;
+
+            rewardList.forEach((rName, i) => {
+                // Exponential spacing coefficient math across the achievable timeline pool
+                let progressFactor = (i + 1) / len;
+                let exponentialOffset = Math.floor(maxYieldPool * Math.pow(progressFactor, 1.5));
+                let targetXpBoundary = startingXp + exponentialOffset;
+                let targetUnlockLevel = calculateCurrentLevel(targetXpBoundary);
+
+                compiledRewards.push({
+                    id: Date.now() + i + Math.random(),
+                    name: rName,
+                    targetXp: targetXpBoundary,
+                    unlockLevel: targetUnlockLevel,
+                    claimed: false
+                });
+            });
+            return compiledRewards;
+        }
+
         window.finalizeSetupWizard = function() {
             try {
                 const nameInput = document.getElementById("setup-name").value.trim();
                 if (!nameInput) return alert("Please enter a Player Name.");
 
-                // Clear out any accidental empty strings
                 setupBrainDumpRewards = setupBrainDumpRewards.filter(r => r.trim() !== "");
-
-                // The Strict 4-Reward Guardrail
                 if (setupBrainDumpRewards.length < 4) {
                     return alert("System requires a minimum of 4 rewards to calibrate your level progression track.");
                 }
-
-                let compiledRewards = [];
-
-                // Map sorted items to levels (Spacing them out across max Level 10 by default)
-                setupBrainDumpRewards.forEach((rName, i) => {
-                    // Formula to evenly distribute unlocks from level 2 upwards
-                    let unlockLevel = Math.round(2 + i * (8 / Math.max(1, setupBrainDumpRewards.length - 1)));
-                    compiledRewards.push({ id: Date.now() + i, name: rName, unlockLevel: unlockLevel, claimed: false });
-                });
 
                 let bossDate = document.getElementById("setup-deadline").value;
                 if (!bossDate) {
@@ -875,10 +943,14 @@
                     bossDate = `${fallback.getFullYear()}-${String(fallback.getMonth()+1).padStart(2,'0')}-${String(fallback.getDate()).padStart(2,'0')}`;
                 }
 
+                // Inject calibrated dynamically scaled rewards array
+                let compiledRewards = calibrateRewardMilestonesFromYieldPool(bossDate, 0, setupBrainDumpRewards);
+
                 player = {
                     name: nameInput,
                     region: document.getElementById("setup-region").value,
-                    level: 1, rank: "Novice", xp: 0, postponeTokens: 3, perfectStreak: 0, stasisMode: false,
+                    cycleCount: 1, // Global Pyramid Track Start
+                    level: 1, rank: "Novice I", xp: 0, postponeTokens: 3, perfectStreak: 0, stasisMode: false,
                     resetHour: document.getElementById("setup-reset").value,
                     bossDeadline: bossDate,
                     lastLoginDate: getLogicalDateStr(), 
@@ -892,29 +964,30 @@
             }
         };
 
-        // --- IMAGE COMPRESSION ---
+        // --- AIRTIGHT CANVAS BASE64 AUTO-COMPRESSION STORAGE ARCHITECTURE ---
         function compressImage(base64Str, maxWidth, maxHeight, callback) {
             let img = new Image();
             img.src = base64Str;
             img.onload = () => {
                 let canvas = document.createElement('canvas');
-                let width = img.width;
-                let height = img.height;
-
-                if (width > height) {
-                    if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; }
-                } else {
-                    if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; }
-                }
+                let width = img.width; let height = img.height;
+                if (width > height) { if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; } } 
+                else { if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; } }
                 canvas.width = width; canvas.height = height;
                 let ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
-                callback(canvas.toDataURL('image/jpeg', 0.7));
+                callback(canvas.toDataURL('image/jpeg', 0.6)); // Balanced compression layer
             };
         }
 
-        window.openAvatarModal = function() { document.getElementById("avatar-edit-modal").classList.remove("modal-hidden"); };
-        window.closeAvatarModal = function() { document.getElementById("avatar-edit-modal").classList.add("modal-hidden"); };
+        window.openAvatarModal = function() { 
+            document.getElementById("avatar-edit-modal").classList.remove("modal-hidden"); 
+            document.body.classList.add("modal-open");
+        };
+        window.closeAvatarModal = function() { 
+            document.getElementById("avatar-edit-modal").classList.add("modal-hidden"); 
+            document.body.classList.remove("modal-open");
+        };
         window.removeDashboardPhoto = function() { 
             if(player) {
                 player.avatarDataUrl = null; 
@@ -928,10 +1001,10 @@
             if (input.files && input.files[0]) { 
                 const r = new FileReader(); 
                 r.onload = e => { 
-                    compressImage(e.target.result, 300, 300, (compressedData) => {
+                    compressImage(e.target.result, 250, 250, (compressedData) => {
                         temporarySetupPhotoData = compressedData; 
                         const msgNode = document.getElementById("setup-photo-preview-msg");
-                        if(msgNode) msgNode.innerText = "Photo loaded and optimized successfully!"; 
+                        if(msgNode) msgNode.innerText = "Photo optimized successfully!"; 
                     });
                 }; 
                 r.readAsDataURL(input.files[0]); 
@@ -943,7 +1016,7 @@
             if (input.files && input.files[0]) { 
                 const r = new FileReader(); 
                 r.onload = e => { 
-                    compressImage(e.target.result, 300, 300, (compressedData) => {
+                    compressImage(e.target.result, 250, 250, (compressedData) => {
                         player.avatarDataUrl = compressedData; 
                         document.getElementById("avatar-img").src = player.avatarDataUrl; 
                         saveData(); 
@@ -951,6 +1024,83 @@
                 }; 
                 r.readAsDataURL(input.files[0]); 
             } 
+        };
+
+        // --- DOOMSDAY ANNUAL TIMELINE TRANSITION POPUP PROTOCOLS ---
+        let doomsdayBrainDumpRewards = ["Buy Clothes and Serums", "Trolley for the weekend trip", "Tattoo research", "Flight Tickets"];
+        
+        function checkDoomsdayTimelineExpiration() {
+            if (!player) return;
+            const diff = parseLogicalDate(player.bossDeadline).setHours(0,0,0,0) - parseLogicalDate(getLogicalDateStr()).setHours(0,0,0,0);
+            if (diff <= 0) {
+                // If past or matching deadline, throw the modal overlay interceptor block completely
+                document.getElementById("doomsday-modal").classList.remove("modal-hidden");
+                document.body.classList.add("modal-open");
+                
+                // Set default tomorrow date picker fallback inside modal
+                let tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 41); // Simulation metric baseline
+                document.getElementById("dd-new-deadline").value = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth()+1).padStart(2,'0')}-${String(tomorrow.getDate()).padStart(2,'0')}`;
+                
+                // If user hits Cycle 10, shift title to Annual Victory celebration parameters
+                if(player.cycleCount >= 9) {
+                    document.getElementById("dd-modal-title").innerText = "🏆 ANNUAL VICTORY ERA";
+                    document.getElementById("dd-modal-desc").innerHTML = "<strong>CRITICAL ACHIEVEMENT UNLOCKED: ELITE RANK ATTAINED.</strong><br>Would you like to initiate New Game Plus Year 2 Reset or calibrate another tracking layer?";
+                }
+                renderDoomsdayBrainDumpList();
+            }
+        }
+
+        window.addRewardToDoomsdayDump = function() {
+            const input = document.getElementById("dd-brain-dump-input");
+            const val = input.value.trim();
+            if(val) { doomsdayBrainDumpRewards.push(val); input.value = ""; renderDoomsdayBrainDumpList(); }
+        };
+        window.updateDoomsdayReward = function(index, val) {
+            val = val.trim(); if(val === "") { doomsdayBrainDumpRewards.splice(index,1); } else { doomsdayBrainDumpRewards[index] = val; }
+        };
+        window.moveDoomsdayRewardUp = function(index) {
+            if(index > 0) { let t = doomsdayBrainDumpRewards[index]; doomsdayBrainDumpRewards[index] = doomsdayBrainDumpRewards[index-1]; doomsdayBrainDumpRewards[index-1] = t; renderDoomsdayBrainDumpList(); }
+        };
+        window.moveDoomsdayRewardDown = function(index) {
+            if(index < doomsdayBrainDumpRewards.length - 1) { let t = doomsdayBrainDumpRewards[index]; doomsdayBrainDumpRewards[index] = doomsdayBrainDumpRewards[index+1]; doomsdayBrainDumpRewards[index+1] = t; renderDoomsdayBrainDumpList(); }
+        };
+
+        function renderDoomsdayBrainDumpList() {
+            const c = document.getElementById("dd-rewards-wrapper"); c.innerHTML = "";
+            doomsdayBrainDumpRewards.forEach((r, idx) => {
+                c.innerHTML += `
+                <div class="sortable-item">
+                    <span style="color:var(--text-gray); margin-right:8px;">${idx + 1}.</span>
+                    <input type="text" class="inline-edit-input" value="${r}" onchange="updateDoomsdayReward(${idx}, this.value)">
+                    <div class="sortable-controls" style="margin-left:8px;">
+                        <button class="sort-btn" onclick="moveDoomsdayRewardUp(${idx})">▲</button>
+                        <button class="sort-btn" onclick="moveDoomsdayRewardDown(${idx})">▼</button>
+                    </div>
+                </div>`;
+            });
+        }
+
+        window.finalizeDoomsdayTimelineReset = function() {
+            const newDeadline = document.getElementById("dd-new-deadline").value;
+            if(!newDeadline) return alert("Select a future timeline anchor date.");
+            
+            doomsdayBrainDumpRewards = doomsdayBrainDumpRewards.filter(r => r.trim() !== "");
+            if(doomsdayBrainDumpRewards.length < 4) return alert("Provide a minimum of 4 sorted rewards.");
+
+            // PRESTIGE COUNTER AND REPLAY INTERVAL LEVEL RESET LAYER
+            player.cycleCount++;
+            player.xp = 0; // Fresh early-game scaling dopamine boost reset
+            player.level = 1;
+            player.bossDeadline = newDeadline;
+            player.isDay0Buffer = true; // Safe cushion buffer layer for rollover checks
+            
+            player.customRewards = calibrateRewardMilestonesFromYieldPool(newDeadline, 0, doomsdayBrainDumpRewards);
+            
+            document.getElementById("doomsday-modal").classList.add("modal-hidden");
+            document.body.classList.remove("modal-open");
+            
+            saveData(); calculateProgression(); updateScreen();
+            alert(`⚡ Timeline calibrated. Welcome to Cycle ${player.cycleCount}. Profile reset executed.`);
         };
 
         function checkNightShiftConditions() {
@@ -995,13 +1145,18 @@
 
         function calculateProgression() {
             if (!player) return; 
-            const old = player.level; 
+            if (!player.cycleCount) player.cycleCount = 1; // Safeguard backward data models
+            
+            const oldLevel = player.level; 
             player.level = calculateCurrentLevel(player.xp);
             
-            if (player.level > old && old > 0) triggerAudioFeedback('levelup');
-            if (player.level >= 10) player.rank = "S-Class"; else if (player.level >= 6) player.rank = "Elite"; else if (player.level >= 3) player.rank = "Awakened"; else player.rank = "Novice";
+            if (player.level > oldLevel && oldLevel > 0) triggerAudioFeedback('levelup');
             
-            document.body.className = `rank-${player.rank.toLowerCase()}`;
+            // Execute decoupled localized rank tracking maps
+            let rankMetrics = resolveRankAndAuraTitle(player.cycleCount);
+            player.rank = rankMetrics.title;
+            
+            document.body.className = rankMetrics.className;
             document.getElementById("avatar-rank-title").innerText = player.rank;
         }
 
@@ -1012,8 +1167,46 @@
             document.getElementById("rank-display").innerText = player.rank; 
             document.getElementById("xp-display").innerText = player.xp;
             
-            let xpNext = getRequiredXpForLevel(player.level + 1) - player.xp;
-            document.getElementById("xp-next-display").innerText = xpNext;
+            // Render progress math boundaries visually to single target focus track
+            let currentLevelBaseXp = getRequiredXpForLevel(player.level);
+            let nextLevelTargetXp = getRequiredXpForLevel(player.level + 1);
+            let totalXpGapInTier = nextLevelTargetXp - currentLevelBaseXp;
+            let playerProgressInsideTier = player.xp - currentLevelBaseXp;
+            
+            document.getElementById("xp-current-display").innerText = playerProgressInsideTier;
+            document.getElementById("xp-needed-display").innerText = totalXpGapInTier;
+
+            let percentageFill = Math.min(100, Math.max(0, (playerProgress = (player.xp - currentLevelMinXp = currentLevelBaseXp) / totalXpGapInTier) * 100));
+            let pBar = document.getElementById("avatar-aura-glow"); // Directly inyect aura modifications if needed
+            
+            // Physical target bar mapping logic inside container limits
+            const s = [...player.customRewards].sort((a,b) => a.targetXp - b.targetXp);
+            const nextRewardObj = s.find(r => !r.claimed);
+            const trackerNode = document.getElementById("dashboard-milestone-tracker");
+            const fillNode = document.getElementById("dashboard-progress-fill");
+
+            if (nextRewardObj) {
+                let currentTrackBase = 0;
+                let rewardIndex = s.indexOf(nextRewardObj);
+                if (rewardIndex > 0) currentTrackBase = s[rewardIndex - 1].targetXp;
+                
+                let barTotalSegment = nextRewardObj.targetXp - currentTrackBase;
+                let barProgressSegment = player.xp - currentTrackBase;
+                let fillPercent = Math.min(100, Math.max(0, (barProgressSegment / barTotalSegment) * 100));
+                
+                fillNode.style.width = `${fillPercent}%`;
+                if (player.xp >= nextRewardObj.targetXp) {
+                    fillNode.classList.add("gold-fill");
+                    trackerNode.innerText = `🏆 Unlocked: ${nextRewardObj.name} Ready to Claim`;
+                } else {
+                    fillNode.classList.remove("gold-fill");
+                    trackerNode.innerText = `🛡️ Next Unlock: ${nextRewardObj.name} [Target Level: ${nextRewardObj.unlockLevel}]`;
+                }
+            } else {
+                fillNode.style.width = "100%";
+                fillNode.classList.add("gold-fill");
+                trackerNode.innerText = "All Rewards Claimed 🏆";
+            }
 
             document.getElementById("pt-display").innerText = player.postponeTokens; 
             document.getElementById("streak-display").innerText = player.perfectStreak;
@@ -1022,19 +1215,6 @@
             document.getElementById("countdown-display").innerText = Math.ceil(diff / 86400000) >= 0 ? `${Math.ceil(diff / 86400000)}d` : "0d";
             document.getElementById("stasis-badge").classList.toggle("hidden", !player.stasisMode);
 
-            const s = [...player.customRewards].sort((a,b) => a.unlockLevel - b.unlockLevel);
-            const t = s.find(r => !r.claimed);
-            const tr = document.getElementById("dashboard-milestone-tracker");
-            
-            if (t) { 
-                if (player.level >= t.unlockLevel) {
-                    tr.innerText = `🏆 Unlocked: ${t.name} Ready to Claim`;
-                } else {
-                    tr.innerText = `🛡️ Next Unlock: ${t.name} [Unlocks at Lvl ${t.unlockLevel}]`; 
-                }
-            } else { 
-                tr.innerText = "All Rewards Claimed 🏆"; 
-            }
             renderQuests();
         }
 
@@ -1052,7 +1232,6 @@
                 let f = q.isDaily ? "🔄 " : q.cycle ? `⏳ ` : "⚡ ";
                 
                 if (q.completed) {
-                    // Update: Mark postponed tasks clearly in the completed list
                     let titleDisplay = q.wasPostponed ? `<strong style="color:var(--system-gold);">[PT]</strong> ${q.title}` : q.title;
                     li.innerHTML = `<span style="text-decoration:line-through; color:var(--text-gray);">${f}${titleDisplay}</span><button class="gold-btn" style="border-color:var(--text-dark); color:var(--text-gray);" onclick="undoQuest('${q.id}')">UNDO</button>`;
                     lists.completed.appendChild(li);
@@ -1075,8 +1254,12 @@
             document.getElementById("edit-task-type").value = q.type;
             document.getElementById("edit-task-reward").value = q.reward;
             document.getElementById("edit-task-modal").classList.remove("modal-hidden");
+            document.body.classList.add("modal-open");
         };
-        window.closeEditTaskModal = function() { document.getElementById("edit-task-modal").classList.add("modal-hidden"); };
+        window.closeEditTaskModal = function() { 
+            document.getElementById("edit-task-modal").classList.add("modal-hidden"); 
+            document.body.classList.remove("modal-open");
+        };
         window.saveTaskEdit = function() {
             const id = document.getElementById("edit-task-id").value;
             const q = quests.find(x => x.id == id);
@@ -1092,68 +1275,43 @@
         window.animateCompleteQuest = function(btn, id) { btn.closest('.quest-item').classList.add('completed-decay'); setTimeout(() => completeQuestDirectly(id), 400); };
         
         function completeQuestDirectly(id) { 
-            const q = quests.find(x=>x.id==id); 
-            if(!q) return; 
-            
+            const q = quests.find(x=>x.id==id); if(!q) return; 
             triggerAudioFeedback('complete'); 
             player.xp += q.reward; 
-            q.completed = true; 
-            q.wasPostponed = false; // Ensure normal completion flag
+            q.completed = true; q.wasPostponed = false; 
             if(q.cycle) q.lastDone = getLogicalDateStr(); 
-            
             logCompletedTaskToArchive(q.title, q.reward); 
-            calculateProgression(); 
-            saveData(); 
-            updateScreen(); 
+            calculateProgression(); saveData(); updateScreen(); 
         }
 
-        // --- NEW UNDO SYSTEM FIX ---
         window.undoQuest = function(id) { 
-            const q = quests.find(x=>x.id==id); 
-            if(!q) return; 
-            
+            const q = quests.find(x=>x.id==id); if(!q) return; 
             if (q.wasPostponed) {
-                // If it was postponed, we DO NOT steal XP. We just refund the token.
-                player.postponeTokens++;
-                q.wasPostponed = false;
+                player.postponeTokens++; q.wasPostponed = false;
                 removeTaskFromArchiveLog(`[POSTPONED]: ${q.title}`); 
             } else {
-                // If it was normal, deduct the XP it originally gave.
                 player.xp = Math.max(0, player.xp - q.reward); 
                 removeTaskFromArchiveLog(q.title); 
             }
-
-            q.completed = false; 
-            if(q.cycle) q.lastDone = null; // Re-enables cycle task for today
-            
-            calculateProgression(); 
-            saveData(); 
-            updateScreen(); 
+            q.completed = false; if(q.cycle) q.lastDone = null;
+            calculateProgression(); saveData(); updateScreen(); 
         };
 
-        // --- NEW PT SYSTEM FIX ---
         window.postponeSingleQuest = function(id) { 
             if(player.postponeTokens<=0) return alert("No PT tokens left!"); 
             const q = quests.find(x=>x.id==id); 
             if(q) { 
-                player.postponeTokens--; 
-                q.completed = true; 
-                q.wasPostponed = true; // Tag it so the system remembers!
-
+                player.postponeTokens--; q.completed = true; q.wasPostponed = true; 
                 if(q.cycle){ 
-                    let y=parseLogicalDate(getLogicalDateStr()); 
-                    y.setDate(y.getDate()-(q.cycle-1)); 
+                    let y=parseLogicalDate(getLogicalDateStr()); y.setDate(y.getDate()-(q.cycle-1)); 
                     q.lastDone=`${y.getFullYear()}-${String(y.getMonth()+1).padStart(2,'0')}-${String(y.getDate()).padStart(2,'0')}`; 
                 } 
-                
-                logCompletedTaskToArchive(`[POSTPONED]: ${q.title}`, 0); 
-                saveData(); 
-                updateScreen(); 
+                logCompletedTaskToArchive(`[POSTPONED]: ${q.title}`, 0); saveData(); updateScreen(); 
             } 
         };
 
-        window.openTomorrowModal = function() { renderTomorrowSandboxList(); document.getElementById("tomorrow-modal").classList.remove("modal-hidden"); };
-        window.closeTomorrowModal = function() { document.getElementById("tomorrow-modal").classList.add("modal-hidden"); };
+        window.openTomorrowModal = function() { renderTomorrowSandboxList(); document.getElementById("tomorrow-modal").classList.remove("modal-hidden"); document.body.classList.add("modal-open"); };
+        window.closeTomorrowModal = function() { document.getElementById("tomorrow-modal").classList.add("modal-hidden"); document.body.classList.remove("modal-open"); };
         window.toggleTomorrowCycleInput = function() { document.getElementById("t-custom-cycle-group").classList.toggle("hidden", document.getElementById("t-quest-frequency").value !== "cyclic"); };
 
         function renderTomorrowSandboxList() {
@@ -1165,8 +1323,7 @@
 
         window.quickAddTomorrowTask = function(title, type, isDaily, cycleDays) {
             let item = { id: Date.now()+Math.random(), type: type, title: title, reward: defaultRewards[type], completed: false, scheduledForTomorrow: true };
-            if (isDaily) item.isDaily = true;
-            else if (cycleDays > 0) { item.cycle = cycleDays; item.lastDone = null; }
+            if (isDaily) item.isDaily = true; else if (cycleDays > 0) { item.cycle = cycleDays; item.lastDone = null; }
             quests.push(item); saveData(); renderTomorrowSandboxList(); updateScreen();
         };
 
@@ -1185,7 +1342,7 @@
         function populateRewardShopPanel() {
             const p = document.getElementById("milestone-roster-list"); p.innerHTML = "";
             player.customRewards.forEach(r => {
-                let isU = player.level >= r.unlockLevel;
+                let isU = player.xp >= r.targetXp;
                 let btn = r.claimed ? `<span>Claimed ✅</span>` : isU ? `<button class="gold-btn" onclick="claimReward(${r.id})">CLAIM</button>` : `<span style="font-size:0.6rem;">LOCK (Need Lvl ${r.unlockLevel})</span>`;
                 p.innerHTML += `<div class="roster-card" style="border-color:${isU&&!r.claimed?'var(--text-gray)':'var(--border-silver)'};">
                     <div><div style="font-weight:bold; ${r.claimed?'text-decoration:line-through; color:var(--text-dark);':''}">${r.name}</div><div style="font-size:0.75rem; color:var(--text-gray);">Unlocks at Level ${r.unlockLevel}</div></div>
@@ -1194,16 +1351,11 @@
         }
 
         window.addCustomRewardShop = function() { 
-            let n = document.getElementById("new-reward-name").value.trim(); 
-            if(!n) return; 
-            
-            // Auto map to next available level slot logically based on max current unlock Level
-            let maxLevel = player.customRewards.length > 0 ? Math.max(...player.customRewards.map(r => r.unlockLevel)) : player.level;
-            let nextUnlock = maxLevel + 1;
-
-            player.customRewards.push({ id: Date.now(), name: n, unlockLevel: nextUnlock, claimed: false }); 
-            document.getElementById("new-reward-name").value = ""; 
-            saveData(); updateScreen(); populateRewardShopPanel(); 
+            let n = document.getElementById("new-reward-name").value.trim(); if(!n) return; 
+            let maxTargetXp = player.customRewards.length > 0 ? Math.max(...player.customRewards.map(r => r.targetXp)) : player.xp;
+            let nextTarget = maxTargetXp + 500; // Inline injection tier offset buffer
+            player.customRewards.push({ id: Date.now(), name: n, targetXp: nextTarget, unlockLevel: calculateCurrentLevel(nextTarget), claimed: false }); 
+            document.getElementById("new-reward-name").value = ""; saveData(); updateScreen(); populateRewardShopPanel(); 
         };
         
         window.deleteCustomReward = function(id) { player.customRewards = player.customRewards.filter(r => r.id != id); saveData(); updateScreen(); populateRewardShopPanel(); };
@@ -1212,14 +1364,11 @@
             const r = player.customRewards.find(x => x.id == id); 
             if(r) { 
                 const nn = prompt("Edit Item Name:", r.name); 
-                if(nn) { 
-                    const nl = prompt("Edit Unlock Level:", r.unlockLevel); 
-                    if(nl && !isNaN(nl)) { r.name = nn; r.unlockLevel = parseInt(nl); saveData(); updateScreen(); populateRewardShopPanel(); } 
-                } 
+                if(nn) { r.name = nn; saveData(); updateScreen(); populateRewardShopPanel(); } 
             } 
         };
 
-        window.claimReward = function(id) { const r = player.customRewards.find(x => x.id == id); if(!r || player.level < r.unlockLevel) return; r.claimed = true; triggerAudioFeedback('levelup'); logCompletedTaskToArchive(`[CLAIMED]: ${r.name}`, 0, true, r.id); saveData(); updateScreen(); populateRewardShopPanel(); };
+        window.claimReward = function(id) { const r = player.customRewards.find(x => x.id == id); if(!r || player.xp < r.targetXp) return; r.claimed = true; triggerAudioFeedback('levelup'); logCompletedTaskToArchive(`[CLAIMED]: ${r.name}`, 0, true, r.id); saveData(); updateScreen(); populateRewardShopPanel(); };
         window.revokeRewardClaim = function(dayStr, idx, tid) { const t = player.customRewards.find(r => r.id == tid); if(t) t.claimed = false; dayLogs[dayStr].itemsLogged.splice(idx, 1); dayLogs[dayStr].totalXPEarned = dayLogs[dayStr].itemsLogged.reduce((sum, i) => sum + i.reward, 0); saveData(); calculateProgression(); updateScreen(); populateArchivePanel(); };
 
         function populateArchivePanel() {
@@ -1231,30 +1380,14 @@
             });
         }
 
-        window.openHelpManualModal = function() { document.getElementById("help-modal").classList.remove("modal-hidden"); };
-        window.closeHelpManualModal = function() { document.getElementById("help-modal").classList.add("modal-hidden"); };
-
-        function logCompletedTaskToArchive(taskTitle, xpValue, isRC=false, rID=null) { const d = getLogicalDateStr(); if(!dayLogs[d]) dayLogs[d] = { totalXPEarned: 0, itemsLogged: [] }; dayLogs[d].itemsLogged.push({ title: taskTitle, reward: xpValue, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), isRewardClaim: isRC, rewardId: rID }); dayLogs[d].totalXPEarned += xpValue; saveData(); }
-        function removeTaskFromArchiveLog(taskTitle) { 
-            const d = getLogicalDateStr(); 
-            if(dayLogs[d]) { 
-                const idx = dayLogs[d].itemsLogged.findIndex(i => i.title === taskTitle); 
-                if(idx !== -1) { 
-                    dayLogs[d].totalXPEarned -= dayLogs[d].itemsLogged[idx].reward; 
-                    dayLogs[d].itemsLogged.splice(idx, 1); 
-                    saveData(); 
-                } 
-            } 
-        }
-
-        window.openSettingsModal = function() { if(player){ document.getElementById("settings-boss-date").value = player.bossDeadline || ""; document.getElementById("settings-reset-hour").value = player.resetHour || "3"; document.getElementById("settings-stasis").checked = player.stasisMode || false; } switchSettingsTab('config'); document.getElementById("settings-modal").classList.remove("modal-hidden"); };
-        window.closeSettingsModal = function() { document.getElementById("settings-modal").classList.add("modal-hidden"); };
-        window.saveSettings = function() { if(!player) return closeSettingsModal(); player.bossDeadline = document.getElementById("settings-boss-date").value; player.resetHour = document.getElementById("settings-reset-hour").value; saveData(); updateScreen(); closeSettingsModal(); };
+        window.openSettingsModal = function() { if(player){ document.getElementById("settings-boss-date").value = player.bossDeadline || ""; document.getElementById("settings-reset-hour").value = player.resetHour || "3"; document.getElementById("settings-stasis").checked = player.stasisMode || false; } switchSettingsTab('config'); document.getElementById("settings-modal").classList.remove("modal-hidden"); document.body.classList.add("modal-open"); };
+        window.closeSettingsModal = function() { document.getElementById("settings-modal").classList.add("modal-hidden"); document.body.classList.remove("modal-open"); };
+        window.saveSettings = function() { if(!player) return closeSettingsModal(); player.bossDeadline = document.getElementById("settings-boss-date").value; player.resetHour = document.getElementById("settings-reset-hour").value; saveData(); updateScreen(); checkDoomsdayTimelineExpiration(); closeSettingsModal(); };
         window.triggerSystemWipe = function() { if(confirm("Erase all tracking profile layers? This operation is permanent.")) { localStorage.clear(); location.reload(); } };
 
+        function logCompletedTaskToArchive(taskTitle, xpValue, isRC=false, rID=null) { const d = getLogicalDateStr(); if(!dayLogs[d]) dayLogs[d] = { totalXPEarned: 0, itemsLogged: [] }; dayLogs[d].itemsLogged.push({ title: taskTitle, reward: xpValue, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), isRewardClaim: isRC, rewardId: rID }); dayLogs[d].totalXPEarned += xpValue; saveData(); }
+        function removeTaskFromArchiveLog(taskTitle) { const d = getLogicalDateStr(); if(dayLogs[d]) { const idx = dayLogs[d].itemsLogged.findIndex(i => i.title === taskTitle); if(idx !== -1) { dayLogs[d].totalXPEarned -= dayLogs[d].itemsLogged[idx].reward; dayLogs[d].itemsLogged.splice(idx, 1); saveData(); } } }
         function saveData() { localStorage.setItem("adhdmaxxing_v6_ultra_player", JSON.stringify(player)); localStorage.setItem("adhdmaxxing_v6_ultra_quests", JSON.stringify(quests)); localStorage.setItem("adhdmaxxing_v6_ultra_logs", JSON.stringify(dayLogs)); }
-        
-        window.replayTutorialSlideshowFromManual = function() { closeHelpManualModal(); taskSlideIndex = 0; renderTaskSlide(); document.getElementById("tutorial-tasks-modal").classList.remove("modal-hidden"); };
         
         document.addEventListener("DOMContentLoaded", loadData);
     </script>
