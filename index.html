@@ -98,14 +98,18 @@
         
         .setup-reward-row { display: flex; gap: 6px; margin-bottom: 6px; width: 100%; align-items: center; }
         .setup-reward-row input[type="text"] { flex: 3; }
-        .setup-reward-row input[type="number"] { flex: 1.2; }
 
         input, select {
             width: 100%; padding: 12px; background: #000; border: 1px solid var(--border-silver);
             color: #fff; font-size: 0.85rem; box-sizing: border-box; transition: var(--transition); height: 46px;
         }
         input:focus, select:focus { outline: none; border-color: var(--system-blue); }
-        .calendar-input-row { display: flex; gap: 8px; width: 100%; }
+
+        /* Sortable List Items */
+        .sortable-item { background: var(--bg-black); border: 1px dashed var(--border-silver); padding: 10px 14px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;}
+        .sortable-controls { display: flex; gap: 6px; align-items: center;}
+        .sort-btn { background: transparent; border: 1px solid var(--text-dark); color: var(--text-gray); font-size: 0.8rem; cursor: pointer; padding: 4px 8px; transition: var(--transition); }
+        .sort-btn:hover { background: var(--text-dark); color: #fff; }
 
         /* Suggestion Chips */
         .suggestion-box { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; justify-content: center; }
@@ -215,7 +219,7 @@
                 </div>
                 <div class="system-slide sys-slide hidden">
                     <h3 class="slide-title">[3/3] UNLOCKING REWARDS</h3>
-                    <p class="slide-text">List real-world rewards and their actual money cost <em>(e.g., $10 Iced Coffee, $60 Video Game)</em>. The app turns that price into an XP goal. Your hard work clears the milestone so you can claim the reward guilt-free.</p>
+                    <p class="slide-text">List your real-world rewards and rank them. Earning XP pushes you to new Levels. As you level up, you naturally unlock your rewards from smallest treat to ultimate prize.</p>
                 </div>
             </div>
 
@@ -376,14 +380,13 @@
                 <div class="reward-creation-box">
                     <h5 style="margin: 0 0 10px 0; color:#fff;">+ ADD REWARD</h5>
                     <div class="suggestion-box">
-                        <div class="chip" onclick="document.getElementById('new-reward-name').value='Cinema Ticket'; document.getElementById('new-reward-value').value='15';">+ Cinema</div>
-                        <div class="chip" onclick="document.getElementById('new-reward-name').value='Fancy Dinner'; document.getElementById('new-reward-value').value='50';">+ Dinner</div>
-                        <div class="chip" onclick="document.getElementById('new-reward-name').value='New Shoes'; document.getElementById('new-reward-value').value='80';">+ Shoes</div>
+                        <div class="chip" onclick="document.getElementById('new-reward-name').value='Cinema Ticket';">+ Cinema</div>
+                        <div class="chip" onclick="document.getElementById('new-reward-name').value='Fancy Dinner';">+ Dinner</div>
+                        <div class="chip" onclick="document.getElementById('new-reward-name').value='Flight Tickets';">+ Flight Tickets</div>
                     </div>
                     <input type="text" id="new-reward-name" placeholder="Item Name...">
-                    <input type="number" id="new-reward-value" placeholder="Price Cost">
                     <div class="centered-btn-wrapper" style="margin-top:4px;">
-                        <button class="secondary-btn btn-text" onclick="addCustomReward()">Save Reward</button>
+                        <button class="secondary-btn btn-text" onclick="addCustomRewardShop()">Save Reward</button>
                     </div>
                 </div>
                 <h4 class="serif-sub">YOUR TARGETS</h4>
@@ -414,16 +417,6 @@
                         <option value="IST" selected>Asia (India Standard Time)</option>
                         <option value="EST">North America (EST)</option>
                         <option value="PST">North America (PST)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Currency:</label>
-                    <select id="setup-currency">
-                        <option value="₹">Rupee (₹) [1 = 2 XP]</option>
-                        <option value="$">Dollar ($) [1 = 100 XP]</option>
-                        <option value="€">Euro (€) [1 = 100 XP]</option>
-                        <option value="£">Pound (£) [1 = 125 XP]</option>
-                        <option value="¥">Yen (¥) [1 = 2 XP]</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -501,23 +494,16 @@
                 </div>
                 
                 <div class="reward-mandate-box">
-                    <h4 style="margin:0 0 10px 0; font-size:0.8rem; color:#fff; text-align:center;">🏆 STARTING REWARDS</h4>
+                    <h4 style="margin:0 0 10px 0; font-size:0.8rem; color:#fff; text-align:center;">🏆 REWARD BRAIN-DUMP</h4>
+                    <p style="font-size: 0.65rem; color:var(--text-gray); text-align:center; margin-top:0;">Add rewards and use arrows to sort them.<br>Top = Easiest Treat, Bottom = Ultimate Prize.</p>
                     
-                    <div class="suggestion-box" style="margin-bottom: 15px;">
-                        <div class="chip" onclick="quickAddWizardReward('Cinema Ticket', 15)">+ Cinema</div>
-                        <div class="chip" onclick="quickAddWizardReward('Fancy Dinner', 50)">+ Dinner</div>
-                        <div class="chip" onclick="quickAddWizardReward('New Shoes', 80)">+ Shoes</div>
+                    <div class="setup-reward-row">
+                        <input type="text" id="wizard-brain-dump-input" placeholder="Type a reward...">
+                        <button class="primary-btn btn-text" style="flex:1;" onclick="addRewardToBrainDump()">ADD</button>
                     </div>
 
-                    <div id="wizard-rewards-wrapper">
-                        <div class="setup-reward-row"><input type="text" class="wiz-r-name" value="Coffee Treat"><input type="number" class="wiz-r-val" value="10"><button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>
-                        <div class="setup-reward-row"><input type="text" class="wiz-r-name" value="Buy New Shirt"><input type="number" class="wiz-r-val" value="40"><button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>
-                        <div class="setup-reward-row"><input type="text" class="wiz-r-name" value="New Video Game"><input type="number" class="wiz-r-val" value="60"><button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>
-                        <div class="setup-reward-row"><input type="text" class="wiz-r-name" value="Weekend Getaway"><input type="number" class="wiz-r-val" value="200"><button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>
-                    </div>
-                    <div class="centered-btn-wrapper" style="margin-top:8px;">
-                        <button class="secondary-btn btn-text" style="height:36px;" onclick="addRewardRowInWizard()">+ Custom Reward Line</button>
-                    </div>
+                    <div id="wizard-rewards-wrapper" style="margin-top:12px;">
+                        </div>
                 </div>
                 <div class="centered-btn-wrapper"><button class="primary-btn btn-text" onclick="finalizeSetupWizard()">Begin Quest</button></div>
             </div>
@@ -553,6 +539,7 @@
             <div id="player-stats">
                 <h1 class="serif-name" id="username">---</h1>
                 <p class="meta-text">Rank: <span id="rank-display" style="font-weight:bold;">---</span> | Level: <span id="level-display">-</span> | Streak: <span id="streak-display">0</span>d</p>
+                <div style="font-size:0.65rem; color:var(--text-gray); margin-top:-8px; margin-bottom:12px;">XP to next level: <span id="xp-next-display">0</span></div>
                 
                 <div id="daily-directive-msg">Welcome! Tap 'Tomorrow' at the bottom to plan out your upcoming routines.</div>
                 <div id="dashboard-milestone-tracker">Next Target: Loading...</div>
@@ -584,9 +571,21 @@
         let player = null; let quests = []; let dayLogs = {}; 
         let taskSlideIndex = 0; let systemSlideIndex = 0; 
         let temporarySetupPhotoData = null;
+        let setupBrainDumpRewards = ["Coffee Treat", "Buy New Shirt", "Weekend Getaway"];
 
         const defaultRewards = { main: 50, side: 20, errand: 75, bonus: 15 };
-        const currencyRatios = { "₹": 2, "$": 100, "€": 100, "£": 125, "¥": 2, "CHF": 100 };
+
+        // Exponential XP RPG Curve logic
+        function getRequiredXpForLevel(level) {
+            if (level <= 1) return 0;
+            return Math.floor(100 * Math.pow(level - 1, 1.5));
+        }
+        
+        function calculateCurrentLevel(xp) {
+            let level = 1;
+            while (xp >= getRequiredXpForLevel(level + 1)) { level++; }
+            return level;
+        }
 
         const systemDirectives = [
             "The System monitors your execution variables. Proceed with absolute precision.",
@@ -659,7 +658,6 @@
                 if (!player.isDay0Buffer) checkNightShiftConditions();
             } else {
                 document.getElementById("setup-screen").classList.remove("hidden");
-                // The 4 Specific Default Quests requested
                 quests = [
                     { id: Date.now(), type: "main", title: "Deep Work / Study Session", reward: 50, completed: false, isDaily: true },
                     { id: Date.now()+1, type: "errand", title: "Clear Workspace", reward: 75, completed: false, isDaily: true },
@@ -670,7 +668,7 @@
             }
         }
 
-        // --- NEW 5-STEP WIZARD FLOW ---
+        // --- NEW WIZARD FLOW ---
 
         window.advanceToTaskDemo = function() {
             if (!document.getElementById("setup-name").value.trim()) return alert("Provide a Player Name.");
@@ -700,7 +698,6 @@
             document.getElementById("slide-task-next-btn").innerText = (taskSlideIndex === slides.length - 1) ? "Set Up Quests" : "Next";
         }
 
-        // Updated for Editable Inputs
         function renderSetupTasksList() {
             const c = document.getElementById("setup-tasks-list"); c.innerHTML = "";
             quests.forEach(q => {
@@ -762,6 +759,7 @@
                 document.getElementById("setup-phase-tasks").classList.add("hidden");
                 document.getElementById("setup-phase-2").classList.remove("hidden");
                 adaptRegionalFormatContext();
+                renderBrainDumpList();
                 return;
             }
             renderSystemSlide();
@@ -774,42 +772,75 @@
             document.getElementById("slide-sys-next-btn").innerText = (systemSlideIndex === slides.length - 1) ? "Calibrate" : "Next";
         }
 
-        window.quickAddWizardReward = function(name, val) {
-            const c = document.getElementById("wizard-rewards-wrapper");
-            if (c.querySelectorAll(".setup-reward-row").length >= 10) return alert("10 max levels.");
-            const div = document.createElement("div"); div.className = "setup-reward-row";
-            div.innerHTML = `<input type="text" class="wiz-r-name" value="${name}"> <input type="number" class="wiz-r-val" value="${val}"> <button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button>`;
-            c.appendChild(div);
+        // --- REWARD BRAIN DUMP & SORTING LOGIC ---
+        window.addRewardToBrainDump = function() {
+            const input = document.getElementById("wizard-brain-dump-input");
+            const val = input.value.trim();
+            if(val) {
+                setupBrainDumpRewards.push(val);
+                input.value = "";
+                renderBrainDumpList();
+            }
         };
 
-        window.addRewardRowInWizard = function() {
-            const c = document.getElementById("wizard-rewards-wrapper");
-            if (c.querySelectorAll(".setup-reward-row").length >= 10) return alert("10 max levels.");
-            const div = document.createElement("div"); div.className = "setup-reward-row";
-            div.innerHTML = `<input type="text" class="wiz-r-name" placeholder="Item Name"> <input type="number" class="wiz-r-val" value="50"> <button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button>`;
-            c.appendChild(div); div.querySelector(".wiz-r-name").focus();
+        window.moveRewardUp = function(index) {
+            if(index > 0) {
+                let temp = setupBrainDumpRewards[index];
+                setupBrainDumpRewards[index] = setupBrainDumpRewards[index-1];
+                setupBrainDumpRewards[index-1] = temp;
+                renderBrainDumpList();
+            }
         };
 
-        // Mobile Safe Finalize function
+        window.moveRewardDown = function(index) {
+            if(index < setupBrainDumpRewards.length - 1) {
+                let temp = setupBrainDumpRewards[index];
+                setupBrainDumpRewards[index] = setupBrainDumpRewards[index+1];
+                setupBrainDumpRewards[index+1] = temp;
+                renderBrainDumpList();
+            }
+        };
+
+        window.deleteBrainDumpReward = function(index) {
+            setupBrainDumpRewards.splice(index, 1);
+            renderBrainDumpList();
+        };
+
+        function renderBrainDumpList() {
+            const c = document.getElementById("wizard-rewards-wrapper");
+            c.innerHTML = "";
+            setupBrainDumpRewards.forEach((r, idx) => {
+                c.innerHTML += `
+                <div class="sortable-item">
+                    <span>${idx + 1}. ${r}</span>
+                    <div class="sortable-controls">
+                        <button class="sort-btn" onclick="moveRewardUp(${idx})">▲</button>
+                        <button class="sort-btn" onclick="moveRewardDown(${idx})">▼</button>
+                        <button class="sort-btn" style="color:var(--system-red); border-color:var(--system-red);" onclick="deleteBrainDumpReward(${idx})">✕</button>
+                    </div>
+                </div>`;
+            });
+        }
+
         window.finalizeSetupWizard = function() {
             try {
                 const nameInput = document.getElementById("setup-name").value.trim();
                 if (!nameInput) return alert("Please enter a Player Name.");
 
                 let compiledRewards = [];
-                const rNames = document.querySelectorAll(".wiz-r-name"); 
-                const rVals = document.querySelectorAll(".wiz-r-val");
-                for(let i=0; i<rNames.length; i++) {
-                    let n = rNames[i].value.trim(); let v = parseInt(rVals[i].value);
-                    if(n && !isNaN(v) && v > 0) compiledRewards.push({ id: Date.now()+i, name: n, value: v, claimed: false });
-                }
+                const totalRewards = setupBrainDumpRewards.length;
                 
-                // Mobile Fix: Lowered the strict 4-reward guardrail. 
-                if (compiledRewards.length === 0) {
-                    compiledRewards.push({ id: Date.now(), name: "First Reward Milestone", value: 100, claimed: false });
+                if (totalRewards === 0) {
+                    setupBrainDumpRewards.push("First Reward Milestone");
                 }
 
-                // Mobile Fix: Handle empty date pickers safely (common bug on iOS Safari)
+                // Map sorted items to levels (Spacing them out across max Level 10 by default)
+                setupBrainDumpRewards.forEach((rName, i) => {
+                    // Formula to evenly distribute unlocks from level 2 upwards
+                    let unlockLevel = Math.round(2 + i * (8 / Math.max(1, setupBrainDumpRewards.length - 1)));
+                    compiledRewards.push({ id: Date.now() + i, name: rName, unlockLevel: unlockLevel, claimed: false });
+                });
+
                 let bossDate = document.getElementById("setup-deadline").value;
                 if (!bossDate) {
                     let fallback = new Date(); fallback.setDate(fallback.getDate() + 30);
@@ -819,7 +850,6 @@
                 player = {
                     name: nameInput,
                     region: document.getElementById("setup-region").value,
-                    currency: document.getElementById("setup-currency").value,
                     level: 1, rank: "Novice", xp: 0, postponeTokens: 3, perfectStreak: 0, stasisMode: false,
                     resetHour: document.getElementById("setup-reset").value,
                     bossDeadline: bossDate,
@@ -834,13 +864,29 @@
             }
         };
 
-        // Avatar Modal Controls
-        window.openAvatarModal = function() { 
-            document.getElementById("avatar-edit-modal").classList.remove("modal-hidden"); 
-        };
-        window.closeAvatarModal = function() { 
-            document.getElementById("avatar-edit-modal").classList.add("modal-hidden"); 
-        };
+        // --- IMAGE COMPRESSION ---
+        function compressImage(base64Str, maxWidth, maxHeight, callback) {
+            let img = new Image();
+            img.src = base64Str;
+            img.onload = () => {
+                let canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; }
+                } else {
+                    if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; }
+                }
+                canvas.width = width; canvas.height = height;
+                let ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                callback(canvas.toDataURL('image/jpeg', 0.7));
+            };
+        }
+
+        window.openAvatarModal = function() { document.getElementById("avatar-edit-modal").classList.remove("modal-hidden"); };
+        window.closeAvatarModal = function() { document.getElementById("avatar-edit-modal").classList.add("modal-hidden"); };
         window.removeDashboardPhoto = function() { 
             if(player) {
                 player.avatarDataUrl = null; 
@@ -850,21 +896,34 @@
         };
 
         window.triggerSetupPhotoUpload = function() { document.getElementById("setup-file-input").click(); };
-        
         window.processSetupPhoto = function(input) { 
             if (input.files && input.files[0]) { 
                 const r = new FileReader(); 
                 r.onload = e => { 
-                    temporarySetupPhotoData = e.target.result; 
-                    const msgNode = document.getElementById("setup-photo-preview-msg");
-                    if(msgNode) msgNode.innerText = "Photo loaded successfully!"; 
+                    compressImage(e.target.result, 300, 300, (compressedData) => {
+                        temporarySetupPhotoData = compressedData; 
+                        const msgNode = document.getElementById("setup-photo-preview-msg");
+                        if(msgNode) msgNode.innerText = "Photo loaded and optimized successfully!"; 
+                    });
                 }; 
                 r.readAsDataURL(input.files[0]); 
             } 
         };
         
         window.triggerDashboardPhotoUpload = function() { document.getElementById("dashboard-file-input").click(); };
-        window.processDashboardPhoto = function(input) { if (input.files && input.files[0]) { const r = new FileReader(); r.onload = e => { player.avatarDataUrl = e.target.result; document.getElementById("avatar-img").src = player.avatarDataUrl; saveData(); }; r.readAsDataURL(input.files[0]); } };
+        window.processDashboardPhoto = function(input) { 
+            if (input.files && input.files[0]) { 
+                const r = new FileReader(); 
+                r.onload = e => { 
+                    compressImage(e.target.result, 300, 300, (compressedData) => {
+                        player.avatarDataUrl = compressedData; 
+                        document.getElementById("avatar-img").src = player.avatarDataUrl; 
+                        saveData(); 
+                    });
+                }; 
+                r.readAsDataURL(input.files[0]); 
+            } 
+        };
 
         function checkNightShiftConditions() {
             if (!player) return; const h = new Date().getHours();
@@ -907,28 +966,47 @@
         }
 
         function calculateProgression() {
-            if (!player) return; const old = player.level; player.level = Math.floor(player.xp / 100) + 1;
+            if (!player) return; 
+            const old = player.level; 
+            player.level = calculateCurrentLevel(player.xp);
+            
             if (player.level > old && old > 0) triggerAudioFeedback('levelup');
             if (player.level >= 10) player.rank = "S-Class"; else if (player.level >= 6) player.rank = "Elite"; else if (player.level >= 3) player.rank = "Awakened"; else player.rank = "Novice";
+            
             document.body.className = `rank-${player.rank.toLowerCase()}`;
             document.getElementById("avatar-rank-title").innerText = player.rank;
         }
 
         function updateScreen() {
             if (!player) return;
-            document.getElementById("username").innerText = player.name; document.getElementById("level-display").innerText = player.level;
-            document.getElementById("rank-display").innerText = player.rank; document.getElementById("xp-display").innerText = player.xp;
-            document.getElementById("pt-display").innerText = player.postponeTokens; document.getElementById("streak-display").innerText = player.perfectStreak;
+            document.getElementById("username").innerText = player.name; 
+            document.getElementById("level-display").innerText = player.level;
+            document.getElementById("rank-display").innerText = player.rank; 
+            document.getElementById("xp-display").innerText = player.xp;
+            
+            let xpNext = getRequiredXpForLevel(player.level + 1) - player.xp;
+            document.getElementById("xp-next-display").innerText = xpNext;
+
+            document.getElementById("pt-display").innerText = player.postponeTokens; 
+            document.getElementById("streak-display").innerText = player.perfectStreak;
             
             const diff = parseLogicalDate(player.bossDeadline).setHours(0,0,0,0) - parseLogicalDate(getLogicalDateStr()).setHours(0,0,0,0);
             document.getElementById("countdown-display").innerText = Math.ceil(diff / 86400000) >= 0 ? `${Math.ceil(diff / 86400000)}d` : "0d";
             document.getElementById("stasis-badge").classList.toggle("hidden", !player.stasisMode);
 
-            const s = [...player.customRewards].sort((a,b) => a.value - b.value); const m = currencyRatios[player.currency] || 2;
-            const t = s.find(r => !r.claimed && player.xp < (r.value * m));
+            const s = [...player.customRewards].sort((a,b) => a.unlockLevel - b.unlockLevel);
+            const t = s.find(r => !r.claimed);
             const tr = document.getElementById("dashboard-milestone-tracker");
-            if (t) { let d = Math.ceil(((t.value * m) - player.xp) / 130); tr.innerText = `🛡️ Next Unlock: ${t.name} [Est. ${d<=0?1:d} Days]`; } 
-            else { const u = s.find(r => !r.claimed); tr.innerText = u ? `🏆 Unlocked: ${u.name} Ready to Claim` : "All Rewards Claimed 🏆"; }
+            
+            if (t) { 
+                if (player.level >= t.unlockLevel) {
+                    tr.innerText = `🏆 Unlocked: ${t.name} Ready to Claim`;
+                } else {
+                    tr.innerText = `🛡️ Next Unlock: ${t.name} [Unlocks at Lvl ${t.unlockLevel}]`; 
+                }
+            } else { 
+                tr.innerText = "All Rewards Claimed 🏆"; 
+            }
             renderQuests();
         }
 
@@ -1016,22 +1094,43 @@
         window.switchSettingsTab = function(tName) { document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden')); document.getElementById(`tab-btn-${tName}`).classList.add('active'); document.getElementById(`tab-content-${tName}`).classList.remove('hidden'); if (tName === 'roster') populateRewardShopPanel(); if (tName === 'archive') populateArchivePanel(); };
 
         function populateRewardShopPanel() {
-            const p = document.getElementById("milestone-roster-list"); p.innerHTML = ""; const m = currencyRatios[player.currency] || 2;
+            const p = document.getElementById("milestone-roster-list"); p.innerHTML = "";
             player.customRewards.forEach(r => {
-                let req = r.value * m; let isU = player.xp >= req;
-                let btn = r.claimed ? `<span>Claimed ✅</span>` : isU ? `<button class="gold-btn" onclick="claimReward(${r.id})">CLAIM</button>` : `<span>LOCK (Need ${req - player.xp} XP)</span>`;
+                let isU = player.level >= r.unlockLevel;
+                let btn = r.claimed ? `<span>Claimed ✅</span>` : isU ? `<button class="gold-btn" onclick="claimReward(${r.id})">CLAIM</button>` : `<span style="font-size:0.6rem;">LOCK (Need Lvl ${r.unlockLevel})</span>`;
                 p.innerHTML += `<div class="roster-card" style="border-color:${isU&&!r.claimed?'var(--text-gray)':'var(--border-silver)'};">
-                    <div><div style="font-weight:bold; ${r.claimed?'text-decoration:line-through; color:var(--text-dark);':''}">${r.name}</div><div style="font-size:0.75rem; color:var(--text-gray);">${req} XP (${player.currency}${r.value})</div></div>
+                    <div><div style="font-weight:bold; ${r.claimed?'text-decoration:line-through; color:var(--text-dark);':''}">${r.name}</div><div style="font-size:0.75rem; color:var(--text-gray);">Unlocks at Level ${r.unlockLevel}</div></div>
                     <div class="flex-buttons"><button onclick="editCustomReward(${r.id})" style="background:none; border:none; color:var(--text-gray); cursor:pointer;">✏️</button>${btn}<button onclick="deleteCustomReward(${r.id})" style="background:none; border:none; color:var(--system-red); cursor:pointer;">🗑️</button></div></div>`;
             });
         }
 
-        window.addCustomReward = function() { let n = document.getElementById("new-reward-name").value.trim(); let v = parseInt(document.getElementById("new-reward-value").value); if(!n || isNaN(v) || v<=0) return; player.customRewards.push({ id: Date.now(), name: n, value: v, claimed: false }); document.getElementById("new-reward-name").value = ""; document.getElementById("new-reward-value").value = ""; saveData(); updateScreen(); populateRewardShopPanel(); };
+        window.addCustomRewardShop = function() { 
+            let n = document.getElementById("new-reward-name").value.trim(); 
+            if(!n) return; 
+            
+            // Auto map to next available level slot logically based on max current unlock Level
+            let maxLevel = player.customRewards.length > 0 ? Math.max(...player.customRewards.map(r => r.unlockLevel)) : player.level;
+            let nextUnlock = maxLevel + 1;
+
+            player.customRewards.push({ id: Date.now(), name: n, unlockLevel: nextUnlock, claimed: false }); 
+            document.getElementById("new-reward-name").value = ""; 
+            saveData(); updateScreen(); populateRewardShopPanel(); 
+        };
+        
         window.deleteCustomReward = function(id) { player.customRewards = player.customRewards.filter(r => r.id != id); saveData(); updateScreen(); populateRewardShopPanel(); };
         window.purgeAllRewards = function() { if(confirm("Permanently wipe all rewards?")) { player.customRewards = []; saveData(); updateScreen(); populateRewardShopPanel(); } };
-        window.editCustomReward = function(id) { const r = player.customRewards.find(x => x.id == id); if(r) { const nn = prompt("Edit Item Name:", r.name); if(nn) { const nv = prompt("Edit Cost:", r.value); if(nv && !isNaN(nv)) { r.name = nn; r.value = parseInt(nv); saveData(); updateScreen(); populateRewardShopPanel(); } } } };
+        window.editCustomReward = function(id) { 
+            const r = player.customRewards.find(x => x.id == id); 
+            if(r) { 
+                const nn = prompt("Edit Item Name:", r.name); 
+                if(nn) { 
+                    const nl = prompt("Edit Unlock Level:", r.unlockLevel); 
+                    if(nl && !isNaN(nl)) { r.name = nn; r.unlockLevel = parseInt(nl); saveData(); updateScreen(); populateRewardShopPanel(); } 
+                } 
+            } 
+        };
 
-        window.claimReward = function(id) { const r = player.customRewards.find(x => x.id == id); const m = currencyRatios[player.currency] || 2; if(!r || player.xp < (r.value * m)) return; r.claimed = true; triggerAudioFeedback('levelup'); logCompletedTaskToArchive(`[CLAIMED]: ${r.name}`, 0, true, r.id); saveData(); updateScreen(); populateRewardShopPanel(); };
+        window.claimReward = function(id) { const r = player.customRewards.find(x => x.id == id); if(!r || player.level < r.unlockLevel) return; r.claimed = true; triggerAudioFeedback('levelup'); logCompletedTaskToArchive(`[CLAIMED]: ${r.name}`, 0, true, r.id); saveData(); updateScreen(); populateRewardShopPanel(); };
         window.revokeRewardClaim = function(dayStr, idx, tid) { const t = player.customRewards.find(r => r.id == tid); if(t) t.claimed = false; dayLogs[dayStr].itemsLogged.splice(idx, 1); dayLogs[dayStr].totalXPEarned = dayLogs[dayStr].itemsLogged.reduce((sum, i) => sum + i.reward, 0); saveData(); calculateProgression(); updateScreen(); populateArchivePanel(); };
 
         function populateArchivePanel() {
