@@ -21,16 +21,10 @@
         }
 
         body {
-            background-color: var(--bg-black);
-            color: var(--text-pure);
+            background-color: var(--bg-black); color: var(--text-pure);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            margin: 0;
-            padding: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            box-sizing: border-box;
+            margin: 0; padding: 16px; display: flex; justify-content: center;
+            align-items: flex-start; min-height: 100vh; box-sizing: border-box;
         }
 
         .serif-title { font-family: "Georgia", serif; font-weight: 400; letter-spacing: 0.08em; margin: 0 0 8px 0; text-transform: uppercase; font-size: 1.25rem; text-align: center; }
@@ -38,13 +32,11 @@
         .thin-line { border: 0; height: 1px; background: var(--border-silver); margin: 12px 0; }
         .hidden, .modal-hidden { display: none !important; }
 
-        /* Animation */
         .animate-fade-in { animation: fadeIn 0.5s forwards; }
         .animate-slide-up { animation: slideUp 0.4s forwards; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Badges & Dashboard Layout */
         #status-alerts-bar { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
         .badge { padding: 6px 12px; font-size: 0.7rem; font-weight: bold; border: 1px solid rgba(0, 221, 255, 0.3); background: #000; color: var(--system-blue); }
 
@@ -55,14 +47,12 @@
             padding: 20px; border-radius: 2px; margin-bottom: 20px;
             display: flex; flex-direction: column; align-items: center; text-align: center;
         }
-
         #instagram-avatar-circle {
             width: 100px; height: 100px; border-radius: 50%; background: #000;
             border: 2px solid var(--text-dark); position: relative;
             display: flex; justify-content: center; align-items: center; margin-bottom: 14px;
         }
         #avatar-img { width: calc(100% - 4px); height: calc(100% - 4px); border-radius: 50%; object-fit: cover; filter: grayscale(100%); }
-        
         #avatar-rank-title {
             font-size: 0.55rem; font-weight: 900; letter-spacing: 0.1em;
             position: absolute; bottom: -6px; z-index: 5; color: var(--text-gray);
@@ -85,7 +75,7 @@
         body.rank-elite #instagram-avatar-circle { border-color: var(--system-purple); box-shadow: 0 0 16px rgba(175, 82, 222, 0.25); }
         body.rank-s-class #instagram-avatar-circle { border-color: var(--system-gold); box-shadow: 0 0 24px rgba(255, 204, 0, 0.35); }
 
-        /* Task Lists */
+        /* Quest Lists */
         .quest-category { margin-bottom: 18px; }
         .category-header { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; border-bottom: 1px solid var(--border-silver); padding-bottom: 6px; margin: 0 0 10px 0; }
         .header-desc { font-weight: 400; color: var(--text-gray); font-size: 0.65rem; letter-spacing: 0; }
@@ -98,7 +88,7 @@
         .quest-item.completed-decay { opacity: 0; transform: scale(0.97) translateY(-4px); transition: var(--transition); }
         .completed-section { opacity: 0.5; } .completed-section:hover { opacity: 1; }
 
-        /* Forms & Inputs */
+        /* Forms, Chips & Inputs */
         .form-group { margin-bottom: 14px; }
         .toggle-group { display: flex; justify-content: space-between; align-items: center; background: #000; border: 1px solid var(--border-silver); padding: 12px; }
         label { display: block; font-size: 0.7rem; color: var(--text-gray); font-weight: bold; margin-bottom: 4px; text-transform: uppercase; }
@@ -116,24 +106,27 @@
         input:focus, select:focus { outline: none; border-color: var(--system-blue); }
         .calendar-input-row { display: flex; gap: 8px; width: 100%; }
 
+        /* Suggestion Chips */
+        .suggestion-box { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; justify-content: center; }
+        .chip { background: var(--bg-black); border: 1px solid var(--border-silver); color: var(--text-gray); padding: 8px 12px; font-size: 0.75rem; cursor: pointer; border-radius: 4px; transition: var(--transition); display:flex; align-items:center; gap:4px;}
+        .chip:hover { border-color: var(--system-blue); color: #fff; }
+        .chip-meta { font-size: 0.6rem; opacity: 0.6; }
+
         /* Universal Standardized Buttons */
         .btn-text { text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; font-weight: bold; }
         
         .primary-btn, .secondary-btn {
-            height: 46px; /* Universal height lock */
-            display: flex; justify-content: center; align-items: center; box-sizing: border-box;
+            height: 46px; display: flex; justify-content: center; align-items: center; box-sizing: border-box;
             cursor: pointer; padding: 0 12px; width: 100%; text-align: center; transition: var(--transition);
         }
         
         .primary-btn { background: var(--text-pure); color: #000; border: 1px solid var(--text-pure); }
         .primary-btn:hover { background: #e5e5ea; }
-        
         .secondary-btn { background: transparent; color: var(--text-pure); border: 1px solid var(--border-silver); }
         .secondary-btn:hover { background: #08080a; border-color: var(--text-dark); }
 
         .gold-btn {
-            height: 36px; /* Slightly smaller for inline task buttons */
-            display: flex; justify-content: center; align-items: center; padding: 0 10px;
+            height: 36px; display: flex; justify-content: center; align-items: center; padding: 0 10px;
             background: transparent; border: 1px solid var(--text-pure); color: var(--text-pure); 
             font-size: 0.7rem; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: var(--transition);
         }
@@ -146,15 +139,13 @@
             width: 100%; max-width: 320px; margin: 24px auto 0 auto; box-sizing: border-box;
         }
         .nav-row button { height: 46px; padding: 0; }
-
-        /* Other Centralized Button Wrappers */
         .centered-btn-wrapper { display: flex; justify-content: center; width: 100%; max-width: 320px; margin: 18px auto 0 auto; gap: 8px; }
         
         .modal-header-row { display: flex; justify-content: space-between; align-items: center; }
         .close-x { background: transparent; border: none; color: var(--text-gray); font-size: 1.5rem; cursor: pointer; padding: 0; line-height: 1; }
 
-        /* Modals with Natural Scrolling */
-        #quest-modal, #settings-modal, #tutorial-modal, #night-shift-modal, #tomorrow-modal, #edit-task-modal {
+        /* Modals */
+        #quest-modal, #settings-modal, #tutorial-tasks-modal, #tutorial-system-modal, #night-shift-modal, #tomorrow-modal, #edit-task-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.95); z-index: 9999;
             display: flex; justify-content: center; align-items: flex-start;
@@ -178,41 +169,58 @@
         .tab-btn { flex: 1; height: 38px; display: flex; justify-content: center; align-items: center; background: transparent; border: 1px solid var(--border-silver); color: var(--text-gray); cursor: pointer; font-size: 0.7rem; text-transform: uppercase; }
         .tab-btn.active { background: var(--panel-dark); border-color: var(--text-pure); color: var(--text-pure); font-weight: bold; }
 
-        .reward-creation-box { background: var(--panel-dark); padding: 12px; border: 1px dashed var(--text-dark); width: 100%; box-sizing: border-box; margin-bottom: 15px;}
         .roster-card, .archive-card { background: var(--panel-dark); border: 1px solid var(--border-silver); padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; box-sizing: border-box; }
-        
         .flex-buttons { display: flex; gap: 6px; }
     </style>
 </head>
 <body>
 
-    <div id="tutorial-modal" class="modal-hidden">
+    <div id="tutorial-tasks-modal" class="modal-hidden">
         <div class="modal-content animate-fade-in">
-            <h2 class="serif-title">📖 SYSTEM GUIDE</h2>
+            <h2 class="serif-title">📖 QUEST GUIDE</h2>
             <hr class="thin-line">
             
-            <div id="slideshow-box">
-                <div class="system-slide">
-                    <h3 class="slide-title">[1/4] THE DOOMSDAY DEADLINE</h3>
-                    <p class="slide-text">You are fighting against a countdown clock. Choose a major real-world deadline date. The app displays exactly how many days you have left to reach it, forcing you to see time slipping away.</p>
+            <div id="slideshow-tasks-box">
+                <div class="system-slide task-slide">
+                    <h3 class="slide-title">[1/2] THE MANDATORY CORE</h3>
+                    <p class="slide-text"><strong>🔥 Main Quests</strong> are heavy focus blocks <em>(e.g., Study Session, Office Project)</em>.<br><br><strong>🛠️ Side Quests</strong> are structural habits <em>(e.g., 10-Min Walk, Read 10 Pages)</em>.<br><br>Both are mandatory. Missing them before your daily reset hour will cost you heavy point penalties.</p>
                 </div>
-                <div class="system-slide hidden">
-                    <h3 class="slide-title">[2/4] YOUR SLEEP RESET HOUR</h3>
-                    <p class="slide-text">Everyone has a different sleep schedule. Pick a reset hour between 12:00 AM and 6:00 AM. This is your personal midnight. If you do not finish your mandatory tasks before this hour, you face point penalties.</p>
-                </div>
-                <div class="system-slide hidden">
-                    <h3 class="slide-title">[3/4] UNLOCKING REWARDS</h3>
-                    <p class="slide-text">You will list real-world rewards and their actual money cost. The app turns that price into an XP goal. You never spend your points; your hard work clears the milestone so you can claim the reward guilt-free.</p>
-                </div>
-                <div class="system-slide hidden">
-                    <h3 class="slide-title">[4/4] TASK RULES</h3>
-                    <p class="slide-text">Main and Side Tasks are mandatory. Finish them before your reset hour, or you lose points. Errands and Bonus Tasks are optional. Completed tasks stay crossed-out on your screen all day to keep you motivated.</p>
+                <div class="system-slide task-slide hidden">
+                    <h3 class="slide-title">[2/2] OPTIONAL WINS</h3>
+                    <p class="slide-text"><strong>📜 Errands</strong> are chores you need to remember <em>(e.g., Water Plants, Pay Bills)</em>.<br><br><strong>⭐ Bonus Quests</strong> are wellness wins <em>(e.g., Protein Shake, Cut Nails)</em>.<br><br>Both are optional. They grant extra points, but failing to do them carries absolutely zero penalties.</p>
                 </div>
             </div>
 
             <div class="centered-btn-wrapper">
-                <button id="slide-prev-btn" class="secondary-btn btn-text" onclick="changeOnboardingSlide(-1)" disabled>Previous</button>
-                <button id="slide-next-btn" class="primary-btn btn-text" onclick="changeOnboardingSlide(1)">Next</button>
+                <button id="slide-task-prev-btn" class="secondary-btn btn-text" onclick="changeTaskSlide(-1)" disabled>Previous</button>
+                <button id="slide-task-next-btn" class="primary-btn btn-text" onclick="changeTaskSlide(1)">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="tutorial-system-modal" class="modal-hidden">
+        <div class="modal-content animate-fade-in">
+            <h2 class="serif-title">📖 SYSTEM GUIDE</h2>
+            <hr class="thin-line">
+            
+            <div id="slideshow-system-box">
+                <div class="system-slide sys-slide">
+                    <h3 class="slide-title">[1/3] THE DOOMSDAY DEADLINE</h3>
+                    <p class="slide-text">You are fighting a countdown clock. Choose a major real-world deadline date <em>(e.g., Final Exams, Project Launch)</em>. The app displays exactly how many days you have left, forcing you to see time slipping away.</p>
+                </div>
+                <div class="system-slide sys-slide hidden">
+                    <h3 class="slide-title">[2/3] YOUR SLEEP RESET HOUR</h3>
+                    <p class="slide-text">Everyone has a different sleep schedule. Pick a reset hour between 12:00 AM and 6:00 AM. This is your personal midnight where the app rolls over to the next day.</p>
+                </div>
+                <div class="system-slide sys-slide hidden">
+                    <h3 class="slide-title">[3/3] UNLOCKING REWARDS</h3>
+                    <p class="slide-text">List real-world rewards and their actual money cost <em>(e.g., $10 Iced Coffee, $60 Video Game)</em>. The app turns that price into an XP goal. Your hard work clears the milestone so you can claim the reward guilt-free.</p>
+                </div>
+            </div>
+
+            <div class="centered-btn-wrapper">
+                <button id="slide-sys-prev-btn" class="secondary-btn btn-text" onclick="changeSystemSlide(-1)" disabled>Previous</button>
+                <button id="slide-sys-next-btn" class="primary-btn btn-text" onclick="changeSystemSlide(1)">Next</button>
             </div>
         </div>
     </div>
@@ -229,11 +237,11 @@
             
             <div class="faq-section">
                 <h4>💡 POSTPONE (PT) BUTTON</h4>
-                <p>Next to mandatory tasks is a yellow [PT] button. Having a terrible day? Click it to safely skip the task. You avoid the penalty loss, but get 0 XP.</p>
+                <p>Next to mandatory quests is a yellow [PT] button. Having a terrible day? Click it to safely skip the quest. You avoid the penalty loss, but get 0 XP.</p>
             </div>
             <div class="faq-section">
                 <h4>🔥 EARNING TOKENS</h4>
-                <p>You start with 3 PT tokens. Complete all mandatory tasks for 3 consecutive days to earn a "Perfect Streak" and get +1 free token.</p>
+                <p>You start with 3 PT tokens. Complete all mandatory quests for 3 consecutive days to earn a "Perfect Streak" and get +1 free token.</p>
             </div>
             <div class="faq-section">
                 <h4>❄️ REST / SICK DAY MODE</h4>
@@ -248,7 +256,7 @@
                 <h2 class="serif-title" style="margin:0;">🌙 NIGHT DIRECTIVE</h2>
                 <button class="close-x" onclick="dismissNightHub()">&times;</button>
             </div>
-            <p style="font-size:0.8rem; color:var(--text-gray);">Unfinished mandatory tasks found.</p>
+            <p style="font-size:0.8rem; color:var(--text-gray);">Unfinished mandatory quests found.</p>
             <hr class="thin-line">
             <div id="night-hub-list"></div>
         </div>
@@ -257,25 +265,25 @@
     <div id="edit-task-modal" class="modal-hidden">
         <div class="modal-content animate-slide-up">
             <div class="modal-header-row">
-                <h3 class="serif-title" style="margin:0;">EDIT TASK</h3>
+                <h3 class="serif-title" style="margin:0;">EDIT QUEST</h3>
                 <button class="close-x" onclick="closeEditTaskModal()">&times;</button>
             </div>
             <hr class="thin-line">
             <input type="hidden" id="edit-task-id">
-            <label>Task Name</label>
+            <label>Quest Name</label>
             <input type="text" id="edit-task-title" style="margin-bottom:12px;">
             <label>Classification</label>
             <select id="edit-task-type" style="margin-bottom:12px;">
-                <option value="main">🔥 Main Task</option>
-                <option value="side">🛠️ Side Task</option>
+                <option value="main">🔥 Main Quest</option>
+                <option value="side">🛠️ Side Quest</option>
                 <option value="errand">📜 Errand</option>
-                <option value="bonus">⭐ Bonus Task</option>
+                <option value="bonus">⭐ Bonus Quest</option>
             </select>
             <label>Reward Points</label>
             <input type="number" id="edit-task-reward" style="margin-bottom:16px;">
             
             <div class="centered-btn-wrapper" style="margin-top:0;">
-                <button class="primary-btn btn-text" onclick="saveTaskEdit()">Save Task</button>
+                <button class="primary-btn btn-text" onclick="saveTaskEdit()">Save Quest</button>
             </div>
         </div>
     </div>
@@ -283,19 +291,27 @@
     <div id="tomorrow-modal" class="modal-hidden">
         <div class="modal-content animate-slide-up">
             <div class="modal-header-row">
-                <h3 class="serif-title" style="margin:0;">🗓️ TOMORROW'S TASKS</h3>
+                <h3 class="serif-title" style="margin:0;">🗓️ PLAN TOMORROW</h3>
                 <button class="close-x" onclick="closeTomorrowModal()">&times;</button>
             </div>
             <hr class="thin-line">
             
             <div class="reward-creation-box">
-                <h5 style="margin: 0 0 10px 0; color:#fff;">+ ADD NEW TASK</h5>
-                <input type="text" id="t-quest-title" placeholder="Task name...">
+                <h5 style="margin: 0 0 10px 0; color:#fff;">+ QUICK ADD PRESETS</h5>
+                <div class="suggestion-box">
+                    <div class="chip" onclick="quickAddTomorrowTask('Exam/Study Prep', 'main', true, 0)">+ Exam Prep <span class="chip-meta">(Daily)</span></div>
+                    <div class="chip" onclick="quickAddTomorrowTask('Office Project', 'main', true, 0)">+ Project <span class="chip-meta">(Daily)</span></div>
+                    <div class="chip" onclick="quickAddTomorrowTask('Read 10 Pages', 'side', true, 0)">+ Read <span class="chip-meta">(Daily)</span></div>
+                    <div class="chip" onclick="quickAddTomorrowTask('Pay Bills', 'errand', false, 30)">+ Pay Bills <span class="chip-meta">(30d)</span></div>
+                </div>
+
+                <h5 style="margin: 15px 0 10px 0; color:#fff; border-top: 1px dashed var(--border-silver); padding-top:15px;">+ CREATE CUSTOM QUEST</h5>
+                <input type="text" id="t-quest-title" placeholder="Quest name...">
                 <select id="t-quest-type" style="margin-bottom:8px;">
-                    <option value="main">🔥 Main Task (+50 XP)</option>
-                    <option value="side" selected>🛠️ Side Task (+20 XP)</option>
+                    <option value="main">🔥 Main Quest (+50 XP)</option>
+                    <option value="side" selected>🛠️ Side Quest (+20 XP)</option>
                     <option value="errand">📜 Errand (+75 XP)</option>
-                    <option value="bonus">⭐ Bonus Task (+15 XP)</option>
+                    <option value="bonus">⭐ Bonus Quest (+15 XP)</option>
                 </select>
                 <select id="t-quest-frequency" onchange="toggleTomorrowCycleInput()" style="margin-bottom:8px;">
                     <option value="daily" selected>🔁 Daily Habit</option>
@@ -310,7 +326,7 @@
                 </div>
             </div>
 
-            <h4 class="serif-sub">UPCOMING HABITS (AUTO-GENERATED)</h4>
+            <h4 class="serif-sub">UPCOMING QUESTS (AUTO-GENERATED)</h4>
             <div id="tomorrow-sandbox-list"></div>
         </div>
     </div>
@@ -333,12 +349,9 @@
                     <label for="settings-stasis" style="margin:0; color:#fff;">❄️ Rest / Sick Day</label>
                     <input type="checkbox" id="settings-stasis" onchange="toggleStasisMode()" style="width:auto; cursor:pointer;">
                 </div>
-                
                 <div class="form-group">
                     <label>Doomsday Limit Date:</label>
-                    <div class="calendar-input-row">
-                        <input type="date" id="settings-boss-date">
-                    </div>
+                    <input type="date" id="settings-boss-date">
                 </div>
                 <div class="form-group">
                     <label>Sleep Reset Hour:</label>
@@ -361,6 +374,11 @@
             <div id="tab-content-roster" class="tab-pane hidden">
                 <div class="reward-creation-box">
                     <h5 style="margin: 0 0 10px 0; color:#fff;">+ ADD REWARD</h5>
+                    <div class="suggestion-box">
+                        <div class="chip" onclick="document.getElementById('new-reward-name').value='Cinema Ticket'; document.getElementById('new-reward-value').value='15';">+ Cinema</div>
+                        <div class="chip" onclick="document.getElementById('new-reward-name').value='Fancy Dinner'; document.getElementById('new-reward-value').value='50';">+ Dinner</div>
+                        <div class="chip" onclick="document.getElementById('new-reward-name').value='New Shoes'; document.getElementById('new-reward-value').value='80';">+ Shoes</div>
+                    </div>
                     <input type="text" id="new-reward-name" placeholder="Item Name...">
                     <input type="number" id="new-reward-value" placeholder="Price Cost">
                     <div class="centered-btn-wrapper" style="margin-top:4px;">
@@ -375,7 +393,7 @@
             </div>
 
             <div id="tab-content-archive" class="tab-pane hidden">
-                <h4 class="serif-sub">COMPLETED TASKS LOG</h4>
+                <h4 class="serif-sub">COMPLETED QUESTS LOG</h4>
                 <div id="history-archive-list"></div>
             </div>
         </div>
@@ -385,7 +403,7 @@
         <div class="setup-content animate-fade-in">
             
             <div id="setup-phase-1">
-                <h2 class="serif-title">SYSTEM REGISTRATION</h2>
+                <h2 class="serif-title">PLAYER REGISTRATION</h2>
                 <hr class="thin-line">
                 <div class="form-group"><label>Player Name:</label><input type="text" id="setup-name" placeholder="Your Name"></div>
                 <div class="form-group">
@@ -413,7 +431,51 @@
                     <input type="file" id="setup-file-input" class="hidden" accept="image/*" onchange="processSetupPhoto(this)">
                     <div id="setup-photo-preview-msg" class="input-helper" style="text-align:center; color:var(--system-blue); margin-top:5px;"></div>
                 </div>
-                <div class="centered-btn-wrapper"><button class="primary-btn btn-text" onclick="advanceSetupToPhase2()">Next Step</button></div>
+                <div class="centered-btn-wrapper"><button class="primary-btn btn-text" onclick="advanceToTaskDemo()">Next Step</button></div>
+            </div>
+
+            <div id="setup-phase-tasks" class="hidden">
+                <h2 class="serif-title">ESTABLISH QUESTS</h2>
+                <hr class="thin-line">
+                <p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:16px;">These are your starting quests. Delete or add new ones below.</p>
+                
+                <div id="setup-tasks-list" style="margin-bottom:20px;"></div>
+
+                <div class="reward-creation-box">
+                    <h5 style="margin: 0 0 10px 0; color:#fff;">+ QUICK ADD PRESETS</h5>
+                    <div class="suggestion-box">
+                        <div class="chip" onclick="quickAddSetupTask('Exam/Study Prep', 'main', true, 0)">+ Exam Prep <span class="chip-meta">(Daily)</span></div>
+                        <div class="chip" onclick="quickAddSetupTask('Office Project', 'main', true, 0)">+ Project <span class="chip-meta">(Daily)</span></div>
+                        <div class="chip" onclick="quickAddSetupTask('10-Min Walk', 'side', true, 0)">+ 10-Min Walk <span class="chip-meta">(Daily)</span></div>
+                        <div class="chip" onclick="quickAddSetupTask('Read 10 Pages', 'side', true, 0)">+ Read <span class="chip-meta">(Daily)</span></div>
+                        <div class="chip" onclick="quickAddSetupTask('Water Plants', 'errand', false, 3)">+ Water Plants <span class="chip-meta">(3d)</span></div>
+                        <div class="chip" onclick="quickAddSetupTask('Pay Bills', 'errand', false, 30)">+ Pay Bills <span class="chip-meta">(30d)</span></div>
+                        <div class="chip" onclick="quickAddSetupTask('Protein Shake', 'bonus', true, 0)">+ Protein <span class="chip-meta">(Daily)</span></div>
+                        <div class="chip" onclick="quickAddSetupTask('Take Meds', 'bonus', true, 0)">+ Take Meds <span class="chip-meta">(Daily)</span></div>
+                    </div>
+
+                    <h5 style="margin: 15px 0 10px 0; color:#fff; border-top: 1px dashed var(--border-silver); padding-top:15px;">+ CREATE CUSTOM QUEST</h5>
+                    <input type="text" id="setup-t-quest-title" placeholder="Quest name...">
+                    <select id="setup-t-quest-type" style="margin-bottom:8px;">
+                        <option value="main">🔥 Main Quest (+50 XP)</option>
+                        <option value="side" selected>🛠️ Side Quest (+20 XP)</option>
+                        <option value="errand">📜 Errand (+75 XP)</option>
+                        <option value="bonus">⭐ Bonus Quest (+15 XP)</option>
+                    </select>
+                    <select id="setup-t-quest-frequency" onchange="toggleSetupCycleInput()" style="margin-bottom:8px;">
+                        <option value="daily" selected>🔁 Daily Habit</option>
+                        <option value="one-time">⚡ Single Event</option>
+                        <option value="cyclic">⏳ Interval Cycle</option>
+                    </select>
+                    <div id="setup-t-custom-cycle-group" class="hidden">
+                        <input type="number" id="setup-t-quest-cycle-days" value="3" placeholder="Every X Days" min="1" style="margin-bottom:8px;">
+                    </div>
+                    <div class="centered-btn-wrapper" style="margin-top:4px;">
+                        <button class="secondary-btn btn-text" onclick="addSetupTask()">Add Custom Quest</button>
+                    </div>
+                </div>
+
+                <div class="centered-btn-wrapper"><button class="primary-btn btn-text" onclick="advanceToSystemDemo()">Next Step</button></div>
             </div>
 
             <div id="setup-phase-2" class="hidden">
@@ -421,10 +483,7 @@
                 <hr class="thin-line">
                 <div class="form-group">
                     <label>Doomsday Deadline Date:</label>
-                    <div class="calendar-input-row">
-                        <input type="date" id="setup-deadline">
-                        <button class="secondary-btn btn-text" style="width:auto; padding:0 16px; font-size:1.2rem;" onclick="triggerCalendarPicker()">📅</button>
-                    </div>
+                    <input type="date" id="setup-deadline">
                     <span id="date-format-tip" class="input-helper" style="color:var(--system-blue);">Format: DD-MM-YYYY</span>
                 </div>
                 <div class="form-group">
@@ -433,7 +492,7 @@
                         <option value="0">12:00 AM (Midnight)</option>
                         <option value="1">01:00 AM</option>
                         <option value="2">02:00 AM</option>
-                        <option value="3" selected>03:00 AM (Recommended Anchor)</option>
+                        <option value="3" selected>03:00 AM (Recommended)</option>
                         <option value="4">04:00 AM</option>
                         <option value="5">05:00 AM</option>
                         <option value="6">06:00 AM</option>
@@ -441,15 +500,22 @@
                 </div>
                 
                 <div class="reward-mandate-box">
-                    <h4 style="margin:0 0 10px 0; font-size:0.8rem; color:#fff; text-align:center;">🏆 STARTING REWARDS (Add Up To 10)</h4>
+                    <h4 style="margin:0 0 10px 0; font-size:0.8rem; color:#fff; text-align:center;">🏆 STARTING REWARDS</h4>
+                    
+                    <div class="suggestion-box" style="margin-bottom: 15px;">
+                        <div class="chip" onclick="quickAddWizardReward('Cinema Ticket', 15)">+ Cinema</div>
+                        <div class="chip" onclick="quickAddWizardReward('Fancy Dinner', 50)">+ Dinner</div>
+                        <div class="chip" onclick="quickAddWizardReward('New Shoes', 80)">+ Shoes</div>
+                    </div>
+
                     <div id="wizard-rewards-wrapper">
-                        <div class="setup-reward-row"><input type="text" class="wiz-r-name" value="Coffee Treat"><input type="number" class="wiz-r-val" value="150"><button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>
-                        <div class="setup-reward-row"><input type="text" class="wiz-r-name" value="Buy New Shirt"><input type="number" class="wiz-r-val" value="1000"><button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>
-                        <div class="setup-reward-row"><input type="text" class="wiz-r-name" value="New Video Game"><input type="number" class="wiz-r-val" value="3000"><button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>
-                        <div class="setup-reward-row"><input type="text" class="wiz-r-name" value="Weekend Getaway"><input type="number" class="wiz-r-val" value="10000"><button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>
+                        <div class="setup-reward-row"><input type="text" class="wiz-r-name" value="Coffee Treat"><input type="number" class="wiz-r-val" value="10"><button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>
+                        <div class="setup-reward-row"><input type="text" class="wiz-r-name" value="Buy New Shirt"><input type="number" class="wiz-r-val" value="40"><button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>
+                        <div class="setup-reward-row"><input type="text" class="wiz-r-name" value="New Video Game"><input type="number" class="wiz-r-val" value="60"><button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>
+                        <div class="setup-reward-row"><input type="text" class="wiz-r-name" value="Weekend Getaway"><input type="number" class="wiz-r-val" value="200"><button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>
                     </div>
                     <div class="centered-btn-wrapper" style="margin-top:8px;">
-                        <button class="secondary-btn btn-text" style="height:36px;" onclick="addRewardRowInWizard()">+ Add Reward Line</button>
+                        <button class="secondary-btn btn-text" style="height:36px;" onclick="addRewardRowInWizard()">+ Custom Reward Line</button>
                     </div>
                 </div>
                 <div class="centered-btn-wrapper"><button class="primary-btn btn-text" onclick="finalizeSetupWizard()">Begin Quest</button></div>
@@ -475,7 +541,7 @@
                 <h1 class="serif-name" id="username">---</h1>
                 <p class="meta-text">Rank: <span id="rank-display" style="font-weight:bold;">---</span> | Level: <span id="level-display">-</span> | Streak: <span id="streak-display">0</span>d</p>
                 
-                <div id="daily-directive-msg">Welcome! Tap 'Tomorrow's Tasks' at the bottom to plan out your upcoming routines.</div>
+                <div id="daily-directive-msg">Welcome! Tap 'Tomorrow' at the bottom to plan out your upcoming routines.</div>
                 <div id="dashboard-milestone-tracker">Next Target: Loading...</div>
 
                 <div class="economy-bar">
@@ -487,10 +553,10 @@
         </div>
 
         <div id="quest-board" class="animate-fade-in">
-            <div class="quest-category"><h3 class="category-header">🔥 MAIN TASKS <span class="header-desc">(Mandatory)</span></h3><ul id="main-quest-list" class="quest-list"></ul></div>
-            <div class="quest-category"><h3 class="category-header">🛠️ SIDE TASKS <span class="header-desc">(Mandatory)</span></h3><ul id="side-quest-list" class="quest-list"></ul></div>
+            <div class="quest-category"><h3 class="category-header">🔥 MAIN QUESTS <span class="header-desc">(Mandatory)</span></h3><ul id="main-quest-list" class="quest-list"></ul></div>
+            <div class="quest-category"><h3 class="category-header">🛠️ SIDE QUESTS <span class="header-desc">(Mandatory)</span></h3><ul id="side-quest-list" class="quest-list"></ul></div>
             <div class="quest-category"><h3 class="category-header">📜 ERRANDS <span class="header-desc">(Optional)</span></h3><ul id="errand-quest-list" class="quest-list"></ul></div>
-            <div class="quest-category"><h3 class="category-header">⭐ BONUS TASKS <span class="header-desc">(Optional)</span></h3><ul id="bonus-quest-list" class="quest-list"></ul></div>
+            <div class="quest-category"><h3 class="category-header">⭐ BONUS QUESTS <span class="header-desc">(Optional)</span></h3><ul id="bonus-quest-list" class="quest-list"></ul></div>
             <div class="quest-category completed-section"><h3 class="category-header completed-header">✅ COMPLETED TODAY</h3><ul id="completed-quest-list" class="quest-list"></ul></div>
         </div>
 
@@ -503,7 +569,8 @@
 
     <script>
         let player = null; let quests = []; let dayLogs = {}; 
-        let onboardingSlideIndex = 0; let temporarySetupPhotoData = null;
+        let taskSlideIndex = 0; let systemSlideIndex = 0; 
+        let temporarySetupPhotoData = null;
 
         const defaultRewards = { main: 50, side: 20, errand: 75, bonus: 15 };
         const currencyRatios = { "₹": 2, "$": 100, "€": 100, "£": 125, "¥": 2, "CHF": 100 };
@@ -512,7 +579,7 @@
             "The System monitors your execution variables. Proceed with absolute precision.",
             "Executive latency detected. Isolate your active focus block immediately.",
             "A continuous matrix streak charges your token bank. Do not yield momentum.",
-            "Do not accumulate task inventory debt. Execution yields absolute clarity."
+            "Do not accumulate quest inventory debt. Execution yields absolute clarity."
         ];
 
         function triggerAudioFeedback(type) {
@@ -551,11 +618,6 @@
             const tipEl = document.getElementById("date-format-tip");
             if(tipEl) tipEl.innerText = (region === "EST" || region === "PST") ? "Format: MM-DD-YYYY" : "Format: DD-MM-YYYY";
         };
-        window.triggerCalendarPicker = function() {
-            const dateInput = document.getElementById("setup-deadline");
-            if (dateInput && typeof dateInput.showPicker === 'function') dateInput.showPicker();
-            else if (dateInput) dateInput.focus();
-        };
 
         function setDefaultSetupDate() {
             const today = new Date();
@@ -584,44 +646,113 @@
                 if (!player.isDay0Buffer) checkNightShiftConditions();
             } else {
                 document.getElementById("setup-screen").classList.remove("hidden");
+                // The 4 Specific Default Quests requested
+                quests = [
+                    { id: Date.now(), type: "main", title: "Deep Work / Study Session", reward: 50, completed: false, isDaily: true },
+                    { id: Date.now()+1, type: "errand", title: "Clear Workspace", reward: 75, completed: false, isDaily: true },
+                    { id: Date.now()+2, type: "bonus", title: "Take a Bath", reward: 15, completed: false, isDaily: true },
+                    { id: Date.now()+3, type: "bonus", title: "Cut Nails", reward: 15, completed: false, cycle: 10, lastDone: null }
+                ];
                 setDefaultSetupDate();
             }
         }
 
-        window.advanceSetupToPhase2 = function() {
+        // --- NEW 5-STEP WIZARD FLOW ---
+
+        window.advanceToTaskDemo = function() {
             if (!document.getElementById("setup-name").value.trim()) return alert("Provide a Player Name.");
             document.getElementById("setup-screen").classList.add("hidden");
-            onboardingSlideIndex = 0; renderOnboardingSlide();
-            document.getElementById("tutorial-modal").classList.remove("modal-hidden");
+            taskSlideIndex = 0; renderTaskSlide();
+            document.getElementById("tutorial-tasks-modal").classList.remove("modal-hidden");
         };
 
-        window.changeOnboardingSlide = function(direction) {
-            const slides = document.querySelectorAll(".system-slide");
-            onboardingSlideIndex += direction;
-            if (onboardingSlideIndex >= slides.length) {
-                document.getElementById("tutorial-modal").classList.add("modal-hidden");
-                if (player && player.name) return; 
+        window.changeTaskSlide = function(direction) {
+            const slides = document.querySelectorAll(".task-slide");
+            taskSlideIndex += direction;
+            if (taskSlideIndex >= slides.length) {
+                document.getElementById("tutorial-tasks-modal").classList.add("modal-hidden");
                 document.getElementById("setup-screen").classList.remove("hidden");
                 document.getElementById("setup-phase-1").classList.add("hidden");
-                document.getElementById("setup-phase-2").classList.remove("hidden");
-                adaptRegionalFormatContext(); return;
+                document.getElementById("setup-phase-tasks").classList.remove("hidden");
+                renderSetupTasksList();
+                return;
             }
-            renderOnboardingSlide();
+            renderTaskSlide();
         };
 
-        function renderOnboardingSlide() {
-            const slides = document.querySelectorAll(".system-slide");
-            slides.forEach((slide, idx) => slide.classList.toggle("hidden", idx !== onboardingSlideIndex));
-            document.getElementById("slide-prev-btn").disabled = (onboardingSlideIndex === 0);
-            document.getElementById("slide-next-btn").innerText = (onboardingSlideIndex === slides.length - 1) ? (player ? "Close Guide" : "Proceed") : "Next";
+        function renderTaskSlide() {
+            const slides = document.querySelectorAll(".task-slide");
+            slides.forEach((slide, idx) => slide.classList.toggle("hidden", idx !== taskSlideIndex));
+            document.getElementById("slide-task-prev-btn").disabled = (taskSlideIndex === 0);
+            document.getElementById("slide-task-next-btn").innerText = (taskSlideIndex === slides.length - 1) ? "Set Up Quests" : "Next";
         }
-        window.replayTutorialSlideshowFromManual = function() { closeHelpManualModal(); onboardingSlideIndex = 0; renderOnboardingSlide(); document.getElementById("tutorial-modal").classList.remove("modal-hidden"); };
+
+        function renderSetupTasksList() {
+            const c = document.getElementById("setup-tasks-list"); c.innerHTML = "";
+            quests.forEach(q => {
+                let fLabel = q.isDaily ? "(Daily)" : q.cycle ? `(${q.cycle}d)` : "(Once)";
+                c.innerHTML += `<div class="roster-card"><div><span style="font-weight:bold;">${q.title}</span><div style="font-size:0.65rem; color:var(--text-gray);">${q.type.toUpperCase()} Quest ${fLabel}</div></div><button onclick="removeSetupTask('${q.id}')" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>`;
+            });
+        }
+        window.toggleSetupCycleInput = function() { document.getElementById("setup-t-custom-cycle-group").classList.toggle("hidden", document.getElementById("setup-t-quest-frequency").value !== "cyclic"); };
+        
+        window.quickAddSetupTask = function(title, type, isDaily, cycleDays) {
+            let item = { id: Date.now()+Math.random(), type: type, title: title, reward: defaultRewards[type], completed: false };
+            if (isDaily) item.isDaily = true;
+            else if (cycleDays > 0) { item.cycle = cycleDays; item.lastDone = null; }
+            quests.push(item);
+            renderSetupTasksList();
+        };
+
+        window.addSetupTask = function() {
+            let t = document.getElementById("setup-t-quest-title").value.trim(); let tp = document.getElementById("setup-t-quest-type").value; let f = document.getElementById("setup-t-quest-frequency").value;
+            if(!t) return alert("Quest requires a name.");
+            let item = { id: Date.now(), type: tp, title: t, reward: defaultRewards[tp], completed: false };
+            if(f==="daily") item.isDaily = true; else if(f==="cyclic") { item.cycle = parseInt(document.getElementById("setup-t-quest-cycle-days").value) || 3; item.lastDone = null; }
+            quests.push(item); document.getElementById("setup-t-quest-title").value = ""; renderSetupTasksList();
+        };
+        window.removeSetupTask = function(id) { quests = quests.filter(q => q.id != id); renderSetupTasksList(); };
+
+        window.advanceToSystemDemo = function() {
+            document.getElementById("setup-screen").classList.add("hidden");
+            systemSlideIndex = 0; renderSystemSlide();
+            document.getElementById("tutorial-system-modal").classList.remove("modal-hidden");
+        };
+
+        window.changeSystemSlide = function(direction) {
+            const slides = document.querySelectorAll(".sys-slide");
+            systemSlideIndex += direction;
+            if (systemSlideIndex >= slides.length) {
+                document.getElementById("tutorial-system-modal").classList.add("modal-hidden");
+                document.getElementById("setup-screen").classList.remove("hidden");
+                document.getElementById("setup-phase-tasks").classList.add("hidden");
+                document.getElementById("setup-phase-2").classList.remove("hidden");
+                adaptRegionalFormatContext();
+                return;
+            }
+            renderSystemSlide();
+        };
+
+        function renderSystemSlide() {
+            const slides = document.querySelectorAll(".sys-slide");
+            slides.forEach((slide, idx) => slide.classList.toggle("hidden", idx !== systemSlideIndex));
+            document.getElementById("slide-sys-prev-btn").disabled = (systemSlideIndex === 0);
+            document.getElementById("slide-sys-next-btn").innerText = (systemSlideIndex === slides.length - 1) ? "Calibrate" : "Next";
+        }
+
+        window.quickAddWizardReward = function(name, val) {
+            const c = document.getElementById("wizard-rewards-wrapper");
+            if (c.querySelectorAll(".setup-reward-row").length >= 10) return alert("10 max levels.");
+            const div = document.createElement("div"); div.className = "setup-reward-row";
+            div.innerHTML = `<input type="text" class="wiz-r-name" value="${name}"> <input type="number" class="wiz-r-val" value="${val}"> <button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button>`;
+            c.appendChild(div);
+        };
 
         window.addRewardRowInWizard = function() {
             const c = document.getElementById("wizard-rewards-wrapper");
             if (c.querySelectorAll(".setup-reward-row").length >= 10) return alert("10 max levels.");
             const div = document.createElement("div"); div.className = "setup-reward-row";
-            div.innerHTML = `<input type="text" class="wiz-r-name" placeholder="Item Name"> <input type="number" class="wiz-r-val" value="500"> <button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button>`;
+            div.innerHTML = `<input type="text" class="wiz-r-name" placeholder="Item Name"> <input type="number" class="wiz-r-val" value="50"> <button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button>`;
             c.appendChild(div); div.querySelector(".wiz-r-name").focus();
         };
 
@@ -645,18 +776,11 @@
                 level: 1, rank: "Novice", xp: 0, postponeTokens: 3, perfectStreak: 0, stasisMode: false,
                 resetHour: document.getElementById("setup-reset").value,
                 bossDeadline: document.getElementById("setup-deadline").value,
-                lastLoginDate: "", 
+                lastLoginDate: getLogicalDateStr(), 
                 isDay0Buffer: true, 
                 avatarDataUrl: temporarySetupPhotoData, customRewards: compiledRewards
             };
-            player.lastLoginDate = getLogicalDateStr();
-
-            quests = [
-                { id: 'base_m1', type: "main", title: "Deep Work Focus Block", reward: 50, completed: false, isDaily: true, workdaysOnly: true },
-                { id: 'base_s1', type: "side", title: "10-Minute Walk", reward: 20, completed: false, isDaily: true },
-                { id: 'base_s2', type: "side", title: "Clear Workspace", reward: 20, completed: false, isDaily: true },
-                { id: 'base_b1', type: "bonus", title: "Drink 2L Water", reward: 15, completed: false, isDaily: true }
-            ];
+            
             dayLogs = {}; saveData(); loadData();
         };
 
@@ -682,7 +806,7 @@
             if (h < 20 && h >= parseInt(player.resetHour)) { dismissNightHub(); return; }
             const pending = quests.filter(q => !q.completed && !q.scheduledForTomorrow && (q.type === 'main' || q.type === 'side'));
             const c = document.getElementById("night-hub-list");
-            c.innerHTML = pending.length === 0 ? `<div style="text-align:center; color:var(--system-blue); padding:10px; font-weight:bold;">All tasks cleared for the night!</div>` : "";
+            c.innerHTML = pending.length === 0 ? `<div style="text-align:center; color:var(--system-blue); padding:10px; font-weight:bold;">All quests cleared for the night!</div>` : "";
             pending.forEach(q => {
                 c.innerHTML += `<div class="roster-card" style="border-color:var(--system-red);"><div><span>${q.title}</span></div><div class="flex-buttons"><button class="gold-btn pt-btn" style="height:36px;" onclick="postponeSingleQuest('${q.id}'); checkNightShiftConditions();">PT</button><button class="gold-btn" style="height:36px;" onclick="completeQuestDirectly('${q.id}'); setTimeout(checkNightShiftConditions, 100);">DONE</button></div></div>`;
             });
@@ -712,7 +836,7 @@
             });
             if (!isW && missed === 0 && tot > 0) { player.perfectStreak++; if (player.perfectStreak % 3 === 0) player.postponeTokens++; } 
             else if (missed > 0) player.perfectStreak = 0;
-            if (pen > 0) { player.xp = Math.max(0, player.xp - pen); alert(`⚠️ Rollover Penalty: Missed tasks caused a -${pen} XP drop.`); }
+            if (pen > 0) { player.xp = Math.max(0, player.xp - pen); alert(`⚠️ Rollover Penalty: Missed quests caused a -${pen} XP drop.`); }
             quests = quests.filter(q => !q.completed || q.isDaily || q.cycle);
             player.lastLoginDate = todayStr; saveData();
         }
@@ -770,7 +894,6 @@
             });
         }
 
-        // Inline Live Editing
         window.openEditTaskModal = function(id) {
             const q = quests.find(x => x.id == id); if(!q) return;
             document.getElementById("edit-task-id").value = q.id;
@@ -804,13 +927,20 @@
         function renderTomorrowSandboxList() {
             const c = document.getElementById("tomorrow-sandbox-list"); c.innerHTML = "";
             quests.forEach(q => {
-                c.innerHTML += `<div class="roster-card"><div><span style="font-weight:bold; ${q.scheduledForTomorrow ? 'color:var(--system-blue);' : ''}">${q.title}</span><div style="font-size:0.65rem; color:var(--text-gray);">${q.type.toUpperCase()} Task (+${q.reward} Pt) ${q.scheduledForTomorrow?'[PLAN]':'[AUTO]'}</div></div><button onclick="removeQuestFromTomorrow('${q.id}')" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>`;
+                c.innerHTML += `<div class="roster-card"><div><span style="font-weight:bold; ${q.scheduledForTomorrow ? 'color:var(--system-blue);' : ''}">${q.title}</span><div style="font-size:0.65rem; color:var(--text-gray);">${q.type.toUpperCase()} Quest (+${q.reward} Pt) ${q.scheduledForTomorrow?'[PLAN]':'[AUTO]'}</div></div><button onclick="removeQuestFromTomorrow('${q.id}')" style="background:none; border:none; color:var(--system-red); font-size:1.1rem; cursor:pointer;">🗑️</button></div>`;
             });
         }
 
+        window.quickAddTomorrowTask = function(title, type, isDaily, cycleDays) {
+            let item = { id: Date.now()+Math.random(), type: type, title: title, reward: defaultRewards[type], completed: false, scheduledForTomorrow: true };
+            if (isDaily) item.isDaily = true;
+            else if (cycleDays > 0) { item.cycle = cycleDays; item.lastDone = null; }
+            quests.push(item); saveData(); renderTomorrowSandboxList(); updateScreen();
+        };
+
         window.addCustomTomorrowQuest = function() {
             let t = document.getElementById("t-quest-title").value.trim(); let tp = document.getElementById("t-quest-type").value; let f = document.getElementById("t-quest-frequency").value;
-            if(!t) return alert("Task requires a name.");
+            if(!t) return alert("Quest requires a name.");
             let item = { id: Date.now(), type: tp, title: t, reward: defaultRewards[tp], completed: false, scheduledForTomorrow: true };
             if(f==="daily") item.isDaily = true; else if(f==="cyclic") { item.cycle = parseInt(document.getElementById("t-quest-cycle-days").value) || 3; item.lastDone = null; }
             quests.push(item); document.getElementById("t-quest-title").value = ""; saveData(); renderTomorrowSandboxList(); updateScreen();
@@ -860,6 +990,8 @@
         window.triggerSystemWipe = function() { if(confirm("Erase all tracking profile layers? This operation is permanent.")) { localStorage.clear(); location.reload(); } };
 
         function saveData() { localStorage.setItem("adhdmaxxing_v6_ultra_player", JSON.stringify(player)); localStorage.setItem("adhdmaxxing_v6_ultra_quests", JSON.stringify(quests)); localStorage.setItem("adhdmaxxing_v6_ultra_logs", JSON.stringify(dayLogs)); }
+        
+        window.replayTutorialSlideshowFromManual = function() { closeHelpManualModal(); taskSlideIndex = 0; renderTaskSlide(); document.getElementById("tutorial-tasks-modal").classList.remove("modal-hidden"); };
         
         document.addEventListener("DOMContentLoaded", loadData);
     </script>
