@@ -171,7 +171,7 @@
         .modal-header-row { display: flex; justify-content: space-between; align-items: center; }
         .close-x { background: transparent; border: none; color: var(--text-gray); font-size: 1.5rem; cursor: pointer; padding: 0; line-height: 1; }
 
-        /* Modals Architecture with Isolated Box Scroll */
+        /* Modals Architecture with Natural Append Expansion */
         #settings-modal, #tutorial-tasks-modal, #tutorial-system-modal, #night-shift-modal, #tomorrow-modal, #edit-task-modal, #avatar-edit-modal, #doomsday-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.96); z-index: 9999;
@@ -184,9 +184,15 @@
             padding: 24px; width: 100%; max-width: 460px; box-sizing: border-box; margin: 0 auto;
         }
 
-        /* Scroll Isolation Containment Panel */
-        .isolated-scroll-panel {
-            max-height: 280px; overflow-y: auto; border: 1px solid var(--border-silver);
+        /* Fluid Appending List Wrapper */
+        .list-containment-box {
+            border: 1px solid var(--border-silver);
+            padding: 10px; background: #020203; margin-bottom: 12px;
+        }
+
+        /* Isolated Box Scroll ONLY for the text-heavy manual */
+        .manual-scroll-panel {
+            max-height: 290px; overflow-y: auto; border: 1px solid var(--border-silver);
             padding: 10px; background: #020203; margin-bottom: 12px;
         }
 
@@ -227,7 +233,7 @@
                     <input type="text" id="dd-brain-dump-input" placeholder="Type new reward treat...">
                     <button class="primary-btn btn-text" style="flex:1;" onclick="addRewardToDoomsdayDump()">ADD</button>
                 </div>
-                <div id="dd-rewards-wrapper" class="isolated-scroll-panel" style="margin-top:12px;"></div>
+                <div id="dd-rewards-wrapper" class="list-containment-box" style="margin-top:12px;"></div>
             </div>
             
             <div class="centered-btn-wrapper" id="dd-submit-btn-wrapper">
@@ -363,7 +369,7 @@
             </div>
 
             <h4 class="serif-sub">UPCOMING QUESTS (AUTO-GENERATED)</h4>
-            <div id="tomorrow-sandbox-list" class="isolated-scroll-panel"></div>
+            <div id="tomorrow-sandbox-list" class="list-containment-box"></div>
         </div>
     </div>
 
@@ -417,7 +423,7 @@
                     </div>
                 </div>
                 <h4 class="serif-sub">YOUR TARGETS</h4>
-                <div id="milestone-roster-list" class="isolated-scroll-panel"></div>
+                <div id="milestone-roster-list" class="list-containment-box"></div>
                 <div class="centered-btn-wrapper">
                     <button class="secondary-btn btn-text" style="color:var(--system-red); border-color:#3a1c1c;" onclick="purgeAllRewards()">💥 Purge All Loot</button>
                 </div>
@@ -425,12 +431,12 @@
 
             <div id="tab-content-archive" class="tab-pane hidden">
                 <h4 class="serif-sub">COMPLETED QUESTS LOG</h4>
-                <div id="history-archive-list" class="isolated-scroll-panel"></div>
+                <div id="history-archive-list" class="list-containment-box"></div>
             </div>
 
             <div id="tab-content-manual" class="tab-pane hidden">
                 <h4 class="serif-sub" style="margin-top:0;">SYSTEM HANDBOOK</h4>
-                <div class="isolated-scroll-panel" style="max-height: 290px;">
+                <div class="manual-scroll-panel">
                     <div class="faq-section">
                         <h4>🔥 QUEST CATEGORY SPECS</h4>
                         <p><strong>Main Quests:</strong> Heavy blocks (+50 XP). Mandatory.<br><strong>Side Quests:</strong> Structural core habits (+20 XP). Mandatory.<br><br>Both carry heavy rollover penalties if left unfinished before your sleep reset anchor.</p>
@@ -482,7 +488,7 @@
                 <hr class="thin-line">
                 <p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:16px;">These are your starting quests. Delete or add new ones below.</p>
                 
-                <div id="setup-tasks-list" class="isolated-scroll-panel" style="max-height: 240px;"></div>
+                <div id="setup-tasks-list" class="list-containment-box"></div>
 
                 <div class="reward-creation-box">
                     <h5 style="margin: 0 0 10px 0; color:#fff;">+ QUICK ADD PRESETS</h5>
@@ -549,7 +555,7 @@
                         <button class="primary-btn btn-text" style="flex:1;" onclick="addRewardToBrainDump()">ADD</button>
                     </div>
 
-                    <div id="wizard-rewards-wrapper" class="isolated-scroll-panel" style="max-height:180px; margin-top:12px;"></div>
+                    <div id="wizard-rewards-wrapper" class="list-containment-box" style="margin-top:12px;"></div>
                 </div>
                 <div class="centered-btn-wrapper"><button class="primary-btn btn-text" onclick="finalizeSetupWizard()">Begin Quest</button></div>
             </div>
@@ -620,6 +626,13 @@
         let temporarySetupPhotoData = null;
         
         let setupBrainDumpRewards = [
+            "Buy Clothes and Serums", 
+            "Trolley for the weekend trip", 
+            "Tattoo research", 
+            "Flight Tickets"
+        ];
+        
+        let doomsdayBrainDumpRewards = [
             "Buy Clothes and Serums", 
             "Trolley for the weekend trip", 
             "Tattoo research", 
