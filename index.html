@@ -804,7 +804,6 @@
                 deleteBrainDumpReward(index);
             } else {
                 setupBrainDumpRewards[index] = val;
-                // Re-rendering here is optional, but ensures the DOM matches exactly if we need to enforce formatting.
             }
         };
 
@@ -1051,8 +1050,11 @@
 
                 const li = document.createElement("li"); li.className = "quest-item";
                 let f = q.isDaily ? "🔄 " : q.cycle ? `⏳ ` : "⚡ ";
+                
                 if (q.completed) {
-                    li.innerHTML = `<span style="text-decoration:line-through; color:var(--text-gray);">${f}${q.title}</span><button class="gold-btn" style="border-color:var(--text-dark); color:var(--text-gray);" onclick="undoQuest('${q.id}')">UNDO</button>`;
+                    // Update: Mark postponed tasks clearly in the completed list
+                    let titleDisplay = q.wasPostponed ? `<strong style="color:var(--system-gold);">[PT]</strong> ${q.title}` : q.title;
+                    li.innerHTML = `<span style="text-decoration:line-through; color:var(--text-gray);">${f}${titleDisplay}</span><button class="gold-btn" style="border-color:var(--text-dark); color:var(--text-gray);" onclick="undoQuest('${q.id}')">UNDO</button>`;
                     lists.completed.appendChild(li);
                 } else {
                     li.innerHTML = `<span>${f}${q.title} <strong style="color:var(--text-gray); font-size:0.8rem;">(+${q.reward})</strong></span>
@@ -1088,9 +1090,67 @@
         };
 
         window.animateCompleteQuest = function(btn, id) { btn.closest('.quest-item').classList.add('completed-decay'); setTimeout(() => completeQuestDirectly(id), 400); };
-        function completeQuestDirectly(id) { const q = quests.find(x=>x.id==id); if(!q) return; triggerAudioFeedback('complete'); player.xp += q.reward; q.completed = true; if(q.cycle) q.lastDone = getLogicalDateStr(); logCompletedTaskToArchive(q.title, q.reward); calculateProgression(); saveData(); updateScreen(); }
-        window.undoQuest = function(id) { const q = quests.find(x=>x.id==id); if(!q) return; player.xp = Math.max(0, player.xp - q.reward); q.completed = false; if(q.cycle) q.lastDone = null; removeTaskFromArchiveLog(q.title); calculateProgression(); saveData(); updateScreen(); };
-        window.postponeSingleQuest = function(id) { if(player.postponeTokens<=0) return alert("No PT tokens left!"); const q = quests.find(x=>x.id==id); if(q) { player.postponeTokens--; q.completed = true; if(q.cycle){ let y=parseLogicalDate(getLogicalDateStr()); y.setDate(y.getDate()-(q.cycle-1)); q.lastDone=`${y.getFullYear()}-${String(y.getMonth()+1).padStart(2,'0')}-${String(y.getDate()).padStart(2,'0')}`; } logCompletedTaskToArchive(`[POSTPONED]: ${q.title}`, 0); saveData(); updateScreen(); } };
+        
+        function completeQuestDirectly(id) { 
+            const q = quests.find(x=>x.id==id); 
+            if(!q) return; 
+            
+            triggerAudioFeedback('complete'); 
+            player.xp += q.reward; 
+            q.completed = true; 
+            q.wasPostponed = false; // Ensure normal completion flag
+            if(q.cycle) q.lastDone = getLogicalDateStr(); 
+            
+            logCompletedTaskToArchive(q.title, q.reward); 
+            calculateProgression(); 
+            saveData(); 
+            updateScreen(); 
+        }
+
+        // --- NEW UNDO SYSTEM FIX ---
+        window.undoQuest = function(id) { 
+            const q = quests.find(x=>x.id==id); 
+            if(!q) return; 
+            
+            if (q.wasPostponed) {
+                // If it was postponed, we DO NOT steal XP. We just refund the token.
+                player.postponeTokens++;
+                q.wasPostponed = false;
+                removeTaskFromArchiveLog(`[POSTPONED]: ${q.title}`); 
+            } else {
+                // If it was normal, deduct the XP it originally gave.
+                player.xp = Math.max(0, player.xp - q.reward); 
+                removeTaskFromArchiveLog(q.title); 
+            }
+
+            q.completed = false; 
+            if(q.cycle) q.lastDone = null; // Re-enables cycle task for today
+            
+            calculateProgression(); 
+            saveData(); 
+            updateScreen(); 
+        };
+
+        // --- NEW PT SYSTEM FIX ---
+        window.postponeSingleQuest = function(id) { 
+            if(player.postponeTokens<=0) return alert("No PT tokens left!"); 
+            const q = quests.find(x=>x.id==id); 
+            if(q) { 
+                player.postponeTokens--; 
+                q.completed = true; 
+                q.wasPostponed = true; // Tag it so the system remembers!
+
+                if(q.cycle){ 
+                    let y=parseLogicalDate(getLogicalDateStr()); 
+                    y.setDate(y.getDate()-(q.cycle-1)); 
+                    q.lastDone=`${y.getFullYear()}-${String(y.getMonth()+1).padStart(2,'0')}-${String(y.getDate()).padStart(2,'0')}`; 
+                } 
+                
+                logCompletedTaskToArchive(`[POSTPONED]: ${q.title}`, 0); 
+                saveData(); 
+                updateScreen(); 
+            } 
+        };
 
         window.openTomorrowModal = function() { renderTomorrowSandboxList(); document.getElementById("tomorrow-modal").classList.remove("modal-hidden"); };
         window.closeTomorrowModal = function() { document.getElementById("tomorrow-modal").classList.add("modal-hidden"); };
@@ -1175,7 +1235,17 @@
         window.closeHelpManualModal = function() { document.getElementById("help-modal").classList.add("modal-hidden"); };
 
         function logCompletedTaskToArchive(taskTitle, xpValue, isRC=false, rID=null) { const d = getLogicalDateStr(); if(!dayLogs[d]) dayLogs[d] = { totalXPEarned: 0, itemsLogged: [] }; dayLogs[d].itemsLogged.push({ title: taskTitle, reward: xpValue, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), isRewardClaim: isRC, rewardId: rID }); dayLogs[d].totalXPEarned += xpValue; saveData(); }
-        function removeTaskFromArchiveLog(taskTitle) { const d = getLogicalDateStr(); if(dayLogs[d]) { const idx = dayLogs[d].itemsLogged.findIndex(i => i.title === taskTitle); if(idx !== -1) { dayLogs[d].totalXPEarned -= dayLogs[d].itemsLogged[idx].reward; dayLogs[d].itemsLogged.splice(idx, 1); saveData(); } } }
+        function removeTaskFromArchiveLog(taskTitle) { 
+            const d = getLogicalDateStr(); 
+            if(dayLogs[d]) { 
+                const idx = dayLogs[d].itemsLogged.findIndex(i => i.title === taskTitle); 
+                if(idx !== -1) { 
+                    dayLogs[d].totalXPEarned -= dayLogs[d].itemsLogged[idx].reward; 
+                    dayLogs[d].itemsLogged.splice(idx, 1); 
+                    saveData(); 
+                } 
+            } 
+        }
 
         window.openSettingsModal = function() { if(player){ document.getElementById("settings-boss-date").value = player.bossDeadline || ""; document.getElementById("settings-reset-hour").value = player.resetHour || "3"; document.getElementById("settings-stasis").checked = player.stasisMode || false; } switchSettingsTab('config'); document.getElementById("settings-modal").classList.remove("modal-hidden"); };
         window.closeSettingsModal = function() { document.getElementById("settings-modal").classList.add("modal-hidden"); };
