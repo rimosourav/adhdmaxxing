@@ -104,6 +104,14 @@
             color: #fff; font-size: 0.85rem; box-sizing: border-box; transition: var(--transition); height: 46px;
         }
         input:focus, select:focus { outline: none; border-color: var(--system-blue); }
+        
+        input.inline-edit-input {
+            flex: 1; background: transparent; border: none; color: var(--text-pure);
+            font-size: 0.85rem; padding: 0 4px; height: 32px; border-bottom: 1px solid transparent;
+        }
+        input.inline-edit-input:focus {
+            border-bottom: 1px solid var(--system-blue); background: var(--panel-dark);
+        }
 
         /* Sortable List Items */
         .sortable-item { background: var(--bg-black); border: 1px dashed var(--border-silver); padding: 10px 14px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;}
@@ -495,10 +503,10 @@
                 
                 <div class="reward-mandate-box">
                     <h4 style="margin:0 0 10px 0; font-size:0.8rem; color:#fff; text-align:center;">🏆 REWARD BRAIN-DUMP</h4>
-                    <p style="font-size: 0.65rem; color:var(--text-gray); text-align:center; margin-top:0;">Add rewards and use arrows to sort them.<br>Top = Easiest Treat, Bottom = Ultimate Prize.</p>
+                    <p style="font-size: 0.65rem; color:var(--text-gray); text-align:center; margin-top:0;">List at least <strong>4 rewards</strong>. Tap any item to edit it.<br>Top = Easiest Treat, Bottom = Ultimate Prize.</p>
                     
                     <div class="setup-reward-row">
-                        <input type="text" id="wizard-brain-dump-input" placeholder="Type a reward...">
+                        <input type="text" id="wizard-brain-dump-input" placeholder="Type a new reward...">
                         <button class="primary-btn btn-text" style="flex:1;" onclick="addRewardToBrainDump()">ADD</button>
                     </div>
 
@@ -571,7 +579,14 @@
         let player = null; let quests = []; let dayLogs = {}; 
         let taskSlideIndex = 0; let systemSlideIndex = 0; 
         let temporarySetupPhotoData = null;
-        let setupBrainDumpRewards = ["Coffee Treat", "Buy New Shirt", "Weekend Getaway"];
+        
+        // Updated Default Pre-filled Rewards List
+        let setupBrainDumpRewards = [
+            "Buy Clothes and Serums", 
+            "Trolley for the weekend trip", 
+            "GTA6", 
+            "New Tattoo"
+        ];
 
         const defaultRewards = { main: 50, side: 20, errand: 75, bonus: 15 };
 
@@ -783,6 +798,16 @@
             }
         };
 
+        window.updateBrainDumpReward = function(index, val) {
+            val = val.trim();
+            if(val === "") {
+                deleteBrainDumpReward(index);
+            } else {
+                setupBrainDumpRewards[index] = val;
+                // Re-rendering here is optional, but ensures the DOM matches exactly if we need to enforce formatting.
+            }
+        };
+
         window.moveRewardUp = function(index) {
             if(index > 0) {
                 let temp = setupBrainDumpRewards[index];
@@ -812,8 +837,9 @@
             setupBrainDumpRewards.forEach((r, idx) => {
                 c.innerHTML += `
                 <div class="sortable-item">
-                    <span>${idx + 1}. ${r}</span>
-                    <div class="sortable-controls">
+                    <span style="color:var(--text-gray); margin-right:8px;">${idx + 1}.</span>
+                    <input type="text" class="inline-edit-input" value="${r}" onchange="updateBrainDumpReward(${idx}, this.value)">
+                    <div class="sortable-controls" style="margin-left:8px;">
                         <button class="sort-btn" onclick="moveRewardUp(${idx})">▲</button>
                         <button class="sort-btn" onclick="moveRewardDown(${idx})">▼</button>
                         <button class="sort-btn" style="color:var(--system-red); border-color:var(--system-red);" onclick="deleteBrainDumpReward(${idx})">✕</button>
@@ -827,12 +853,15 @@
                 const nameInput = document.getElementById("setup-name").value.trim();
                 if (!nameInput) return alert("Please enter a Player Name.");
 
-                let compiledRewards = [];
-                const totalRewards = setupBrainDumpRewards.length;
-                
-                if (totalRewards === 0) {
-                    setupBrainDumpRewards.push("First Reward Milestone");
+                // Clear out any accidental empty strings
+                setupBrainDumpRewards = setupBrainDumpRewards.filter(r => r.trim() !== "");
+
+                // The Strict 4-Reward Guardrail
+                if (setupBrainDumpRewards.length < 4) {
+                    return alert("System requires a minimum of 4 rewards to calibrate your level progression track.");
                 }
+
+                let compiledRewards = [];
 
                 // Map sorted items to levels (Spacing them out across max Level 10 by default)
                 setupBrainDumpRewards.forEach((rName, i) => {
