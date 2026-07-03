@@ -23,7 +23,7 @@
         body {
             background-color: var(--bg-black); color: var(--text-pure);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            margin: 0; padding: 16px; display: flex; justify-content: center;
+            margin: 0; padding: 12px; display: flex; justify-content: center;
             align-items: flex-start; min-height: 100vh; box-sizing: border-box;
         }
 
@@ -33,118 +33,129 @@
             width: 100%;
         }
 
-        .serif-title { font-family: "Georgia", serif; font-weight: 400; letter-spacing: 0.08em; margin: 0 0 8px 0; text-transform: uppercase; font-size: 1.25rem; text-align: center; }
-        .serif-sub { font-family: "Georgia", serif; font-style: italic; font-weight: 400; color: var(--text-gray); margin: 16px 0 8px 0; font-size: 0.9rem; text-align: center; }
-        .thin-line { border: 0; height: 1px; background: var(--border-silver); margin: 12px 0; }
+        .serif-title { font-family: "Georgia", serif; font-weight: 400; letter-spacing: 0.08em; margin: 0 0 6px 0; text-transform: uppercase; font-size: 1.1rem; text-align: center; }
+        .serif-sub { font-family: "Georgia", serif; font-style: italic; font-weight: 400; color: var(--text-gray); margin: 12px 0 6px 0; font-size: 0.8rem; text-align: center; }
+        .thin-line { border: 0; height: 1px; background: var(--border-silver); margin: 10px 0; }
         .hidden, .modal-hidden { display: none !important; }
 
         .animate-fade-in { animation: fadeIn 0.5s forwards; }
         .animate-slide-up { animation: slideUp 0.4s forwards; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-        #status-alerts-bar { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-        .badge { padding: 6px 12px; font-size: 0.7rem; font-weight: bold; border: 1px solid rgba(0, 221, 255, 0.3); background: #000; color: var(--system-blue); }
+        /* Floating XP Payout Keyframes */
+        @keyframes floatUpFade {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-30px); opacity: 0; }
+        }
 
-        #main-dashboard { width: 100%; max-width: 500px; box-sizing: border-box; margin: 0 auto;}
+        .floating-xp-node {
+            position: absolute;
+            z-index: 10000;
+            pointer-events: none;
+            font-family: -apple-system, sans-serif;
+            font-weight: 900;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            animation: floatUpFade 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        #status-alerts-bar { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+        .badge { padding: 4px 10px; font-size: 0.65rem; font-weight: bold; border: 1px solid rgba(0, 221, 255, 0.2); background: #000; color: var(--system-blue); }
+
+        #main-dashboard { width: 100%; max-width: 480px; box-sizing: border-box; margin: 0 auto;}
 
         #avatar-container {
             background: var(--panel-dark); border: 1px solid var(--border-silver);
-            padding: 20px; border-radius: 2px; margin-bottom: 20px;
+            padding: 16px; border-radius: 2px; margin-bottom: 16px;
             display: flex; flex-direction: column; align-items: center; text-align: center;
         }
+        
         #instagram-avatar-circle {
-            width: 100px; height: 100px; border-radius: 50%; background: #000;
+            width: 86px; height: 86px; border-radius: 50%; background: #000;
             border: 2px solid var(--text-dark); position: relative;
-            display: flex; justify-content: center; align-items: center; margin-bottom: 14px;
+            display: flex; justify-content: center; align-items: center; margin-bottom: 10px;
             cursor: pointer;
             transition: var(--transition);
         }
         #avatar-img { width: calc(100% - 4px); height: calc(100% - 4px); border-radius: 50%; object-fit: cover; filter: grayscale(100%); }
         #avatar-rank-title {
-            font-size: 0.55rem; font-weight: 900; letter-spacing: 0.1em;
-            position: absolute; bottom: -6px; z-index: 5; color: var(--text-gray);
-            background: #000; border: 1px solid var(--border-silver); padding: 1px 6px; text-transform: uppercase;
+            font-size: 0.5rem; font-weight: 900; letter-spacing: 0.08em;
+            position: absolute; bottom: -5px; z-index: 5; color: var(--text-gray);
+            background: #000; border: 1px solid var(--border-silver); padding: 1px 5px; text-transform: uppercase;
             white-space: nowrap;
         }
 
-        .serif-name { font-family: "Georgia", serif; font-weight: 400; margin: 0; font-size: 1.6rem; letter-spacing: 0.05em; }
-        .meta-text { font-size: 0.75rem; color: var(--text-gray); margin: 4px 0 10px 0; }
-        #daily-directive-msg { font-family: "Georgia", serif; font-style: italic; font-size: 0.85rem; border-left: 2px solid var(--system-blue); padding-left: 10px; margin: 12px 0; color: var(--text-pure); text-align: left; line-height: 1.3; }
-        #dashboard-milestone-tracker { font-size: 0.75rem; font-weight: bold; color: var(--system-gold); margin: 10px 0 14px 0; text-align: left; width: 100%; word-break: break-word; }
+        .serif-name { font-family: "Georgia", serif; font-weight: 400; margin: 0; font-size: 1.4rem; letter-spacing: 0.02em; }
+        .meta-text { font-size: 0.7rem; color: var(--text-gray); margin: 4px 0 8px 0; }
+        #daily-directive-msg { font-family: "Georgia", serif; font-style: italic; font-size: 0.75rem; border-left: 2px solid var(--system-blue); padding-left: 8px; margin: 10px 0; color: var(--text-pure); text-align: left; line-height: 1.35; }
+        #dashboard-milestone-tracker { font-size: 0.7rem; font-weight: bold; color: var(--system-gold); margin: 8px 0 12px 0; text-align: left; width: 100%; word-break: break-word; }
 
-        /* Progress Bar Styling */
-        .p-bar-container { width: 100%; background: #111; border: 1px solid var(--border-silver); height: 6px; margin: 6px 0 12px 0; border-radius: 3px; overflow: hidden; }
+        .p-bar-container { width: 100%; background: #111; border: 1px solid var(--border-silver); height: 5px; margin: 6px 0 10px 0; border-radius: 2px; overflow: hidden; }
         .p-bar-fill { height: 100%; background: var(--system-blue); width: 0%; transition: width 0.4s ease; }
         .p-bar-fill.gold-fill { background: var(--system-gold); }
 
-        .economy-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 14px; background: #000; border: 1px solid var(--border-silver); padding: 8px; width: 100%; box-sizing: border-box; }
+        .economy-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 10px; background: #000; border: 1px solid var(--border-silver); padding: 6px; width: 100%; box-sizing: border-box; }
         .eco-stat { display: flex; flex-direction: column; align-items: center; }
-        .eco-stat span { font-size: 0.55rem; font-weight: bold; color: var(--text-gray); margin-bottom: 2px; }
-        .eco-stat strong { font-size: 0.9rem; color: var(--text-pure); }
+        .eco-stat span { font-size: 0.5rem; font-weight: bold; color: var(--text-gray); margin-bottom: 2px; }
+        .eco-stat strong { font-size: 0.8rem; color: var(--text-pure); }
         .alert-text strong { color: var(--system-red); }
 
-        /* Color Graded Ranks Architecture Styling */
-        body.rank-novice #instagram-avatar-circle { border-color: var(--text-dark); box-shadow: none; }
-        body.rank-awakened #instagram-avatar-circle { border-color: var(--system-blue); box-shadow: 0 0 14px rgba(0, 221, 255, 0.4); }
-        body.rank-veteran #instagram-avatar-circle { border-color: var(--system-purple); box-shadow: 0 0 14px rgba(175, 82, 222, 0.4); }
-        body.rank-elite #instagram-avatar-circle { border-color: var(--system-gold); box-shadow: 0 0 18px rgba(255, 204, 0, 0.5); }
-
         /* Quest Lists */
-        .quest-category { margin-bottom: 18px; }
-        .category-header { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; border-bottom: 1px solid var(--border-silver); padding-bottom: 6px; margin: 0 0 10px 0; }
-        .header-desc { font-weight: 400; color: var(--text-gray); font-size: 0.65rem; letter-spacing: 0; }
+        .quest-category { margin-bottom: 14px; }
+        .category-header { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; border-bottom: 1px solid var(--border-silver); padding-bottom: 4px; margin: 0 0 8px 0; }
+        .header-desc { font-weight: 400; color: var(--text-gray); font-size: 0.6rem; letter-spacing: 0; }
         .quest-list { list-style: none; padding: 0; margin: 0; }
 
         .quest-item {
             background: var(--panel-dark); border: 1px solid var(--border-silver);
-            padding: 12px 14px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; gap: 8px;
+            padding: 10px 12px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 0.75rem;
         }
         .quest-item.completed-decay { opacity: 0; transform: scale(0.97) translateY(-4px); transition: var(--transition); }
-        .completed-section { opacity: 0.5; } .completed-section:hover { opacity: 1; }
+        .completed-section { opacity: 0.45; } .completed-section:hover { opacity: 1; }
 
         /* Forms, Chips & Inputs */
-        .form-group { margin-bottom: 14px; }
-        .toggle-group { display: flex; justify-content: space-between; align-items: center; background: #000; border: 1px solid var(--border-silver); padding: 12px; }
-        label { display: block; font-size: 0.7rem; color: var(--text-gray); font-weight: bold; margin-bottom: 4px; text-transform: uppercase; }
-        .input-helper { display: block; font-size: 0.65rem; color: var(--text-dark); margin-top: 4px; }
-        .reward-mandate-box { background: rgba(10,10,12,0.6); padding: 12px; border: 1px solid var(--border-silver); margin-top: 12px; width: 100%; box-sizing: border-box; }
+        .form-group { margin-bottom: 12px; }
+        .toggle-group { display: flex; justify-content: space-between; align-items: center; background: #000; border: 1px solid var(--border-silver); padding: 10px; }
+        label { display: block; font-size: 0.65rem; color: var(--text-gray); font-weight: bold; margin-bottom: 4px; text-transform: uppercase; }
+        .input-helper { display: block; font-size: 0.6rem; color: var(--text-dark); margin-top: 3px; }
+        .reward-mandate-box { background: rgba(10,10,12,0.6); padding: 10px; border: 1px solid var(--border-silver); margin-top: 10px; width: 100%; box-sizing: border-box; }
         
         .setup-reward-row { display: flex; gap: 6px; margin-bottom: 6px; width: 100%; align-items: center; }
         .setup-reward-row input[type="text"] { flex: 3; }
 
         input, select {
-            width: 100%; padding: 12px; background: #000; border: 1px solid var(--border-silver);
-            color: #fff; font-size: 0.85rem; box-sizing: border-box; transition: var(--transition); height: 46px;
+            width: 100%; padding: 10px; background: #000; border: 1px solid var(--border-silver);
+            color: #fff; font-size: 0.8rem; box-sizing: border-box; transition: var(--transition); height: 40px;
         }
         input:focus, select:focus { outline: none; border-color: var(--system-blue); }
         
         input.inline-edit-input {
             flex: 1; background: transparent; border: none; color: var(--text-pure);
-            font-size: 0.85rem; padding: 0 4px; height: 32px; border-bottom: 1px solid transparent;
+            font-size: 0.75rem; padding: 0 4px; height: 28px; border-bottom: 1px solid transparent;
         }
         input.inline-edit-input:focus {
             border-bottom: 1px solid var(--system-blue); background: var(--panel-dark);
         }
 
         /* Sortable List Items */
-        .sortable-item { background: var(--bg-black); border: 1px dashed var(--border-silver); padding: 10px 14px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;}
-        .sortable-controls { display: flex; gap: 6px; align-items: center;}
-        .sort-btn { background: transparent; border: 1px solid var(--text-dark); color: var(--text-gray); font-size: 0.8rem; cursor: pointer; padding: 4px 8px; transition: var(--transition); }
+        .sortable-item { background: var(--bg-black); border: 1px dashed var(--border-silver); padding: 8px 12px; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem;}
+        .sortable-controls { display: flex; gap: 4px; align-items: center;}
+        .sort-btn { background: transparent; border: 1px solid var(--text-dark); color: var(--text-gray); font-size: 0.7rem; cursor: pointer; padding: 3px 6px; transition: var(--transition); }
         .sort-btn:hover { background: var(--text-dark); color: #fff; }
 
         /* Suggestion Chips */
-        .suggestion-box { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; justify-content: center; }
-        .chip { background: var(--bg-black); border: 1px solid var(--border-silver); color: var(--text-gray); padding: 8px 12px; font-size: 0.75rem; cursor: pointer; border-radius: 4px; transition: var(--transition); display:flex; align-items:center; gap:4px;}
+        .suggestion-box { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; justify-content: center; }
+        .chip { background: var(--bg-black); border: 1px solid var(--border-silver); color: var(--text-gray); padding: 6px 10px; font-size: 0.7rem; cursor: pointer; border-radius: 3px; transition: var(--transition); display:flex; align-items:center; gap:4px;}
         .chip:hover { border-color: var(--system-blue); color: #fff; }
-        .chip-meta { font-size: 0.6rem; opacity: 0.6; }
+        .chip-meta { font-size: 0.55rem; opacity: 0.5; }
 
         /* Universal Buttons */
-        .btn-text { text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; font-weight: bold; }
+        .btn-text { text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; font-weight: bold; }
         
         .primary-btn, .secondary-btn {
-            height: 46px; display: flex; justify-content: center; align-items: center; box-sizing: border-box;
-            cursor: pointer; padding: 0 12px; width: 100%; text-align: center; transition: var(--transition);
+            height: 40px; display: flex; justify-content: center; align-items: center; box-sizing: border-box;
+            cursor: pointer; padding: 0 10px; width: 100%; text-align: center; transition: var(--transition);
         }
         
         .primary-btn { background: var(--text-pure); color: #000; border: 1px solid var(--text-pure); }
@@ -153,9 +164,9 @@
         .secondary-btn:hover { background: #08080a; border-color: var(--text-dark); }
 
         .gold-btn {
-            height: 36px; display: flex; justify-content: center; align-items: center; padding: 0 10px;
+            height: 32px; display: flex; justify-content: center; align-items: center; padding: 0 8px;
             background: transparent; border: 1px solid var(--text-pure); color: var(--text-pure); 
-            font-size: 0.7rem; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: var(--transition);
+            font-size: 0.65rem; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: var(--transition);
         }
         .gold-btn:hover { background: var(--text-pure); color: #000; }
         .pt-btn { border-color: var(--system-gold) !important; color: var(--system-gold) !important; }
@@ -163,55 +174,46 @@
         /* Alignment Configurations */
         .nav-row {
             display: flex; justify-content: center; align-items: center; gap: 8px;
-            width: 100%; max-width: 400px; margin: 24px auto 0 auto; box-sizing: border-box;
+            width: 100%; max-width: 380px; margin: 20px auto 0 auto; box-sizing: border-box;
         }
-        .nav-row button { height: 46px; }
-        .centered-btn-wrapper { display: flex; justify-content: center; width: 100%; max-width: 320px; margin: 18px auto 0 auto; gap: 8px; }
+        .nav-row button { height: 40px; }
+        .centered-btn-wrapper { display: flex; justify-content: center; width: 100%; max-width: 300px; margin: 14px auto 0 auto; gap: 6px; }
         
         .modal-header-row { display: flex; justify-content: space-between; align-items: center; }
-        .close-x { background: transparent; border: none; color: var(--text-gray); font-size: 1.5rem; cursor: pointer; padding: 0; line-height: 1; }
+        .close-x { background: transparent; border: none; color: var(--text-gray); font-size: 1.3rem; cursor: pointer; padding: 0; line-height: 1; }
 
-        /* Modals Architecture with Natural Append Expansion */
+        /* Modals Architecture */
         #settings-modal, #tutorial-tasks-modal, #tutorial-system-modal, #night-shift-modal, #tomorrow-modal, #edit-task-modal, #avatar-edit-modal, #doomsday-modal, #framing-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.96); z-index: 9999;
             display: flex; justify-content: center; align-items: flex-start;
-            padding: 40px 12px; box-sizing: border-box; overflow-y: auto;
+            padding: 30px 12px; box-sizing: border-box; overflow-y: auto;
         }
         
         .modal-content, .settings-modal-content, .setup-content {
             background: var(--bg-black); border: 1px solid var(--border-silver);
-            padding: 24px; width: 100%; max-width: 460px; box-sizing: border-box; margin: 0 auto;
+            padding: 20px; width: 100%; max-width: 440px; box-sizing: border-box; margin: 0 auto;
         }
 
-        /* Fluid Appending List Wrapper */
-        .list-containment-box {
-            border: 1px solid var(--border-silver);
-            padding: 10px; background: #020203; margin-bottom: 12px;
-        }
+        .list-containment-box { border: 1px solid var(--border-silver); padding: 8px; background: #020203; margin-bottom: 10px; }
+        .manual-scroll-panel { max-height: 260px; overflow-y: auto; border: 1px solid var(--border-silver); padding: 8px; background: #020203; margin-bottom: 10px; }
 
-        /* Isolated Box Scroll ONLY for the text-heavy manual */
-        .manual-scroll-panel {
-            max-height: 290px; overflow-y: auto; border: 1px solid var(--border-silver);
-            padding: 10px; background: #020203; margin-bottom: 12px;
-        }
-
-        .faq-section { background: var(--panel-dark); border: 1px solid var(--border-silver); padding: 12px; margin-bottom: 10px; }
-        .faq-section h4 { margin: 0 0 6px 0; font-size: 0.75rem; color: var(--system-blue); }
-        .faq-section p { margin: 0; font-size: 0.75rem; color: var(--text-gray); line-height: 1.4; }
+        .faq-section { background: var(--panel-dark); border: 1px solid var(--border-silver); padding: 10px; margin-bottom: 8px; }
+        .faq-section h4 { margin: 0 0 4px 0; font-size: 0.7rem; color: var(--system-blue); }
+        .faq-section p { margin: 0; font-size: 0.65rem; color: var(--text-gray); line-height: 1.35; }
         
-        .system-slide { background: var(--panel-dark); padding: 20px; border: 1px solid var(--border-silver); min-height: 110px; }
-        .slide-title { font-size: 0.75rem; color: var(--system-gold); margin: 0 0 8px 0; }
-        .slide-text { font-size: 0.75rem; color: #fff; line-height: 1.4; margin: 0; }
+        .system-slide { background: var(--panel-dark); padding: 16px; border: 1px solid var(--border-silver); min-height: 100px; }
+        .slide-title { font-size: 0.7rem; color: var(--system-gold); margin: 0 0 6px 0; }
+        .slide-text { font-size: 0.65rem; color: #fff; line-height: 1.35; margin: 0; }
 
-        .settings-tabs { display: grid; grid-template-columns: repeat(4, 1fr); max-width: 100%; margin: 14px auto; gap: 4px; }
-        .tab-btn { height: 38px; display: flex; justify-content: center; align-items: center; background: transparent; border: 1px solid var(--border-silver); color: var(--text-gray); cursor: pointer; font-size: 0.65rem; text-transform: uppercase; padding: 0 2px; text-align: center; }
+        .settings-tabs { display: grid; grid-template-columns: repeat(4, 1fr); max-width: 100%; margin: 12px auto; gap: 4px; }
+        .tab-btn { height: 32px; display: flex; justify-content: center; align-items: center; background: transparent; border: 1px solid var(--border-silver); color: var(--text-gray); cursor: pointer; font-size: 0.6rem; text-transform: uppercase; padding: 0 2px; text-align: center; }
         .tab-btn.active { background: var(--panel-dark); border-color: var(--text-pure); color: var(--text-pure); font-weight: bold; }
 
-        .roster-card, .archive-card { background: var(--panel-dark); border: 1px solid var(--border-silver); padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; box-sizing: border-box; }
-        .flex-buttons { display: flex; gap: 6px; }
+        .roster-card, .archive-card { background: var(--panel-dark); border: 1px solid var(--border-silver); padding: 10px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; box-sizing: border-box; }
+        .flex-buttons { display: flex; gap: 4px; }
 
-        #framing-canvas { background: #111; display: block; margin: 14px auto; border: 1px solid var(--border-silver); cursor: move; touch-action: none; }
+        #framing-canvas { background: #111; display: block; margin: 12px auto; border: 1px solid var(--border-silver); cursor: move; touch-action: none; }
     </style>
 </head>
 <body>
@@ -219,7 +221,7 @@
     <div id="framing-modal" class="modal-hidden">
         <div class="modal-content animate-fade-in" style="max-width:320px; text-align:center;">
             <h3 class="serif-title" style="margin:0;">📐 REPOSITION PHOTO</h3>
-            <p style="font-size:0.65rem; color:var(--text-gray); margin:4px 0 0 0;">Drag image inside frame window to align avatar.</p>
+            <p style="font-size:0.6rem; color:var(--text-gray); margin:4px 0 0 0;">Drag image inside frame window to align avatar.</p>
             <canvas id="framing-canvas" width="250" height="250"></canvas>
             <div class="centered-btn-wrapper" style="margin-top:14px; gap:8px;">
                 <button class="secondary-btn btn-text" style="flex:1;" onclick="cancelFramingStage()">Cancel</button>
@@ -231,7 +233,7 @@
     <div id="doomsday-modal" class="modal-hidden">
         <div class="modal-content animate-fade-in">
             <h2 class="serif-title" id="dd-modal-title">⏳ TIMELINE COLLAPSED</h2>
-            <p style="font-size:0.75rem; color:var(--text-gray); text-align:center; margin-top:0;" id="dd-modal-desc">Your deadline has arrived. Calibrate your next major real-world chapter block.</p>
+            <p style="font-size:0.7rem; color:var(--text-gray); text-align:center; margin-top:0;" id="dd-modal-desc">Your deadline has arrived. Calibrate your next major real-world chapter block.</p>
             <hr class="thin-line">
             
             <div class="form-group">
@@ -240,8 +242,8 @@
             </div>
 
             <div class="reward-mandate-box">
-                <h4 style="margin:0 0 10px 0; font-size:0.8rem; color:#fff; text-align:center;">🏆 CHAPTER REWARD TRACK</h4>
-                <p style="font-size: 0.65rem; color:var(--text-gray); text-align:center; margin-top:0;">Input at least 4 new rewards arranged from top (easiest) to bottom (ultimate prize).</p>
+                <h4 style="margin:0 0 10px 0; font-size:0.75rem; color:#fff; text-align:center;">🏆 CHAPTER REWARD TRACK</h4>
+                <p style="font-size: 0.6rem; color:var(--text-gray); text-align:center; margin-top:0;">Input at least 4 new rewards arranged from top (easiest) to bottom (ultimate prize).</p>
                 
                 <div class="setup-reward-row">
                     <input type="text" id="dd-brain-dump-input" placeholder="Type new reward treat...">
@@ -312,7 +314,7 @@
                 <h2 class="serif-title" style="margin:0;">🌙 NIGHT DIRECTIVE</h2>
                 <button class="close-x" onclick="dismissNightHub()">&times;</button>
             </div>
-            <p style="font-size:0.8rem; color:var(--text-gray);">Unfinished mandatory quests found.</p>
+            <p style="font-size:0.75rem; color:var(--text-gray);">Unfinished mandatory quests found.</p>
             <hr class="thin-line">
             <div id="night-hub-list"></div>
         </div>
@@ -343,7 +345,12 @@
             </select>
             <div id="edit-custom-cycle-group" class="hidden">
                 <label>Interval Days</label>
-                <input type="number" id="edit-task-cycle-days" min="1" style="margin-bottom:16px;">
+                <input type="number" id="edit-task-cycle-days" min="1" style="margin-bottom:12px;">
+            </div>
+            
+            <div class="form-group toggle-group" style="margin-top:8px; margin-bottom:14px;">
+                <label for="edit-task-stackable" style="margin:0; color:#fff;">🏃 Allow Multi-Stacking (Exercise/Repetitive)</label>
+                <input type="checkbox" id="edit-task-stackable" style="width:auto; cursor:pointer;">
             </div>
             
             <div class="centered-btn-wrapper" style="margin-top:4px;">
@@ -361,7 +368,7 @@
             <hr class="thin-line">
             
             <div class="reward-creation-box">
-                <h5 style="margin: 0 0 10px 0; color:#fff;">⚡ QUICK REFILL FORMS</h5>
+                <h5 style="margin: 0 0 10px 0; color:#fff; font-size:0.75rem;">⚡ QUICK REFILL FORMS</h5>
                 <div class="suggestion-box">
                     <div class="chip" onclick="populateTomorrowForm('Deep Work / Study Session', 'main', 'daily', 0)">+ Study Prep <span class="chip-meta">(Daily)</span></div>
                     <div class="chip" onclick="populateTomorrowForm('Office Project Sprint', 'main', 'daily', 0)">+ Project <span class="chip-meta">(Daily)</span></div>
@@ -369,7 +376,7 @@
                     <div class="chip" onclick="populateTomorrowForm('Pay Rent & Bills', 'errand', 'one-time', 0)">+ Pay Bills <span class="chip-meta">(Once)</span></div>
                 </div>
 
-                <h5 style="margin: 15px 0 10px 0; color:#fff; border-top: 1px dashed var(--border-silver); padding-top:15px;">+ CREATE CUSTOM QUEST</h5>
+                <h5 style="margin: 12px 0 8px 0; color:#fff; border-top: 1px dashed var(--border-silver); padding-top:12px; font-size:0.75rem;">+ CREATE CUSTOM QUEST</h5>
                 <input type="text" id="t-quest-title" placeholder="Quest name...">
                 <select id="t-quest-type" style="margin-bottom:8px;">
                     <option value="main">🔥 Main Quest</option>
@@ -438,7 +445,7 @@
 
             <div id="tab-content-roster" class="tab-pane hidden">
                 <div class="reward-creation-box">
-                    <h5 style="margin: 0 0 10px 0; color:#fff;">+ ADD REWARD</h5>
+                    <h5 style="margin: 0 0 10px 0; color:#fff; font-size:0.75rem;">+ ADD REWARD</h5>
                     <input type="text" id="new-reward-name" placeholder="Item Name...">
                     <div class="centered-btn-wrapper" style="margin-top:4px;">
                         <button class="secondary-btn btn-text" onclick="addCustomRewardShop()">Save Reward</button>
@@ -508,12 +515,12 @@
             <div id="setup-phase-tasks" class="hidden">
                 <h2 class="serif-title">ESTABLISH QUESTS</h2>
                 <hr class="thin-line">
-                <p style="font-size:0.8rem; color:var(--text-gray); text-align:center; margin-bottom:16px;">These are your starting quests. Customize the names or add more below.</p>
+                <p style="font-size:0.75rem; color:var(--text-gray); text-align:center; margin-bottom:12px;">These are your starting quests. Customize the names or add more below.</p>
                 
                 <div id="setup-tasks-list" class="list-containment-box"></div>
 
                 <div class="reward-creation-box">
-                    <h5 style="margin: 0 0 10px 0; color:#fff;">⚡ QUICK REFILL FORMS</h5>
+                    <h5 style="margin: 0 0 10px 0; color:#fff; font-size:0.75rem;">⚡ QUICK REFILL FORMS</h5>
                     <div class="suggestion-box">
                         <div class="chip" onclick="populateSetupForm('Deep Work / Study Session', 'main', 'daily', 0)">+ Exam Prep <span class="chip-meta">(Daily)</span></div>
                         <div class="chip" onclick="populateSetupForm('Office Project Sprint', 'main', 'daily', 0)">+ Project <span class="chip-meta">(Daily)</span></div>
@@ -523,7 +530,7 @@
                         <div class="chip" onclick="populateSetupForm('Pay Credit Card Statement', 'errand', 'one-time', 0)">+ Pay Bills <span class="chip-meta">(Once)</span></div>
                     </div>
 
-                    <h5 style="margin: 15px 0 10px 0; color:#fff; border-top: 1px dashed var(--border-silver); padding-top:15px;">+ CREATE CUSTOM QUEST</h5>
+                    <h5 style="margin: 12px 0 6px 0; color:#fff; border-top: 1px dashed var(--border-silver); padding-top:12px; font-size:0.75rem;">+ CREATE CUSTOM QUEST</h5>
                     <input type="text" id="setup-t-quest-title" placeholder="Quest name...">
                     <select id="setup-t-quest-type" style="margin-bottom:8px;">
                         <option value="main">🔥 Main Quest</option>
@@ -569,8 +576,8 @@
                 </div>
                 
                 <div class="reward-mandate-box">
-                    <h4 style="margin:0 0 10px 0; font-size:0.8rem; color:#fff; text-align:center;">🏆 REWARD BRAIN-DUMP</h4>
-                    <p style="font-size: 0.65rem; color:var(--text-gray); text-align:center; margin-top:0;">List at least <strong>4 rewards</strong>. Tap any item to edit it.<br>Top = Easiest Treat, Bottom = Ultimate Prize.</p>
+                    <h4 style="margin:0 0 10px 0; font-size:0.75rem; color:#fff; text-align:center;">🏆 REWARD BRAIN-DUMP</h4>
+                    <p style="font-size: 0.6rem; color:var(--text-gray); text-align:center; margin-top:0;">List at least <strong>4 rewards</strong>. Tap any item to edit it.<br>Top = Easiest Treat, Bottom = Ultimate Prize.</p>
                     
                     <div class="setup-reward-row">
                         <input type="text" id="wizard-brain-dump-input" placeholder="Type a new reward...">
@@ -587,12 +594,12 @@
 
     <div id="avatar-edit-modal" class="modal-hidden">
         <div class="modal-content animate-slide-up" style="max-width: 320px; text-align: center;">
-            <div class="modal-header-row" style="margin-bottom: 16px;">
+            <div class="modal-header-row" style="margin-bottom: 12px;">
                 <h3 class="serif-title" style="margin:0; width: 100%;">PROFILE PHOTO</h3>
             </div>
-            <hr class="thin-line" style="margin-bottom: 16px;">
-            <button class="primary-btn btn-text" style="margin-bottom: 12px; border-color: var(--system-blue); color: var(--system-blue); background: transparent;" onclick="triggerDashboardPhotoUpload(); closeAvatarModal();">📷 New Photo</button>
-            <button class="secondary-btn btn-text" style="margin-bottom: 12px; color: var(--system-red); border-color: #3a1c1c;" onclick="removeDashboardPhoto(); closeAvatarModal();">🗑️ Remove Photo</button>
+            <hr class="thin-line" style="margin-bottom: 12px;">
+            <button class="primary-btn btn-text" style="margin-bottom: 10px; border-color: var(--system-blue); color: var(--system-blue); background: transparent;" onclick="triggerDashboardPhotoUpload(); closeAvatarModal();">📷 New Photo</button>
+            <button class="secondary-btn btn-text" style="margin-bottom: 10px; color: var(--system-red); border-color: #3a1c1c;" onclick="removeDashboardPhoto(); closeAvatarModal();">🗑️ Remove Photo</button>
             <button class="secondary-btn btn-text" onclick="closeAvatarModal()">Cancel</button>
         </div>
     </div>
@@ -613,7 +620,7 @@
             <div id="player-stats">
                 <h1 class="serif-name" id="username">---</h1>
                 <p class="meta-text">Rank: <span id="rank-display" style="font-weight:bold;">---</span> | Level: <span id="level-display">-</span> | Streak: <span id="streak-display">0</span>d</p>
-                <div style="font-size:0.65rem; color:var(--text-gray); margin-top:-8px; margin-bottom:4px;">XP inside cycle tier: <span id="xp-current-display">0</span> / <span id="xp-needed-display">0</span></div>
+                <div style="font-size:0.6rem; color:var(--text-gray); margin-top:-8px; margin-bottom:4px;">XP inside cycle tier: <span id="xp-current-display">0</span> / <span id="xp-needed-display">0</span></div>
                 
                 <div class="p-bar-container"><div id="dashboard-progress-fill" class="p-bar-fill"></div></div>
 
@@ -673,6 +680,35 @@
 
         const defaultRewards = { main: 50, side: 20, errand: 75, bonus: 15 };
 
+        // --- COORDINATE MAPPED FLOATING XP ENGINE ---
+        function spawnFloatingXp(event, textValue, questType) {
+            let x = 0; let y = 0;
+            if (event && event.clientX && event.clientY) {
+                x = event.pageX;
+                y = event.pageY;
+            } else {
+                x = window.innerWidth / 2;
+                y = window.innerHeight / 2;
+            }
+
+            const floatNode = document.createElement("div");
+            floatNode.className = "floating-xp-node";
+            floatNode.innerText = textValue;
+
+            // Set accent aura based on core layout classes
+            if (questType === 'main') floatNode.style.color = "var(--system-red)";
+            else if (questType === 'side') floatNode.style.color = "var(--system-blue)";
+            else if (questType === 'errand') floatNode.style.color = "var(--system-purple)";
+            else floatNode.style.color = "var(--system-gold)";
+
+            floatNode.style.textShadow = "0 0 6px rgba(0,0,0,0.8)";
+            floatNode.style.left = `${x - 15}px`;
+            floatNode.style.top = `${y - 15}px`;
+
+            document.body.appendChild(floatNode);
+            setTimeout(() => { floatNode.remove(); }, 680);
+        }
+
         // --- NATIVE INTERACTIVE CANVAS FRAMING SYSTEM FUNCTIONS ---
         function initFramingModalPipeline(rawDataUrl, completionCallback) {
             activeFramingCallback = completionCallback;
@@ -685,7 +721,6 @@
                 let horizontalScaleFactor = framingCanvas.width / framingImg.width;
                 let verticalScaleFactor = framingCanvas.height / framingImg.height;
                 
-                // FIXED: Removed 'let' declaration to target the shared global variable instead of shadowing it
                 imgScale = Math.max(horizontalScaleFactor, verticalScaleFactor);
                 
                 imgX = (framingCanvas.width - framingImg.width * imgScale) / 2;
@@ -772,7 +807,17 @@
             eCtx.drawImage(framingCanvas, 0, 0, 250, 250);
             
             let structuredOutputBase64 = exportCanvas.toDataURL("image/jpeg", 0.7);
-            if (activeFramingCallback) activeFramingCallback(structuredOutputBase64);
+            if (activeFramingCallback) activeFramingCallback(framedBase64 => {
+                if(player) {
+                    player.avatarDataUrl = framedBase64;
+                    document.getElementById("avatar-img").src = player.avatarDataUrl;
+                    saveData();
+                } else {
+                    temporarySetupPhotoData = framedBase64;
+                    const tipNode = document.getElementById("setup-photo-preview-msg");
+                    if (tipNode) tipNode.innerText = "Avatar framed successfully!";
+                }
+            });
             
             document.getElementById("framing-modal").classList.add("modal-hidden");
             document.body.classList.remove("modal-open");
@@ -809,10 +854,10 @@
         }
 
         const systemDirectives = [
-            "The System monitors your execution variables. Proceed with absolute precision.",
-            "Executive latency detected. Isolate your active focus block immediately.",
-            "A continuous matrix streak charges your token bank. Do not yield momentum.",
-            "Do not accumulate quest inventory debt. Execution yields absolute clarity."
+            "The System monitors your variables. Proceed with absolute precision.",
+            "Executive latency detected. Isolate focus immediately.",
+            "A continuous matrix streak charges your token bank.",
+            "Do not accumulate quest debt. Execution yields clarity."
         ];
 
         function triggerAudioFeedback(type) {
@@ -822,12 +867,12 @@
                 osc.connect(gain); gain.connect(ctx.destination);
                 if (type === 'complete') {
                     osc.type = 'sine'; osc.frequency.setValueAtTime(440.00, ctx.currentTime); osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.08);  
-                    gain.gain.setValueAtTime(0.03, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-                    osc.start(); osc.stop(ctx.currentTime + 0.3);
+                    gain.gain.setValueAtTime(0.02, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
+                    osc.start(); osc.stop(ctx.currentTime + 0.25);
                 } else if (type === 'levelup') {
-                    osc.type = 'triangle'; osc.frequency.setValueAtTime(523.25, ctx.currentTime); osc.frequency.setValueAtTime(1046.50, ctx.currentTime + 0.25); 
-                    gain.gain.setValueAtTime(0.05, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
-                    osc.start(); osc.stop(ctx.currentTime + 0.6);
+                    osc.type = 'triangle'; osc.frequency.setValueAtTime(523.25, ctx.currentTime); osc.frequency.setValueAtTime(1046.50, ctx.currentTime + 0.2); 
+                    gain.gain.setValueAtTime(0.04, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+                    osc.start(); osc.stop(ctx.currentTime + 0.5);
                 }
             } catch (e) {}
         }
@@ -923,12 +968,12 @@
             quests.forEach(q => {
                 let fLabel = q.isDaily ? "(Daily)" : q.cycle ? `(${q.cycle}d)` : "(Once)";
                 c.innerHTML += `
-                <div class="setup-reward-row" style="background: var(--panel-dark); padding: 8px; border: 1px solid var(--border-silver); margin-bottom: 6px; align-items: flex-end;">
+                <div class="setup-reward-row" style="background: var(--panel-dark); padding: 6px; border: 1px solid var(--border-silver); margin-bottom: 6px; align-items: flex-end;">
                     <div style="flex: 1; display: flex; flex-direction: column; width: 100%;">
-                        <span style="font-size:0.6rem; color:var(--text-gray); margin-bottom:4px; font-weight:bold; text-transform:uppercase;">${q.type} ${fLabel}</span>
-                        <input type="text" value="${q.title}" onchange="updateSetupTask('${q.id}', 'title', this.value)" style="height:36px; padding:8px; width: 100%;">
+                        <span style="font-size:0.55rem; color:var(--text-gray); margin-bottom:4px; font-weight:bold; text-transform:uppercase;">${q.type} ${fLabel}</span>
+                        <input type="text" value="${q.title}" onchange="updateSetupTask('${q.id}', 'title', this.value)" style="height:32px; padding:6px; width: 100%; font-size:0.75rem;">
                     </div>
-                    <button onclick="removeSetupTask('${q.id}')" style="background:none; border:none; color:var(--system-red); font-size:1.2rem; cursor:pointer; margin-left:8px; padding-bottom:4px;">🗑️</button>
+                    <button onclick="removeSetupTask('${q.id}')" style="background:none; border:none; color:var(--system-red); font-size:1rem; cursor:pointer; margin-left:8px; padding-bottom:2px;">🗑️</button>
                 </div>`;
             });
         }
@@ -953,7 +998,7 @@
         window.addSetupTask = function() {
             let t = document.getElementById("setup-t-quest-title").value.trim(); let tp = document.getElementById("setup-t-quest-type").value; let f = document.getElementById("setup-t-quest-frequency").value;
             if(!t) return alert("Quest requires a name.");
-            let item = { id: Date.now(), type: tp, title: t, completed: false };
+            let item = { id: Date.now(), type: tp, title: t, completed: false, isStackable: false, stackCount: 0 };
             if(f==="daily") item.isDaily = true; else if(f==="cyclic") { item.cycle = parseInt(document.getElementById("setup-t-quest-cycle-days").value) || 3; item.lastDone = null; }
             quests.push(item); document.getElementById("setup-t-quest-title").value = ""; renderSetupTasksList();
         };
@@ -1049,11 +1094,7 @@
             if (input.files && input.files[0]) { 
                 const fileReaderEngine = new FileReader(); 
                 fileReaderEngine.onload = e => { 
-                    initFramingModalPipeline(e.target.result, (framedBase64) => {
-                        temporarySetupPhotoData = framedBase64;
-                        const tipNode = document.getElementById("setup-photo-preview-msg");
-                        if (tipNode) tipNode.innerText = "Avatar framed successfully!";
-                    });
+                    initFramingModalPipeline(e.target.result);
                 }; 
                 fileReaderEngine.readAsDataURL(input.files[0]); 
             } 
@@ -1064,11 +1105,7 @@
             if (input.files && input.files[0]) { 
                 const fileReaderEngine = new FileReader(); 
                 fileReaderEngine.onload = e => { 
-                    initFramingModalPipeline(e.target.result, (framedBase64) => {
-                        player.avatarDataUrl = framedBase64;
-                        document.getElementById("avatar-img").src = player.avatarDataUrl;
-                        saveData();
-                    });
+                    initFramingModalPipeline(e.target.result);
                 }; 
                 fileReaderEngine.readAsDataURL(input.files[0]); 
             } 
@@ -1086,7 +1123,7 @@
                 
                 if(player.cycleCount >= 9) {
                     document.getElementById("dd-modal-title").innerText = "🏆 ANNUAL VICTORY ERA";
-                    document.getElementById("dd-modal-desc").innerHTML = "<strong>CRITICAL ACHIEVEMENT UNLOCKED: ELITE RANK ATTAINED.</strong><br>Would you like to initiate New Game Plus Year 2 Reset or calibrate another tracking layer?";
+                    document.getElementById("dd-modal-desc").innerHTML = "<strong>CRITICAL ACHIEVEMENT UNLOCKED: ELITE RANK ATTAINED.</strong>";
                 }
                 renderDoomsdayBrainDumpList();
             }
@@ -1158,21 +1195,26 @@
             
             document.getElementById("edit-task-frequency").value = freq;
             document.getElementById("edit-task-cycle-days").value = q.cycle || 3;
+            document.getElementById("edit-task-stackable").checked = q.isStackable || false;
             toggleEditCycleInput();
 
             document.getElementById("edit-task-modal").classList.remove("modal-hidden");
             document.body.classList.add("modal-open");
         };
+        
         window.closeEditTaskModal = function() { 
             document.getElementById("edit-task-modal").classList.add("modal-hidden"); 
             document.body.classList.remove("modal-open");
         };
+        
         window.saveTaskEdit = function() {
             const id = document.getElementById("edit-task-id").value;
             const q = quests.find(x => x.id == id);
             if(q) {
                 q.title = document.getElementById("edit-task-title").value.trim() || q.title;
                 q.type = document.getElementById("edit-task-type").value;
+                q.isStackable = document.getElementById("edit-task-stackable").checked;
+                if(!q.isStackable) q.stackCount = 0;
                 
                 let freq = document.getElementById("edit-task-frequency").value;
                 if (freq === "daily") { q.isDaily = true; delete q.cycle; }
@@ -1184,13 +1226,44 @@
             closeEditTaskModal();
         };
 
-        window.animateCompleteQuest = function(btn, id) { 
+        window.animateCompleteQuest = function(event, id) { 
             const q = quests.find(x => x.id == id);
-            if (q && (q.type === 'main' || q.type === 'side')) {
-                btn.closest('.quest-item').classList.add('completed-decay'); 
-                setTimeout(() => completeQuestDirectly(id), 400); 
+            if (!q) return;
+            
+            let calculatedReward = getScaledQuestReward(q.type, player.level);
+            
+            if (q.isStackable) {
+                triggerAudioFeedback('complete');
+                q.stackCount = (q.stackCount || 0) + 1;
+                player.xp += calculatedReward;
+                spawnFloatingXp(event, `+${calculatedReward} XP`, q.type);
+                logCompletedTaskToArchive(`${q.title} (x${q.stackCount})`, calculatedReward);
+                calculateProgression(); saveData(); updateScreen();
             } else {
-                completeQuestDirectly(id);
+                const btn = event.currentTarget;
+                if (q.type === 'main' || q.type === 'side') {
+                    btn.closest('.quest-item').classList.add('completed-decay'); 
+                    spawnFloatingXp(event, `+${calculatedReward} XP`, q.type);
+                    setTimeout(() => completeQuestDirectly(id), 400); 
+                } else {
+                    spawnFloatingXp(event, `+${calculatedReward} XP`, q.type);
+                    completeQuestDirectly(id);
+                }
+            }
+        };
+
+        window.decrementStackQuest = function(event, id) {
+            const q = quests.find(x => x.id == id);
+            if(q && q.isStackable && q.stackCount > 0) {
+                let calculatedReward = getScaledQuestReward(q.type, player.level);
+                player.xp = Math.max(0, player.xp - calculatedReward);
+                removeTaskFromArchiveLog(`${q.title} (x${q.stackCount})`);
+                
+                q.stackCount--;
+                if(q.stackCount === 0) q.completed = false;
+                
+                spawnFloatingXp(event, `-${calculatedReward} XP`, 'main');
+                calculateProgression(); saveData(); updateScreen();
             }
         };
 
@@ -1205,6 +1278,7 @@
                 removeTaskFromArchiveLog(q.title); 
             }
             q.completed = false; if(q.cycle) q.lastDone = null;
+            q.stackCount = 0;
             calculateProgression(); saveData(); updateScreen(); 
         };
 
@@ -1212,7 +1286,7 @@
             if(player.postponeTokens<=0) return alert("No PT tokens left!"); 
             const q = quests.find(x=>x.id==id); 
             if(q) { 
-                player.postponeTokens--; q.completed = true; q.wasPostponed = true; 
+                player.postponeTokens--; q.completed = true; q.wasPostponed = true; q.stackCount = 0;
                 if(q.cycle){ 
                     let y=parseLogicalDate(getLogicalDateStr()); y.setDate(y.getDate()-(q.cycle-1)); 
                     q.lastDone=`${y.getFullYear()}-${String(y.getMonth()+1).padStart(2,'0')}-${String(y.getDate()).padStart(2,'0')}`; 
@@ -1236,7 +1310,7 @@
         window.addCustomTomorrowQuest = function() {
             let t = document.getElementById("t-quest-title").value.trim(); let tp = document.getElementById("t-quest-type").value; let f = document.getElementById("t-quest-frequency").value;
             if(!t) return alert("Quest requires a name.");
-            let item = { id: Date.now(), type: tp, title: t, completed: false, scheduledForTomorrow: true };
+            let item = { id: Date.now(), type: tp, title: t, completed: false, scheduledForTomorrow: true, isStackable: false, stackCount: 0 };
             if(f==="daily") item.isDaily = true; else if(f==="cyclic") { item.cycle = parseInt(document.getElementById("t-quest-cycle-days").value) || 3; item.lastDone = null; }
             quests.push(item); document.getElementById("t-quest-title").value = ""; saveData(); renderTomorrowSandboxList(); updateScreen();
         };
@@ -1253,7 +1327,7 @@
             document.getElementById("new-reward-name").value = ""; saveData(); updateScreen(); populateRewardShopPanel(); 
         };
         
-        window.deleteCustomReward = function(id) { player.customRewards = player.customRewards.filter(r => r.id != id); saveData(); updateScreen(); populateRewardShopPanel(); };
+            window.deleteCustomReward = function(id) { player.customRewards = player.customRewards.filter(r => r.id != id); saveData(); updateScreen(); populateRewardShopPanel(); };
         window.purgeAllRewards = function() { if(confirm("Permanently wipe all rewards?")) { player.customRewards = []; saveData(); updateScreen(); populateRewardShopPanel(); } };
         window.editCustomReward = function(id) { 
             const r = player.customRewards.find(x => x.id == id); 
@@ -1275,7 +1349,6 @@
         window.closeAvatarModal = function() { document.getElementById("avatar-edit-modal").classList.add("modal-hidden"); document.body.classList.remove("modal-open"); };
         window.removeDashboardPhoto = function() { player.avatarDataUrl = null; document.getElementById("avatar-img").src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111'/><text x='50%' y='55%' font-family='sans-serif' font-size='10' fill='%23555' text-anchor='middle'>IMG</text></svg>"; saveData(); };
         
-        // FIXED: Re-injected the entirely missing structural openSettingsModal function
         window.openSettingsModal = function() {
             if (player) {
                 document.getElementById("settings-boss-date").value = player.bossDeadline || "";
@@ -1339,7 +1412,7 @@
             });
 
             if (player.isDay0Buffer || player.stasisMode) {
-                player.isDay0Buffer = false; quests.forEach(q => { if (q.isDaily || q.cycle) q.completed = false; });
+                player.isDay0Buffer = false; quests.forEach(q => { if (q.isDaily || q.cycle) q.completed = false; q.stackCount = 0; });
                 player.lastLoginDate = todayStr; saveData(); return;
             }
             const y = parseLogicalDate(player.lastLoginDate); const isW = (y.getDay() === 0 || y.getDay() === 6);
@@ -1348,12 +1421,13 @@
                 if (q.workdaysOnly && isW) { if (q.isDaily || q.cycle) q.completed = false; return; }
                 if (q.type === 'main' || q.type === 'side') {
                     tot++;
-                    if (!q.completed) {
+                    if (!q.completed && (q.stackCount || 0) === 0) {
                         if (q.cycle && q.lastDone && Math.floor((y - parseLogicalDate(q.lastDone))/86400000) < q.cycle) return;
                         missed++; pen += Math.floor(getScaledQuestReward(q.type, player.level) * 1.5);
                     }
                 }
                 if (q.isDaily || q.cycle) q.completed = false;
+                q.stackCount = 0;
             });
             if (!isW && missed === 0 && tot > 0) { player.perfectStreak++; if (player.perfectStreak % 3 === 0) player.postponeTokens++; } 
             else if (missed > 0) player.perfectStreak = 0;
@@ -1443,21 +1517,24 @@
 
                 const li = document.createElement("li"); li.className = "quest-item";
                 let f = q.isDaily ? "🔄 " : q.cycle ? `⏳ ` : "⚡ ";
-                let scaledVal = getScaledQuestReward(q.type, player.level);
-                
                 let isOptional = (q.type === 'errand' || q.type === 'bonus');
 
-                if (q.completed && !isOptional) {
+                // If non-stackable task is complete -> send straight down to Completed Today panel log
+                if (q.completed && !q.isStackable && !isOptional) {
                     let titleDisplay = q.wasPostponed ? `<strong style="color:var(--system-gold);">[PT]</strong> ${q.title}` : q.title;
                     li.innerHTML = `<span style="text-decoration:line-through; color:var(--text-gray);">${f}${titleDisplay}</span><button class="gold-btn" style="border-color:var(--text-dark); color:var(--text-gray);" onclick="undoQuest('${q.id}')">UNDO</button>`;
                     lists.completed.appendChild(li);
                 } else {
-                    let stackLabel = (isOptional && q.completed) ? ` <span style="color:var(--system-blue); font-weight:bold;">(Done)</span>` : '';
-                    li.innerHTML = `<span>${f}${q.title}${stackLabel} <strong style="color:var(--text-gray); font-size:0.8rem;">(+${scaledVal} XP)</strong></span>
+                    // Render Active Quest Row Layout
+                    let inlineStackCountLabel = (q.isStackable && q.stackCount > 0) ? ` <span style="color:var(--system-blue); font-weight:900;">(x${q.stackCount})</span>` : '';
+                    let standardOptionalLabel = (!q.isStackable && isOptional && q.completed) ? ` <span style="color:var(--system-blue); font-weight:bold;">(Done)</span>` : '';
+                    
+                    li.innerHTML = `<span>${f}${q.title}${inlineStackCountLabel}${standardOptionalLabel}</span>
                         <div class="flex-buttons">
                             <button class="gold-btn" style="border-color:var(--text-dark); padding:0 8px;" onclick="openEditTaskModal('${q.id}')">✏️</button>
-                            ${(q.type==='main'||q.type==='side') ? `<button class="gold-btn pt-btn" onclick="postponeSingleQuest('${q.id}')">PT</button>` : ''}
-                            <button class="gold-btn" onclick="animateCompleteQuest(this, '${q.id}')">${isOptional ? '+ STACK' : 'COMPLETE'}</button>
+                            ${(!q.isStackable && (q.type==='main'||q.type==='side')) ? `<button class="gold-btn pt-btn" onclick="postponeSingleQuest('${q.id}')">PT</button>` : ''}
+                            ${(q.isStackable && q.stackCount > 0) ? `<button class="gold-btn" style="border-color:var(--system-red); color:var(--system-red); padding:0 10px;" onclick="decrementStackQuest(event, '${q.id}')">-</button>` : ''}
+                            <button class="gold-btn" onclick="animateCompleteQuest(event, '${q.id}')">COMPLETE</button>
                         </div>`;
                     lists[q.type].appendChild(li);
                 }
@@ -1585,6 +1662,17 @@
             updateScreen();
             rotateDirectiveMessage();
             alert("⚔️ System calibrated. Welcome to your productivity arc!");
+        };
+
+        window.openSettingsModal = function() {
+            if (player) {
+                document.getElementById("settings-boss-date").value = player.bossDeadline || "";
+                document.getElementById("settings-reset-hour").value = player.resetHour || "3";
+                document.getElementById("settings-stasis").checked = player.stasisMode || false;
+            }
+            switchSettingsTab('config');
+            document.getElementById("settings-modal").classList.remove("modal-hidden");
+            document.body.classList.add("modal-open");
         };
 
         document.addEventListener("DOMContentLoaded", loadData);
